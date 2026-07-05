@@ -1,0 +1,10 @@
+<button 
+  [type]="type"
+  class="btn btn-lg btn-other"
+  [ngClass]="'btn-' + variant"
+  [attr.data-bs-toggle]="dataToggle"
+  [attr.data-bs-target]="dataTarget"
+  [disabled] = "disabled"
+>
+  <ng-content></ng-content>
+</button>

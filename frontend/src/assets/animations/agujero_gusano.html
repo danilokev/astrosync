@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Agujero de Gusano</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#0a0d1f; overflow:hidden; width:100vw; height:100vh; font-family:'Roboto',sans-serif; }
+canvas { display:block; }
+#hud { position:fixed; inset:0; pointer-events:none; z-index:10; }
+#title { position:absolute; top:22px; left:50%; transform:translateX(-50%); text-align:center; }
+#title h1 { font-family:'Montserrat',sans-serif; font-size:26px; font-weight:700; letter-spacing:6px; color:rgba(160,210,255,0.92); text-transform:uppercase; text-shadow:0 0 24px rgba(100,170,255,0.4); }
+#title p  { font-family:'Roboto',sans-serif; font-size:15px; letter-spacing:3px; color:rgba(188,122,255,0.7); margin-top:10px; }
+#btns { position:absolute; bottom:60px; right:20px; display:flex; flex-direction:column; gap:6px; pointer-events:all; }
+#btns button { background:rgba(14,18,50,0.82); border:1px solid rgba(188,122,255,0.2); color:rgba(188,122,255,0.85); font-family:'Montserrat',sans-serif; font-size:10px; font-weight:600; letter-spacing:2px; padding:7px 16px; cursor:pointer; text-transform:uppercase; border-radius:8px; transition:all 0.2s; }
+#btns button:hover { background:rgba(30,20,70,0.92); color:#fff; border-color:rgba(188,122,255,0.55); }
+#tabs { position:absolute; bottom:16px; left:50%; transform:translateX(-50%); display:flex; gap:6px; pointer-events:all; }
+#tabs button { background:rgba(14,18,50,0.82); border:1px solid rgba(188,122,255,0.2); color:rgba(188,122,255,0.85); font-family:'Montserrat',sans-serif; font-size:10px; font-weight:600; letter-spacing:2px; padding:7px 16px; cursor:pointer; text-transform:uppercase; border-radius:8px; transition:all 0.2s; }
+#tabs button.on, #tabs button:hover { background:rgba(30,20,70,0.92); color:#fff; border-color:rgba(188,122,255,0.55); }
+#info-btn { position:fixed; bottom:22px; left:20px; z-index:20; width:40px; height:40px; border-radius:50%; background:rgba(14,18,50,0.85); border:1px solid rgba(188,122,255,0.35); color:rgba(188,122,255,0.95); font-size:20px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; pointer-events:all; font-family:'Montserrat',sans-serif; box-shadow:0 2px 14px rgba(0,0,0,0.45); }
+#info-btn:hover { background:rgba(30,20,80,0.95); border-color:rgba(188,122,255,0.7); color:#fff; box-shadow:0 0 18px rgba(188,122,255,0.28); }
+#info-panel { position:fixed; top:0; left:0; bottom:0; width:320px; background:rgba(10,13,32,0.96); border-right:1px solid rgba(188,122,255,0.14); backdrop-filter:blur(14px); z-index:30; display:flex; flex-direction:column; transform:translateX(-100%); transition:transform 0.3s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+#info-panel.open { transform:translateX(0); pointer-events:all; }
+#info-head { display:flex; align-items:center; justify-content:space-between; padding:20px 20px 16px; border-bottom:1px solid rgba(188,122,255,0.1); flex-shrink:0; }
+#info-head-left { display:flex; align-items:center; gap:10px; }
+#info-title { font-family:'Montserrat',sans-serif; font-size:15px; font-weight:700; letter-spacing:2px; color:rgba(210,175,255,0.95); text-transform:uppercase; }
+#info-x { background:none; border:none; color:rgba(188,122,255,0.45); font-size:18px; cursor:pointer; padding:2px 6px; border-radius:6px; line-height:1; transition:all 0.2s; }
+#info-x:hover { color:#fff; background:rgba(188,122,255,0.12); }
+#info-body { overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:16px; flex:1; }
+#info-body::-webkit-scrollbar { width:3px; }
+#info-body::-webkit-scrollbar-thumb { background:rgba(188,122,255,0.2); border-radius:3px; }
+.info-p { font-family:'Roboto',sans-serif; font-size:15px; color:rgba(200,185,240,0.72); line-height:1.8; margin:0; }
+</style>
+</head>
+<body>
+<div id="hud">
+  <div id="title">
+    <h1>Agujero de Gusano</h1>
+    <p>Puente espacio-temporal · Materia exótica</p>
+  </div>
+  <div id="tabs">
+    <button class="on" onclick="setMode('sequence')">SECUENCIA COMPLETA</button>
+    <button onclick="setMode('outside')">VISTA EXTERIOR</button>
+  </div>
+  <div id="btns">
+    <button onclick="doPause()" id="wh-pause-btn">PAUSA</button>
+    <button onclick="doSpeed(0.4)">LENTO</button>
+    <button onclick="doSpeed(1.0)">NORMAL</button>
+    <button onclick="doSpeed(2.0)">RAPIDO</button>
+  </div>
+</div>
+
+<button id="info-btn" onclick="toggleInfo()" title="Informacion cientifica">i</button>
+
+<div id="info-panel">
+  <div id="info-head">
+    <div id="info-head-left">
+      <span id="info-title">Agujero de Gusano</span>
+    </div>
+    <button id="info-x" onclick="toggleInfo()">✕</button>
+  </div>
+  <div id="info-body">
+    <p class="info-p">Un agujero de gusano o puente de Einstein-Rosen es una solucion a las ecuaciones de la relatividad general que conecta dos regiones del espacio-tiempo, potencialmente muy alejadas entre si o pertenecientes a universos diferentes.</p>
+    <p class="info-p">Fue propuesto matematicamente por Einstein y Rosen en 1935. La version transitable de Kip Thorne y Mike Morris (1988) requeriria materia exotica con densidad de energia negativa para mantener abierta la garganta y evitar que colapse.</p>
+    <p class="info-p">Si fuesen estables y transitables, los agujeros de gusano podrian permitir viajes mas rapidos que la luz entre puntos lejanos del universo o incluso viajes en el tiempo. La pelicula Interstellar (2014), asesorada por Kip Thorne, muestra la representacion cientificamente mas precisa basada en la geometria de Morris-Thorne.</p>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+
+var PA=false, SP=1.0, MODE='sequence';
+var clock=new THREE.Clock();
+var whElapsed=0, whLastT=performance.now()/1000;
+
+window.doPause=function(){ PA=!PA; document.getElementById("wh-pause-btn").textContent=PA?"REANUDAR":"PAUSA"; };
+window.doSpeed=function(v){ SP=v; };
+window.setMode=function(m){
+  MODE=m; camT=0;
+  document.querySelectorAll('#tabs button').forEach(function(b,i){
+    b.className=['sequence','outside'][i]===m?'on':'';
+  });
+};
+
+var renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.1;
+document.body.appendChild(renderer.domElement);
+var scene=new THREE.Scene();
+var camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,0.1,100000);
+camera.position.set(0,0,800);
+addEventListener('resize',function(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
+
+var VS='attribute float aS;attribute float aA;varying vec3 vC;varying float vA;void main(){vC=color;vA=aA;vec4 mv=modelViewMatrix*vec4(position,1.0);gl_PointSize=aS*(500.0/-mv.z);gl_PointSize=clamp(gl_PointSize,0.2,120.0);gl_Position=projectionMatrix*mv;}';
+var FS='varying vec3 vC;varying float vA;void main(){float d=length(gl_PointCoord-0.5)*2.0;float s=pow(1.0-smoothstep(0.0,1.0,d),2.2);gl_FragColor=vec4(vC,vA*s);if(gl_FragColor.a<0.003)discard;}';
+function pm(add){return new THREE.ShaderMaterial({vertexShader:VS,fragmentShader:FS,vertexColors:true,transparent:true,depthWrite:false,blending:add?THREE.AdditiveBlending:THREE.NormalBlending});}
+function geo(n){var g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(new Float32Array(n*3),3));g.setAttribute('color',new THREE.BufferAttribute(new Float32Array(n*3),3));g.setAttribute('aS',new THREE.BufferAttribute(new Float32Array(n),1));g.setAttribute('aA',new THREE.BufferAttribute(new Float32Array(n),1));return g;}
+function upd(g){['position','color','aS','aA'].forEach(function(k){if(g.attributes[k])g.attributes[k].needsUpdate=true;});}
+function rnd(a,b){return a+Math.random()*(b-a);}
+function clamp01(x){return Math.max(0,Math.min(1,x));}
+
+// TUNEL DEL WORMHOLE - geometria de Morris-Thorne
+// r(l) = sqrt(b0^2 + l^2) donde b0 es el radio de la garganta
+var THROAT_R=80;
+var TUNNEL_LEN=600;
+var TUNNEL_SEGS=80;
+var TUNNEL_RINGS=60;
+
+// Generar la superficie del tunel (toro deformado)
+var tunnelGeo=new THREE.BufferGeometry();
+var tunnelPos=[];
+var tunnelIdx=[];
+for(var si=0;si<=TUNNEL_SEGS;si++){
+  var l=((si/TUNNEL_SEGS)-0.5)*TUNNEL_LEN*2;
+  var r=Math.sqrt(THROAT_R*THROAT_R+l*l*0.08); // radio de Morris-Thorne
+  var flare=1+Math.pow(Math.abs(l/TUNNEL_LEN),1.5)*2; // ensanche en los extremos
+  r*=flare;
+  for(var ri=0;ri<=TUNNEL_RINGS;ri++){
+    var ang=ri/TUNNEL_RINGS*Math.PI*2;
+    tunnelPos.push(r*Math.cos(ang), r*Math.sin(ang), l);
+  }
+}
+var tpa=new Float32Array(tunnelPos);
+tunnelGeo.setAttribute('position',new THREE.BufferAttribute(tpa,3));
+// Wireframe del tunel
+var tunnelMat=new THREE.ShaderMaterial({
+  vertexShader:'void main(){gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
+  fragmentShader:'void main(){gl_FragColor=vec4(0.55,0.25,1.0,0.08);}',
+  transparent:true,wireframe:true,depthWrite:false,blending:THREE.AdditiveBlending
+});
+scene.add(new THREE.Mesh(tunnelGeo,tunnelMat));
+
+// ANILLOS DE ENERGIA en la garganta
+for(var ri=0;ri<8;ri++){
+  var rScale=THROAT_R*(0.9+ri*0.15);
+  var ringGeo=new THREE.TorusGeometry(rScale,1.5,8,128);
+  var alpha=0.35-ri*0.04;
+  var ringMat=new THREE.MeshBasicMaterial({color:new THREE.Color().setHSL(0.75-ri*0.02,1,0.6),transparent:true,opacity:alpha,blending:THREE.AdditiveBlending,depthWrite:false});
+  var ring=new THREE.Mesh(ringGeo,ringMat);
+  ring.rotation.x=Math.PI/2;
+  scene.add(ring);
+}
+
+// DISTORSION GRAVITACIONAL - lente de luz (partículas en espiral)
+var LENS_N=12000;
+var lensData=Array.from({length:LENS_N},function(){
+  var dist=THROAT_R*(1.5+Math.pow(Math.random(),0.4)*8);
+  var angle=Math.random()*Math.PI*2;
+  var z=(Math.random()-0.5)*200;
+  var orbitSpeed=(1/Math.sqrt(dist/THROAT_R))*0.8*(Math.random()>0.5?1:-1);
+  return {dist:dist,angle:angle,z:z,orbitSpeed:orbitSpeed,sz:0.5+Math.random()*2,alpha:0.08+Math.random()*0.25,phase:Math.random()*Math.PI*2,hue:0.72+Math.random()*0.08};
+});
+var lensGeo=geo(LENS_N);
+scene.add(new THREE.Points(lensGeo,pm(true)));
+
+// PARTICULAS DE MATERIA EXOTICA (fluyen por el tunel)
+var FLOW_N=15000;
+var flowData=Array.from({length:FLOW_N},function(){
+  var r=Math.random()*THROAT_R*0.8;
+  var angle=Math.random()*Math.PI*2;
+  return {
+    r:r, angle:angle,
+    z:-TUNNEL_LEN+(Math.random()*TUNNEL_LEN*2),
+    speed:0.5+Math.random()*2.5,
+    phase:Math.random()*Math.PI*2,
+    sz:0.8+Math.random()*3,
+    hue:0.6+Math.random()*0.2,
+  };
+});
+var flowGeo=geo(FLOW_N);
+scene.add(new THREE.Points(flowGeo,pm(true)));
+
+// UNIVERSO A (entrada) - estrellas azules
+var UNI_A_N=3000;
+var uniAGeo=geo(UNI_A_N);
+{
+  var p=uniAGeo.attributes.position.array,c=uniAGeo.attributes.color.array,s=uniAGeo.attributes.aS.array,a=uniAGeo.attributes.aA.array;
+  for(var i=0;i<UNI_A_N;i++){
+    var ang=Math.random()*Math.PI*2,rad=rnd(300,2000),z=rnd(-3000,-600);
+    p[i*3]=rad*Math.cos(ang);p[i*3+1]=rad*Math.sin(ang);p[i*3+2]=z;
+    var col=new THREE.Color().setHSL(0.6+Math.random()*0.1,0.4,0.5+Math.random()*0.5);
+    c[i*3]=col.r;c[i*3+1]=col.g;c[i*3+2]=col.b;
+    s[i]=0.8+Math.random()*2.5;a[i]=0.2+Math.random()*0.7;
+  }
+  upd(uniAGeo);
+}
+scene.add(new THREE.Points(uniAGeo,pm(true)));
+
+// UNIVERSO B (salida) - estrellas doradas/naranjas
+var UNI_B_N=3000;
+var uniBGeo=geo(UNI_B_N);
+{
+  var p=uniBGeo.attributes.position.array,c=uniBGeo.attributes.color.array,s=uniBGeo.attributes.aS.array,a=uniBGeo.attributes.aA.array;
+  for(var i=0;i<UNI_B_N;i++){
+    var ang=Math.random()*Math.PI*2,rad=rnd(300,2000),z=rnd(600,3000);
+    p[i*3]=rad*Math.cos(ang);p[i*3+1]=rad*Math.sin(ang);p[i*3+2]=z;
+    var col=new THREE.Color().setHSL(0.10+Math.random()*0.08,0.6,0.4+Math.random()*0.5);
+    c[i*3]=col.r;c[i*3+1]=col.g;c[i*3+2]=col.b;
+    s[i]=0.8+Math.random()*2.5;a[i]=0.2+Math.random()*0.7;
+  }
+  upd(uniBGeo);
+}
+scene.add(new THREE.Points(uniBGeo,pm(true)));
+
+// GLOW central de la garganta
+for(var gi=0;gi<5;gi++){
+  var gr=THROAT_R*(0.5+gi*0.4);
+  var gm=new THREE.Mesh(new THREE.SphereGeometry(gr,24,24),
+    new THREE.MeshBasicMaterial({color:new THREE.Color().setHSL(0.75,1,0.5+gi*0.05),transparent:true,opacity:(0.18-gi*0.03),blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.BackSide}));
+  scene.add(gm);
+}
+
+// LUZ
+scene.add(new THREE.PointLight(0x8844ff,8,2000));
+scene.add(new THREE.AmbientLight(0x050308,1));
+
+// Camara path — secuencia continua: aproximacion + travesia + salida
+var camT=0;
+
+// Path unificado: entra desde lejos, atraviesa la garganta, sale al otro universo
+var SEQUENCE_PATH = new THREE.CatmullRomCurve3([
+  // Aproximacion
+  new THREE.Vector3(0,   0,   1800),
+  new THREE.Vector3(60,  80,  1200),
+  new THREE.Vector3(-40,-50,   700),
+  new THREE.Vector3(20,  30,   300),
+  // Entrada a la garganta
+  new THREE.Vector3(0,   0,   100),
+  // Garganta (z=0)
+  new THREE.Vector3(15,  10,   0),
+  // Salida
+  new THREE.Vector3(-20,-15,  -200),
+  new THREE.Vector3(30,  20,  -500),
+  new THREE.Vector3(-40, 50,  -900),
+  new THREE.Vector3(0,   0,  -1600),
+], false, 'catmullrom', 0.5);
+
+function update(dt,et){
+  // Distorsion de anillos
+  tunnelMat.uniforms&&null;
+
+  // Lente gravitacional - orbitas
+  var lp=lensGeo.attributes.position.array,lc=lensGeo.attributes.color.array,ls=lensGeo.attributes.aS.array,la=lensGeo.attributes.aA.array;
+  for(var i=0;i<LENS_N;i++){
+    var d=lensData[i];
+    d.angle+=d.orbitSpeed*0.008*SP;
+    // Espiral hacia la garganta para las mas cercanas
+    var distortion=MODE==='travel'?1:1+Math.sin(et*0.3+d.phase)*0.1;
+    var lR=d.dist*distortion;
+    lp[i*3]=lR*Math.cos(d.angle);
+    lp[i*3+1]=lR*Math.sin(d.angle);
+    lp[i*3+2]=d.z+Math.sin(et*0.2+d.phase)*20;
+    var col=new THREE.Color().setHSL(d.hue+Math.abs(d.orbitSpeed)*0.05,1,0.55+0.15*Math.sin(et*0.5+d.phase));
+    lc[i*3]=col.r;lc[i*3+1]=col.g;lc[i*3+2]=col.b;
+    ls[i]=d.sz*(1+0.1*Math.sin(et*0.8+d.phase));
+    // Fade por distancia a garganta
+    var zFade=clamp01(1-Math.abs(d.z)/300);
+    la[i]=d.alpha*zFade*(0.7+0.3*Math.abs(Math.sin(et*0.4+d.phase)));
+  }
+  upd(lensGeo);
+
+  // Flujo materia exotica — mas rapido al atravesar la garganta
+  var fp=flowGeo.attributes.position.array,fc=flowGeo.attributes.color.array,fs=flowGeo.attributes.aS.array,fa=flowGeo.attributes.aA.array;
+  var inGaranta=MODE==='sequence'&&camT>0.35&&camT<0.65;
+  for(var i=0;i<FLOW_N;i++){
+    var d=flowData[i];
+    d.z+=d.speed*SP*(inGaranta?3:1);
+    if(d.z>TUNNEL_LEN) d.z=-TUNNEL_LEN;
+    var throatFactor=Math.sqrt(THROAT_R*THROAT_R+d.z*d.z*0.08)/THROAT_R;
+    var R=d.r*throatFactor;
+    d.angle+=0.002*SP;
+    fp[i*3]=R*Math.cos(d.angle);fp[i*3+1]=R*Math.sin(d.angle);fp[i*3+2]=d.z;
+    var zNorm=(d.z+TUNNEL_LEN)/(TUNNEL_LEN*2);
+    var col=new THREE.Color().setHSL(0.65-zNorm*0.15,0.9,0.5+zNorm*0.2);
+    fc[i*3]=col.r;fc[i*3+1]=col.g;fc[i*3+2]=col.b;
+    fs[i]=d.sz*(0.8+0.4*Math.sin(et*d.speed+d.phase));
+    var centreFade=clamp01(1-R/(THROAT_R*2));
+    fa[i]=0.3*centreFade*(0.7+0.3*Math.sin(et*1.5+d.phase));
+  }
+  upd(flowGeo);
+
+  // Camara
+  if(MODE==='outside'){
+    var oa=et*0.08*SP;
+    camera.position.set(Math.cos(oa)*600,150+Math.sin(et*0.04)*100,Math.sin(oa)*600);
+    camera.lookAt(0,0,0);
+    camera.rotation.z+=Math.sin(et*0.1)*0.002;
+  } else {
+    // Secuencia continua — avanza y hace loop
+    camT+=dt*0.05*SP;
+    if(camT>=1.0) camT=0;
+    var pos=SEQUENCE_PATH.getPoint(camT);
+    var lookT=Math.min(camT+0.015,0.999);
+    var look=SEQUENCE_PATH.getPoint(lookT);
+    camera.position.lerp(pos,0.06);
+    camera.lookAt(look);
+    // Distorsion al pasar por la garganta (camT ~0.4-0.6)
+    var nearThroat=clamp01(1-Math.abs(camT-0.5)*6);
+    camera.rotation.z+=Math.sin(et*3)*0.012*nearThroat;
+    camera.fov=75+nearThroat*18;
+    camera.updateProjectionMatrix();
+  }
+
+  // Cielo cambia segun posicion en el tunel
+  var zPos=camera.position.z;
+  var inTunnel=Math.abs(zPos)<400;
+  var tunnelDepth=inTunnel?clamp01(1-Math.abs(zPos)/400):0;
+  var r=0.001+tunnelDepth*0.008;
+  var g2=0.0+tunnelDepth*0.002;
+  var b2=0.003+tunnelDepth*0.015;
+  renderer.setClearColor(new THREE.Color(r,g2,b2));
+  scene.fog=new THREE.FogExp2(new THREE.Color(r,g2,b2).getHex(),inTunnel?0.0003:0.00008);
+}
+
+function loop(){requestAnimationFrame(loop);var now=performance.now()/1000,rawDt=now-whLastT;whLastT=now;var dt=Math.min(rawDt,0.05);if(!PA)whElapsed+=dt;var et=whElapsed;if(!PA)update(dt,et);renderer.render(scene,camera);}
+loop();
+
+window.toggleInfo=function(){ document.getElementById('info-panel').classList.toggle('open'); };
+})();
+</script>
+</body>
+</html>

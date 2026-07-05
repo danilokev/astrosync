@@ -1,0 +1,22 @@
+<div
+  class="toast position-fixed fade"
+  role="alert"
+  aria-live="assertive"
+  aria-atomic="true"
+  [ngClass]="type"
+  [class.show]="show"
+  *ngIf="show"
+>
+  <div class="toast-header">
+    <strong class="me-auto">{{ title }}</strong>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Cerrar"
+      (click)="hide()"
+    ></button>
+  </div>
+  <div class="toast-body">
+    {{ message }}
+  </div>
+</div>

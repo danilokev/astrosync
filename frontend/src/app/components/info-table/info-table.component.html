@@ -1,0 +1,178 @@
+<!-- <div *ngIf="type === 'star' && normalizedData">
+    <div>
+        <p>Identificadores en catálogos de estrellas</p>
+        <ul>
+            <li>Hipparcos Catalog: <span>{{normalizedData.hip}}</span></li>
+            <li>Henry Draper Catalog: <span>{{normalizedData.hd}}</span></li>
+            <li>Yale Bright Star Catalog: <span>{{normalizedData.hr}}</span></li>
+            <li>Gliese Catalog of Nearby Stars: <span>{{normalizedData.gl}}</span></li>
+        </ul>
+    </div>
+    <div>
+        <p>
+            Ascensión recta
+            <app-icon-btn icon="bi-info-circle" (action)="showInfo('https://es.wikipedia.org/wiki/Ascensi%C3%B3n_recta')"></app-icon-btn>
+        </p>
+        <span>{{normalizedData.ra}}</span>
+    </div>
+    <div>
+        <p>
+            Declinación
+            <app-icon-btn icon="bi-info-circle" (action)="showInfo('https://es.wikipedia.org/wiki/Declinaci%C3%B3n_(astronom%C3%ADa)')"></app-icon-btn>
+        </p>
+        <span>{{normalizedData.dec}}</span>
+    </div>
+    <div>
+        <p>
+            Magnitud aparente
+            <app-icon-btn icon="bi-info-circle" (action)="showInfo('https://es.wikipedia.org/wiki/Magnitud_aparente')"></app-icon-btn>
+        </p>
+        <span>{{normalizedData.mag}}</span>
+    </div>
+    <div>
+        <p></p>
+        Distancia
+        <span>{{normalizedData.dist}}</span>
+    </div>
+    <div>
+        Tipo espectral
+        <app-icon-btn icon="bi-info-circle" (action)="showInfo('https://es.wikipedia.org/wiki/Clasificaci%C3%B3n_estelar')"></app-icon-btn>
+        <span>{{normalizedData.spect}}</span>
+    </div>
+    <div>
+        Color
+        <span>{{normalizedData.ci}}</span>
+    </div>
+    <div>
+        Constelación
+        <span>{{normalizedData.con}}</span>
+    </div>
+</div> -->
+
+<div *ngIf="type && type === 'star' && normalizedData" class="table-scroll">
+    <h3 class="section-title">Características</h3>
+    <table class="table table-dark table-striped table-responsive">
+        <thead>
+        <tr>
+            <th>Característica</th>
+            <th>Valor</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <!-- <tr>
+            <td class="td-bold">Identificadores en catálogos de estrellas</td>
+            <td>
+                <ul>
+                    <li>Hipparcos Catalog: <span>HIP {{normalizedData.hip}}</span></li>
+                    <li>Henry Draper Catalog: <span>HD {{normalizedData.hd}}</span></li>
+                    <li>Yale Bright Star Catalog: <span>HR {{normalizedData.hr}}</span></li>
+                    <li>Gliese Catalog of Nearby Stars: <span>{{normalizedData.gl}}</span></li>
+                </ul>
+            </td>
+        </tr> -->
+
+            <tr *ngIf="normalizedData.hip">
+                <td class="td-bold">
+                    Hipparcos Catalog ID
+                    <app-icon-btn icon="bi-info-circle" (action)="showInfo('https://es.wikipedia.org/wiki/Cat%C3%A1logo_Hipparcos')"></app-icon-btn>
+                </td>
+                <td>HIP {{normalizedData.hip}}</td>
+            </tr>
+
+            <tr *ngIf="normalizedData.hd">
+                <td class="td-bold">
+                    Henry Draper Catalog ID
+                    <app-icon-btn icon="bi-info-circle" (action)="showInfo('https://es.wikipedia.org/wiki/Cat%C3%A1logo_Henry_Draper')"></app-icon-btn>
+                </td>
+                <td>HD {{normalizedData.hd}}</td>
+            </tr>
+
+            <tr *ngIf="normalizedData.hr">
+                <td class="td-bold">
+                    Yale Bright Star Catalog ID
+                    <app-icon-btn icon="bi-info-circle" (action)="showInfo('https://es.wikipedia.org/wiki/Bright_Star_Catalogue')"></app-icon-btn>
+                </td>
+                <td>HR {{normalizedData.hr}}</td>
+            </tr>
+
+            <tr *ngIf="normalizedData.gl">
+                <td class="td-bold">
+                    Gliese Catalog of Nearby Stars ID
+                    <app-icon-btn icon="bi-info-circle" (action)="showInfo('https://es.wikipedia.org/wiki/Cat%C3%A1logo_Gliese')"></app-icon-btn>
+                </td>
+                <td>{{normalizedData.gl}}</td>
+            </tr>
+
+            <tr>
+                <td class="td-bold">
+                    Ascensión recta
+                    <app-icon-btn icon="bi-info-circle" (action)="showInfo('https://es.wikipedia.org/wiki/Ascensi%C3%B3n_recta')"></app-icon-btn>
+                </td>
+                <td>
+                    <span>{{normalizedData.ra}}</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-bold">
+                    Declinación
+                    <app-icon-btn icon="bi-info-circle" (action)="showInfo('https://es.wikipedia.org/wiki/Declinaci%C3%B3n_(astronom%C3%ADa)')"></app-icon-btn>
+                </td>
+                <td>
+                    <span>{{normalizedData.dec}}</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-bold">
+                    Magnitud aparente
+                    <app-icon-btn icon="bi-info-circle" (action)="showInfo('https://es.wikipedia.org/wiki/Magnitud_aparente')"></app-icon-btn>
+                </td>
+                <td>
+                    <span>{{normalizedData.mag}}</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-bold">
+                    Distancia
+                </td>
+                <td>
+                    <span>{{normalizedData.dist}}</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-bold">
+                    Tipo espectral
+                    <app-icon-btn icon="bi-info-circle" (action)="showInfo('https://es.wikipedia.org/wiki/Clasificaci%C3%B3n_estelar')"></app-icon-btn>
+                </td>
+                <td>
+                    <span>{{normalizedData.spect}}</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-bold">
+                    Color
+                </td>
+                <td>
+                    <span>{{normalizedData.ci}}</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-bold">
+                    Constelación
+                </td>
+                <td>
+                    <span class="clickable"
+                        (click)="onConstellationClick(normalizedData.con)">
+                    {{normalizedData.con}}
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

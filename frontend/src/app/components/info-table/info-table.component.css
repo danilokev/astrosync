@@ -1,0 +1,44 @@
+.table-scroll{
+    overflow-x: auto;
+    border: 3px solid var(--color-navlink-border);
+    border-radius: 7px;
+
+    table{
+        margin-bottom: 0;
+        overflow-x: scroll !important;
+    }
+}
+
+.table-striped {
+  --bs-table-bg: #171552;
+  --bs-table-striped-bg: #232064;
+}
+
+thead{
+    display: none;
+}
+
+.td-bold{
+    font-weight: bold;
+}
+
+.section-title{
+  font-size: 14pt;
+}
+
+.clickable {
+  cursor: pointer;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+/* Hover */
+.clickable:hover {
+  color: #4dabf7; /* azul bonito */
+  text-shadow: 0 0 5px rgba(77, 171, 247, 0.6);
+}
+
+/* Click (mientras mantienes pulsado) */
+.clickable:active {
+  color: #74c0fc;
+  text-shadow: 0 0 8px rgba(116, 192, 252, 0.9);
+}

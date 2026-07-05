@@ -1,0 +1,29 @@
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  color: var(--color-text-primary);
+  font-size: 14px;
+}
+
+input {
+  padding: 10px 12px;
+  width: 250px;
+  border: 3px solid var(--color-text-primary);
+  border-radius: 15px;
+  font-size: 15px;
+  color: var(--color-text-primary);
+  background-color: var(--color-primary-bg);
+  outline: none;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--color-btn-other-hover);
+  }
+
+  &:focus {
+    background-color: var(--color-btn-other-active);
+  }
+}

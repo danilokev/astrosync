@@ -1,0 +1,18 @@
+<div class="clock-box">
+  <div class="time">{{ timeString }}</div>
+  <div class="date">{{ dateStr }}</div>
+
+  <div class="controls">
+    <button (click)="resetTime()">
+      <i class="bi bi-arrow-counterclockwise"></i>
+    </button>
+
+    <button (click)="pauseTime()" [disabled]="isPaused">
+      <i class="bi bi-pause-fill"></i>
+    </button>
+
+    <button (click)="resumeTime()" [disabled]="!isPaused">
+      <i class="bi bi-play-fill"></i>
+    </button>
+  </div>
+</div>

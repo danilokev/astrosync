@@ -1,0 +1,186 @@
+.marker-container {
+  position: fixed;
+  top: 80px;
+  right: 300px;
+  z-index: 100;
+}
+
+.marker-box {
+  position: relative;
+  background: var(--color-bg-panel-floating);
+  backdrop-filter: var(--backdrop-blur-default);
+  padding: 1rem;
+  color: var(--color-text-primary);
+  border-radius: 16px;
+  width: 300px;
+  min-height: 140px;
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.45),
+    0 0 40px rgba(40, 80, 255, 0.12);
+  border: 1px solid var(--color-border-primary);
+}
+
+/* Estilos de botón de cerrar panel */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.25);
+  border: none;
+  border-radius: 6px;
+  color: var(--color-text-primary);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+  opacity: 1;
+  background: var(--color-cancel-hover);
+}
+
+/* Header con ubicación */
+.marker-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-right: 2rem;
+}
+
+.location-icon {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.location-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.location-name {
+  margin: 0;
+  font-size: var(--h3-size);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-text-primary);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.location-coords {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.8rem;
+  opacity: 0.8;
+  letter-spacing: 0.5px;
+}
+
+/* Acciones */
+.marker-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem 0.875rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: left;
+}
+
+.action-btn i {
+  font-size: 1.125rem;
+  flex-shrink: 0;
+}
+
+.action-text {
+  flex: 1;
+}
+
+/* Botón primario (Explorar el cielo) */
+.action-btn-primary {
+  background: var(--color-primary);
+  color: var(--color-text-dark);
+  border: 1px solid rgba(192, 123, 255, 0.3);
+}
+
+.action-btn-primary:hover {
+  background: var(--color-primary-hover-bg);
+}
+
+/* Botón secundario (Guardar lugar) */
+.action-btn-secondary {
+  background: var(--color-secondary-bg);
+  color: var(--color-text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.action-btn-secondary:hover {
+  background: var(--color-secondary-hover-bg);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.action-btn-secondary.active {
+  background: rgba(34, 197, 94, 0.2);
+  border-color: rgba(34, 197, 94, 0.4);
+  color: #4ade80;
+}
+
+.action-btn-secondary.active:hover {
+  background: rgba(34, 197, 94, 0.25);
+  border-color: rgba(34, 197, 94, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .marker-container {
+    right: 60px;
+  }
+}
+
+@media (max-width: 768px) {
+  .marker-container {
+    right: 40px;
+  }
+
+  .marker-box {
+    width: 280px;
+  }
+
+  .location-name {
+    font-size: 0.95rem;
+  }
+
+  .action-btn {
+    font-size: 0.8125rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .marker-container {
+    top: auto;
+    right: 50%;
+    bottom: 80px;
+  }
+
+  .marker-box {
+    width: calc(100vw - 40px);
+    max-width: 320px;
+  }
+}

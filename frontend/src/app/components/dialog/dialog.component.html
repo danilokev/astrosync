@@ -1,0 +1,29 @@
+<ng-template #dialogContent>
+  <div class="modal-header">
+    <h1 class="modal-title">{{ dialogTitle }}</h1>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Cerrar"
+      (click)="onCancel()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    {{ dialogMessage }}
+    <span *ngFor="let key of keysReversed">
+      <span
+        [ngStyle]="{ 'font-weight': dialogMessageObj[key] ? 'bold' : 'normal' }"
+      >
+        {{ key }}
+      </span>
+    </span>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="onCancel()">
+      {{ closeButtonText }}
+    </button>
+    <button type="button" class="btn btn-danger" (click)="confirm()">
+      {{ confirmButtonText }}
+    </button>
+  </div>
+</ng-template>

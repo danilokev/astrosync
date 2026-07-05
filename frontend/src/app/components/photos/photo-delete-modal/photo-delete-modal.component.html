@@ -1,0 +1,67 @@
+<div
+  class="photo-delete-modal__overlay"
+  [class.show]="isOpen"
+  role="presentation"
+></div>
+<div
+  class="photo-delete-modal__container"
+  [class.show]="isOpen"
+  role="alertdialog"
+  aria-modal="true"
+  aria-labelledby="deleteModalTitle"
+  aria-describedby="deleteModalDescription"
+>
+  <div class="photo-delete-modal__content">
+    <!-- Icono de advertencia -->
+    <div class="photo-delete-modal__icon-wrapper">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+    </div>
+
+    <!-- Título -->
+    <h2 id="deleteModalTitle" class="photo-delete-modal__title">
+      ¿Eliminar fotografía?
+    </h2>
+
+    <!-- Descripción -->
+    <p id="deleteModalDescription" class="photo-delete-modal__description">
+      Estás a punto de eliminar permanentemente:
+      <strong>{{ photoTitle || "Sin título" }}</strong>
+    </p>
+
+    <p class="photo-delete-modal__warning">
+      <i class="bi bi-info-circle me-2"></i>
+      Esta acción no se puede deshacer.
+    </p>
+
+    <!-- Botones de acción -->
+    <div class="photo-delete-modal__actions">
+      <button
+        type="button"
+        class="btn btn-secondary photo-delete-modal__btn-cancel"
+        (click)="handleCancel()"
+        [disabled]="isDeleting"
+        aria-label="Cancelar eliminación"
+      >
+        <i class="bi bi-x-lg me-2"></i>
+        No, Cancelar
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-danger photo-delete-modal__btn-confirm"
+        (click)="handleConfirm()"
+        [disabled]="isDeleting"
+        aria-label="Confirmar eliminación"
+      >
+        @if (!isDeleting) {
+          <i class="bi bi-trash3 me-2"></i>
+        } @else {
+          <span class="spinner-border spinner-border-sm me-2" role="status">
+            <span class="visually-hidden">Eliminando...</span>
+          </span>
+        }
+        {{ isDeleting ? "Eliminando..." : "Si, Eliminar" }}
+      </button>
+    </div>
+  </div>
+</div>

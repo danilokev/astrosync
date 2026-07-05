@@ -1,0 +1,122 @@
+<star>
+  <name>{{title}}</name>
+  <image>{{imageUrl}}</image>
+  {{#if attributionRequired}}
+  <image-attribution>
+    {{#if artistText}}
+    <text>{{artistText}}</text>
+    {{/if}}
+
+    {{#if artistName}}
+    <artist>
+      <name>{{artistName}}</name>
+      {{#if artistProfileUrl}}
+      <profileUrl>{{artistProfileUrl}}</profileUrl>
+      {{/if}}
+    </artist>
+    {{/if}}
+
+    {{#if license}}
+    <license>
+      <name>{{license}}</name>
+      {{#if licenseUrl}}
+      <url>{{licenseUrl}}</url>
+      {{/if}}
+    </license>
+    {{/if}}
+
+    {{#if wikimediaUrl}}
+    <source>
+      <name>Wikimedia Commons</name>
+      <url>{{wikimediaUrl}}</url>
+    </source>
+    {{/if}}
+  </image-attribution>
+  {{/if}}
+  <description>{{description}}</description>
+  <wikipediaUrl>{{articleUrl}}</wikipediaUrl>
+  <!-- <characteristics>
+    <characteristic name="Hipparcos Catalog ID" link="https://es.wikipedia.org/wiki/Cat%C3%A1logo_Hipparcos">HIP {{hip}}</characteristic>
+    <characteristic name="Henry Draper Catalog ID" link="https://es.wikipedia.org/wiki/Cat%C3%A1logo_Henry_Draper">HD {{hd}}</characteristic>
+    <characteristic name="Yale Bright Star Catalog ID" link="https://es.wikipedia.org/wiki/Bright_Star_Catalogue">HR {{hr}}</characteristic>
+    <characteristic name="Gliese Catalog of Nearby Stars ID" link="https://es.wikipedia.org/wiki/Cat%C3%A1logo_Gliese">{{gl}}</characteristic>
+    <characteristic name="Ascensión recta" link="https://es.wikipedia.org/wiki/Ascensi%C3%B3n_recta">{{ra}}</characteristic>
+    <characteristic name="Declinación" link="https://es.wikipedia.org/wiki/Declinaci%C3%B3n_(astronom%C3%ADa)">{{dec}}</characteristic>
+    <characteristic name="Magnitud aparente" link="https://es.wikipedia.org/wiki/Magnitud_aparente">{{mag}}</characteristic>
+    <characteristic name="Distancia">{{dist}} años de luz</characteristic>
+    <characteristic name="Tipo espectral" link="https://es.wikipedia.org/wiki/Clasificaci%C3%B3n_estelar">{{spect}}</characteristic>
+    <characteristic name="Color">{{ci}}</characteristic>
+    <characteristic name="Constelación">{{con}}</characteristic>
+  </characteristics> -->
+  {{#if hasCharacteristics}}
+  <characteristics>
+
+    {{#if hip}}
+    <characteristic name="Hipparcos Catalog ID" link="https://es.wikipedia.org/wiki/Cat%C3%A1logo_Hipparcos">
+      HIP {{hip}}
+    </characteristic>
+    {{/if}}
+
+    {{#if hd}}
+    <characteristic name="Henry Draper Catalog ID" link="https://es.wikipedia.org/wiki/Cat%C3%A1logo_Henry_Draper">
+      HD {{hd}}
+    </characteristic>
+    {{/if}}
+
+    {{#if hr}}
+    <characteristic name="Yale Bright Star Catalog ID" link="https://es.wikipedia.org/wiki/Bright_Star_Catalogue">
+      HR {{hr}}
+    </characteristic>
+    {{/if}}
+
+    {{#if gl}}
+    <characteristic name="Gliese Catalog of Nearby Stars ID" link="https://es.wikipedia.org/wiki/Cat%C3%A1logo_Gliese">
+      {{gl}}
+    </characteristic>
+    {{/if}}
+
+    {{#if ra}}
+    <characteristic name="Right Ascension" link="https://es.wikipedia.org/wiki/Ascensi%C3%B3n_recta">
+      {{ra}}
+    </characteristic>
+    {{/if}}
+
+    {{#if dec}}
+    <characteristic name="Declination" link="https://es.wikipedia.org/wiki/Declinaci%C3%B3n_(astronom%C3%ADa)">
+      {{dec}}
+    </characteristic>
+    {{/if}}
+
+    {{#if mag}}
+    <characteristic name="Apparent Magnitude" link="https://es.wikipedia.org/wiki/Magnitud_aparente">
+      {{mag}}
+    </characteristic>
+    {{/if}}
+
+    {{#if dist}}
+    <characteristic name="Distance">
+      {{dist}} años de luz
+    </characteristic>
+    {{/if}}
+
+    {{#if spect}}
+    <characteristic name="Spectral Type" link="https://es.wikipedia.org/wiki/Clasificaci%C3%B3n_estelar">
+      {{spect}}
+    </characteristic>
+    {{/if}}
+
+    {{#if ci}}
+    <characteristic name="Color Index">
+      {{ci}}
+    </characteristic>
+    {{/if}}
+
+    {{#if con}}
+    <characteristic name="Constellation">
+      {{con}}
+    </characteristic>
+    {{/if}}
+
+  </characteristics>
+  {{/if}}
+</star>

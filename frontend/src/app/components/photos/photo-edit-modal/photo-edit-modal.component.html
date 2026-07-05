@@ -1,0 +1,243 @@
+<div
+  class="photo-edit-modal__backdrop"
+  [class.show]="isOpen"
+  (click)="handleClose()"
+  role="presentation"
+  aria-hidden="true"
+></div>
+<div
+  class="photo-edit-modal"
+  [class.show]="isOpen"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modalTitle"
+>
+  <div class="photo-edit-modal__content">
+    <header class="photo-edit-modal__header">
+      <h2 id="modalTitle" class="photo-edit-modal__title">Editar fotografía</h2>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Cerrar modal"
+        (click)="handleClose()"
+        [disabled]="isSaving || isLoadingPhoto"
+      ></button>
+    </header>
+
+    <div class="photo-edit-modal__divider"></div>
+
+    @if (isLoadingPhoto) {
+      <div class="photo-edit-modal__loading">
+        <div class="spinner"></div>
+        <p>Cargando datos de la foto...</p>
+      </div>
+    }
+
+    @if (!isLoadingPhoto) {
+      <div class="photo-edit-modal__messages">
+        @if (errorMessage) {
+          <div class="alert alert-error" role="alert">
+            <i class="bi bi-exclamation-circle"></i>
+            {{ errorMessage }}
+            <button
+              type="button"
+              class="alert-close"
+              aria-label="Cerrar alerta"
+              (click)="errorMessage = ''"
+            >
+              <i class="bi bi-x"></i>
+            </button>
+          </div>
+        }
+
+        @if (successMessage) {
+          <div class="alert alert-success" role="alert">
+            <i class="bi bi-check-circle"></i>
+            {{ successMessage }}
+          </div>
+        }
+      </div>
+
+      <form (ngSubmit)="onSubmit()" class="photo-edit-modal__form">
+        <div class="photo-edit-modal__fields">
+          <div class="photo-edit-modal__field">
+            <label for="titulo" class="form-label">
+              Título <span class="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              id="titulo"
+              class="form-control"
+              [class.is-invalid]="tituloError"
+              placeholder="Ej: Aurora boreal en Islandia"
+              [(ngModel)]="titulo"
+              name="titulo"
+              maxlength="100"
+              [disabled]="isSaving"
+              (blur)="validarTitulo()"
+              (input)="validarTitulo()"
+              aria-describedby="tituloHelp tituloError"
+            />
+            <small id="tituloHelp" class="form-hint">
+              {{ titulo.length }} / 100 caracteres
+            </small>
+            @if (tituloError) {
+              <small class="field-error">{{ tituloError }}</small>
+            }
+          </div>
+
+          <div class="photo-edit-modal__field">
+            <label for="fechaCreacion" class="form-label">
+              Fecha de captura <span class="text-danger">*</span>
+            </label>
+            <input
+              type="date"
+              id="fechaCreacion"
+              class="form-control"
+              [(ngModel)]="fechaCreacion"
+              name="fechaCreacion"
+              [disabled]="isSaving"
+              (input)="limpiarMensajeExito()"
+            />
+            <small class="form-hint">
+              Fecha en que fue tomada la fotografía
+            </small>
+          </div>
+
+          <div class="photo-edit-modal__field">
+            <label class="form-label">Ubicación (Opcional)</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Nombre del lugar (ej: Teide, Tenerife)"
+              [(ngModel)]="locNombre"
+              name="locNombre"
+              [disabled]="isSaving"
+              (input)="limpiarMensajeExito()"
+            />
+            <div class="row g-2 mt-2">
+              <div class="col-6">
+                <div class="input-group">
+                  <span class="input-group-text">Lat</span>
+                  <input
+                    type="number"
+                    step="any"
+                    class="form-control"
+                    [class.is-invalid]="latError"
+                    placeholder="0.0000"
+                    [(ngModel)]="locLat"
+                    name="locLat"
+                    [disabled]="isSaving"
+                    (blur)="validarLatitud()"
+                    (input)="validarLatitud()"
+                  />
+                </div>
+                @if (latError) {
+                  <small class="field-error">{{ latError }}</small>
+                }
+              </div>
+              <div class="col-6">
+                <div class="input-group">
+                  <span class="input-group-text">Lng</span>
+                  <input
+                    type="number"
+                    step="any"
+                    class="form-control"
+                    [class.is-invalid]="lngError"
+                    placeholder="0.0000"
+                    [(ngModel)]="locLng"
+                    name="locLng"
+                    [disabled]="isSaving"
+                    (blur)="validarLongitud()"
+                    (input)="validarLongitud()"
+                  />
+                </div>
+                @if (lngError) {
+                  <small class="field-error">{{ lngError }}</small>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="photo-edit-modal__field">
+            <label class="form-label">Etiquetas (Opcional)</label>
+
+            @if (referencias.length > 0) {
+              <div class="photo-edit-modal__tags">
+                @for (ref of referencias; track ref; let i = $index) {
+                  <span class="tag">
+                    <i class="bi bi-tag"></i>
+                    {{ ref }}
+                    <button
+                      type="button"
+                      class="tag-remove"
+                      title="Eliminar etiqueta"
+                      (click)="eliminarReferencia(i)"
+                      [disabled]="isSaving"
+                      aria-label="Eliminar etiqueta"
+                    >
+                      <i class="bi bi-x"></i>
+                    </button>
+                  </span>
+                }
+              </div>
+            }
+
+            <div class="photo-edit-modal__tag-input">
+              <input
+                type="text"
+                id="nuevaReferencia"
+                class="form-control"
+                [class.is-invalid]="referenciaError"
+                placeholder="Añadir etiqueta..."
+                [(ngModel)]="nuevaReferencia"
+                name="nuevaReferencia"
+                maxlength="50"
+                [disabled]="isSaving"
+                (keyup.enter)="agregarReferencia()"
+                (blur)="validarReferencia()"
+                (input)="validarReferencia()"
+              />
+              <button
+                type="button"
+                class="btn-add-tag"
+                (click)="agregarReferencia()"
+                [disabled]="isSaving || !nuevaReferencia.trim()"
+                aria-label="Agregar etiqueta"
+              >
+                <i class="bi bi-plus-lg"></i>
+              </button>
+            </div>
+            @if (referenciaError) {
+              <small class="field-error">{{ referenciaError }}</small>
+            }
+            <small class="form-hint"> Haz clic en + para agregar </small>
+          </div>
+        </div>
+
+        <footer class="photo-edit-modal__actions">
+          <div class="photo-edit-modal__buttons">
+            <button
+              type="button"
+              class="btn btn-cancel"
+              (click)="handleClose()"
+              [disabled]="isSaving"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="isSaving || !!tituloError || !!latError || !!lngError"
+            >
+              @if (isSaving) {
+                <span class="spinner"></span>
+              }
+              {{ isSaving ? "Guardando..." : "Guardar cambios" }}
+            </button>
+          </div>
+        </footer>
+      </form>
+    }
+  </div>
+</div>

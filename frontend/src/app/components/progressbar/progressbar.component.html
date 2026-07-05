@@ -1,0 +1,11 @@
+<div 
+    class="progress"
+    [ngClass]="{'progress-hidden': !showProgress}"
+    role="progressbar"
+    aria-label="Progreso de importación"
+    [attr.aria-valuenow]="progress"
+    aria-valuemin="0"
+    aria-valuemax="100"
+>
+  <div class="progress-bar" [style.width.%]="progress">{{progress}}%</div>
+</div>

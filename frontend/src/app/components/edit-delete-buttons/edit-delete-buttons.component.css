@@ -1,0 +1,56 @@
+.btn {
+  width: 48px;
+  height: 48px;
+  border: 3px solid black;
+  border-radius: 12px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 22px;
+  cursor: pointer;
+
+  i {
+    color: black;
+  }
+}
+
+/* ESTILO: BORRAR */
+.delete {
+  background-color: var(--color-btn-delete);  
+  &:hover i {
+    color:var(--color-text-primary);
+  }  /* Rosa fuerte / fucsia */ /* Rosa fuerte / fucsia */
+}
+
+.delete:hover {
+  background-color: var(--color-btn-delete-hover); 
+  
+}
+
+.delete:active {
+  background-color: var(--color-btn-delete-active); 
+  i {
+    color:var(--color-text-primary);
+  }  /* Rosa fuerte / fucsia */
+}
+
+/* ESTILO: EDITAR */
+.edit {
+  background-color: var(--color-btn-edit);   /* Verde neón */
+}
+
+.edit:hover {
+  background-color: var(--color-btn-edit-hover);   /* Verde */
+  i {
+    color:var(--color-text-primary);
+  }
+}
+
+/* ESTILO: EDITAR */
+.edit:active {
+  background-color: var(--color-btn-edit-active);
+  i {
+    color:var(--color-text-primary);
+  }   /* Verde neón */
+}

@@ -1,0 +1,101 @@
+<!-- Banner de cookies -->
+<div class="cookie-banner" *ngIf="visible && !showPreferences" role="dialog" aria-label="Aviso de cookies" aria-live="polite">
+  <div class="cookie-banner__inner">
+    <p class="cookie-banner__text">
+      Usamos cookies para mejorar tu experiencia en AstroSync y recordar tus preferencias de observación.
+      <button class="cookie-banner__link" type="button" (click)="onOpenPrivacy()">
+        Política de privacidad y cookies
+      </button>
+    </p>
+    <div class="cookie-banner__actions">
+      <button class="btn btn--ghost" type="button" (click)="openCustomize()">Personalizar</button>
+      <button class="btn btn--secondary" type="button" (click)="acceptEssential()">Solo esenciales</button>
+      <button class="btn btn--primary" type="button" (click)="acceptAll()">Aceptar todas</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de preferencias de cookies -->
+<div class="modal-overlay" *ngIf="showPreferences" role="dialog" aria-modal="true" aria-labelledby="pref-title">
+  <div class="modal">
+
+    <div class="modal__header">
+      <h2 id="pref-title" class="modal__title">Preferencias de cookies</h2>
+      <button class="modal__close" type="button" (click)="closePreferences()" aria-label="Cerrar">✕</button>
+    </div>
+
+    <div class="modal__body">
+      <p class="modal__intro">
+        AstroSync utiliza cookies para garantizar el funcionamiento de la plataforma y personalizar
+        tu experiencia de exploración del universo. Puedes activar o desactivar cada categoría,
+        salvo las esenciales, que son necesarias para el funcionamiento del sitio.
+      </p>
+
+      <!-- Esenciales -->
+      <div class="cookie-row">
+        <div class="cookie-row__info">
+          <span class="cookie-row__name">Cookies esenciales</span>
+          <span class="cookie-row__desc">Autenticación, seguridad y funcionamiento básico. No pueden desactivarse.</span>
+        </div>
+        <div class="toggle toggle--on toggle--locked" aria-label="Siempre activo"></div>
+      </div>
+
+      <!-- Análisis -->
+      <div class="cookie-row">
+        <div class="cookie-row__info">
+          <span class="cookie-row__name">Cookies de análisis</span>
+          <span class="cookie-row__desc">Nos ayudan a entender cómo los usuarios interactúan con AstroSync.</span>
+        </div>
+        <button
+          class="toggle"
+          [class.toggle--on]="preferences.analytics"
+          (click)="preferences.analytics = !preferences.analytics"
+          role="switch"
+          [attr.aria-checked]="preferences.analytics"
+          [attr.aria-label]="'Análisis: ' + (preferences.analytics ? 'activado' : 'desactivado')"
+          type="button">
+        </button>
+      </div>
+
+      <!-- Preferencias -->
+      <div class="cookie-row">
+        <div class="cookie-row__info">
+          <span class="cookie-row__name">Cookies de preferencias</span>
+          <span class="cookie-row__desc">Guardan tu ubicación de observación, zona horaria e idioma.</span>
+        </div>
+        <button
+          class="toggle"
+          [class.toggle--on]="preferences.preferences"
+          (click)="preferences.preferences = !preferences.preferences"
+          role="switch"
+          [attr.aria-checked]="preferences.preferences"
+          [attr.aria-label]="'Preferencias: ' + (preferences.preferences ? 'activado' : 'desactivado')"
+          type="button">
+        </button>
+      </div>
+
+      <!-- Terceros -->
+      <div class="cookie-row">
+        <div class="cookie-row__info">
+          <span class="cookie-row__name">Cookies de terceros</span>
+          <span class="cookie-row__desc">Servicios externos como mapas de contaminación lumínica y pronóstico meteorológico.</span>
+        </div>
+        <button
+          class="toggle"
+          [class.toggle--on]="preferences.thirdParty"
+          (click)="preferences.thirdParty = !preferences.thirdParty"
+          role="switch"
+          [attr.aria-checked]="preferences.thirdParty"
+          [attr.aria-label]="'Terceros: ' + (preferences.thirdParty ? 'activado' : 'desactivado')"
+          type="button">
+        </button>
+      </div>
+    </div>
+
+    <div class="modal__footer">
+      <button class="btn btn--ghost" type="button" (click)="closePreferences()">Cancelar</button>
+      <button class="btn btn--primary" type="button" (click)="savePreferences()">Guardar preferencias</button>
+    </div>
+
+  </div>
+</div>

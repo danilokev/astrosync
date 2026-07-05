@@ -1,0 +1,47 @@
+<div class="file-input-container">
+  <div
+    class="dropzone"
+    [class.dragging]="isDragging"
+    [class.has-file]="selected"
+    (drop)="onDrop($event)"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave()"
+  >
+    @if (selected) {
+      <div class="preview">
+        <i class="bi bi-file-earmark-image"></i>
+        <span class="preview-text">Cambiar imagen</span>
+      </div>
+    } @else {
+      <div class="upload-prompt">
+        <i class="bi bi-cloud-arrow-up"></i>
+        <span class="upload-text">Arrastra o selecciona</span>
+      </div>
+    }
+    <input
+      #fileInput
+      type="file"
+      [attr.accept]="acceptTypes"
+      (change)="onFileChange($event)"
+      aria-label="Seleccionar archivo de imagen"
+    />
+  </div>
+
+  @if (selected) {
+    <div class="file-info">
+      <div class="file-info-row">
+        <i class="bi bi-file-earmark"></i>
+        <span class="file-name" [title]="fileName">{{ fileName }}</span>
+        <button
+          type="button"
+          class="btn-remove"
+          (click)="clearFile()"
+          aria-label="Eliminar archivo"
+        >
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <span class="file-size">{{ formatFileSize(fileSize) }}</span>
+    </div>
+  }
+</div>

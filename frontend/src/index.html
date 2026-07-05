@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>AstroSync</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="assets/icon.png" />
+    <meta
+      name="description"
+      content="Planetario 3D para explorar el cielo en tiempo real desde cualquier lugar. Visualiza astros y constelaciones; consulta contaminación lumínica, meteorología y eventos."
+    />
+    <meta
+      name="google-site-verification"
+      content="JDBZgpq8FacKurPO3w1tXlSx9BwULBJ5Qh-9_fyvr84"
+    />
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-RP6ZK81W8T"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-RP6ZK81W8T");
+    </script>
+
+    <!-- JSON LD -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "name": "Nauti Coders",
+            "@id": "https://www.astrosync.ovh/#nautiCoders"
+            "description": "Grupo de estudiantes de 4º de Ingeniería Multimedia del itinerario de Gestión de Contenidos de la Universidad de Alicante que desarrollan el proyecto AstroSync",
+            "url": "https://www.astrosync.ovh/nautiCoders",
+            "logo": "https://www.astrosync.ovh/nautiCoders/wp-content/uploads/2025/10/nauti-coders-logo.png",
+            "member": [
+              { "@type": "Person", "name": "Diana Shilova" },
+              { "@type": "Person", "name": "Daniel Pinteño Llerena" },
+              { "@type": "Person", "name": "Anthony Ubillús Avendaño" },
+              { "@type": "Person", "name": "Kevin D. Analuisa Ortiz" },
+              { "@type": "Person", "name": "José Alberto Garcia Pedreño" }
+            ],
+            "parentOrganization": {
+              "@type": "EducationalOrganization",
+              "name": "Universidad de Alicante",
+              "url": "https://www.ua.es"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.astrosync.ovh/#landing",
+            "url": "https://www.astrosync.ovh/",
+            "name": "AstroSync",
+            "publisher": {
+              "@id": "https://www.astrosync.ovh/nautiCoders"
+            }
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://www.astrosync.ovh/#app",
+            "name": "AstroSync",
+            "url": "https://www.astrosync.ovh/app",
+            "description": "Observa estrellas, planetas y constelaciones según tu ubicación. Contaminación lumínica, meteorología, galería, eventos y chatbot de astronomía.",
+            "applicationCategory": "EducationApplication",
+            "operatingSystem": "All",
+            "browserRequirements": "Requires JavaScript",
+            "inLanguage": "es",
+            "isAccessibleForFree": true,
+            "publisher": {
+              "@id": "https://www.astrosync.ovh/nautiCoders"
+            },
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <app-root></app-root>
+
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=2"></script>
+    <df-messenger
+      intent="WELCOME"
+      chat-title="S.A.N.A."
+      agent-id="ccf33194-20ee-4bae-92cc-be64c402ccef"
+      language-code="es"
+      chat-icon="assets/icon-events/Sana.png?v=1"
+    ></df-messenger>
+  </body>
+</html>

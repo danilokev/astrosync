@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <style>
+        img{
+            width: 100%;
+            height: auto;
+            border: 15px solid #fff;
+            box-sizing: border-box;
+        }
+        h1{
+            margin-top: 0;
+            font-size: 32pt;
+        }
+        body{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(45deg, #730744, #422aba, #00035a);
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        main{
+            margin: 0 10% 0 10%;
+            border-radius: 20px;
+            text-align: center;
+            background-color: #0000006b;
+            padding: 5%;
+            border: dotted 5px #fff;
+            margin: 2em;
+            width: 70%;
+        }
+        .row{
+            display: grid;
+            grid-template-columns: 40% auto;
+            /* flex-direction: row; */
+            gap: 50px;
+            /* flex-wrap: wrap; */
+        }
+        p{
+            text-align: left;
+            font-size: 16pt;
+        }
+        a{
+            color: #ff86cb;
+        }
+        .table{
+            border: 1px solid #fff;
+        }
+        .table-row{
+            display: flex;
+            flex-direction: row;
+            background-color: #232064;
+        }
+        /*.dark{
+            background-color: #171552;
+        }*/
+        .table-row p{
+            display: flex;
+            border: 1px solid #fff;
+            margin: 0;
+            width: 100%;
+            text-align: center; 
+            justify-content: center;
+            align-items: center;
+            padding: .5em;
+        }
+        .table-row:nth-child(odd) {
+            background: #171552;
+        }
+        .table-row p a{
+            width: 100%;
+        }
+        .attribution{
+            font-style: italic;
+            font-size: 12pt;
+            text-align: center;
+        }
+        @media (max-width: 1200px) {
+            .row{
+                display: block;
+            }
+        }
+  </style>
+</head>
+<body>
+    <main>
+        <h1>{{title}}</h1>
+        <div class="row">
+            <div>
+                <img src="{{imageUrl}}" alt="{{title}}">
+                <!-- Atribución -->
+                {{#if attributionRequired}}
+                <p class="attribution">
+                    {{#if artistText}}
+                    <span>{{artistText}}</span>
+                    {{/if}}
+
+                    {{#if artistName}}
+                    <a href="{{artistProfileUrl}}">{{artistName}}</a>,
+                    {{/if}}
+
+                    {{#if license}}
+                    <a href="{{licenseUrl}}" target="_blank">{{license}}</a>,
+                    {{/if}}
+
+                    {{#if wikimediaUrl}}
+                    via <a href="{{wikimediaUrl}}" target="_blank">Wikimedia Commons</a>
+                    {{/if}}
+                </p>
+                {{/if}}
+                <!-- <p class="attribution">
+                    <span>{{artistText}}</span>
+                    <a href="{{artistProfileUrl}}">{{artistName}}</a>,
+                    <a href="{{licenseUrl}}" target="_blank">{{license}}</a>,
+                    via
+                    <a href="{{wikimediaUrl}}" target="_blank">Wikimedia Commons</a>
+                </p> -->
+            </div>
+            <div class="text">
+                <p class="description">{{description}}</p>
+                <p><strong>Artículo en Wikipedia:</strong> <a href="{{articleUrl}}">{{articleUrl}}</a></p>
+            </div>
+        </div>
+        {{#if artistText}}
+        <span>{{artistText}}</span>
+        {{/if}}
+        {{#if hasCharacteristics}}
+        <h2>Características</h2>
+        <div class="table">
+            {{#if hip}}
+            <div class="table-row">
+                <p><a href="https://es.wikipedia.org/wiki/Cat%C3%A1logo_Hipparcos">Hipparcos Catalog ID</a></p>
+                <p>HIP <span>{{hip}}</span></p>
+            </div>
+            {{/if}}
+            {{#if hd}}
+            <div class="table-row">
+                <p><a href="https://es.wikipedia.org/wiki/Cat%C3%A1logo_Henry_Draper">Henry Draper Catalog ID</a></p>
+                <p>HD <span>{{hd}}</span></p>
+            </div>
+            {{/if}}
+            {{#if hr}}
+            <div class="table-row">
+                <p><a href="https://es.wikipedia.org/wiki/Bright_Star_Catalogue">Yale Bright Star Catalog ID</a></p>
+                <p>HR <span>{{hr}}</span></p>
+            </div>
+            {{/if}}
+            {{#if gl}}
+            <div class="table-row">
+                <p><a href="https://es.wikipedia.org/wiki/Cat%C3%A1logo_Gliese">Gliese Catalog of Nearby Stars ID</a></p>
+                <p>{{gl}}</p>
+            </div>
+            {{/if}}
+            {{#if ra}}
+            <div class="table-row">
+                <p><a href="https://es.wikipedia.org/wiki/Ascensi%C3%B3n_recta">Ascensión recta</a></p>
+                <p>{{ra}}</p>
+            </div>
+            {{/if}}
+            {{#if dec}}
+            <div class="table-row">
+                <p><a href="https://es.wikipedia.org/wiki/Declinaci%C3%B3n_(astronom%C3%ADa)">Declinación</a></p>
+                <p>{{dec}}</p>
+            </div>
+            {{/if}}
+            {{#if mag}}
+            <div class="table-row">
+                <p><a href="https://es.wikipedia.org/wiki/Magnitud_aparente">Magnitud aparente</a></p>
+                <p>{{mag}}</p>
+            </div>
+            {{/if}}
+            {{#if dist}}
+            <div class="table-row">
+                <p>Distancia</p>
+                <p>{{dist}} años de luz</p>
+            </div>
+            {{/if}}
+            {{#if spect}}
+            <div class="table-row">
+                <p><a href="https://es.wikipedia.org/wiki/Clasificaci%C3%B3n_estelar">Tipo espectral</a></p>
+                <p>{{spect}}</p>
+            </div>
+            {{/if}}
+            {{#if ci}}
+            <div class="table-row">
+                <p>Color</p>
+                <p>{{ci}}</p>
+            </div>
+            {{/if}}
+            {{#if con}}
+            <div class="table-row">
+                <p>Constelación</p>
+                <p>{{con}}</p>
+            </div>
+            {{/if}}
+        </div>
+        {{/if}}
+    </main>
+</body>
+</html>

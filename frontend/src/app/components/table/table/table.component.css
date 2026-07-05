@@ -1,0 +1,25 @@
+.table-scroll {
+  overflow-x: auto;
+  border: 3px solid var(--color-navlink-border);
+  border-radius: 7px;
+
+  table {
+    margin-bottom: 0;
+    overflow-x: scroll !important;
+  }
+}
+
+.table-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  text-align: center;
+}
+
+.table-striped {
+  --bs-table-bg: #171552;
+  --bs-table-striped-bg: #232064;
+}

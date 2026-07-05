@@ -1,0 +1,9 @@
+<div class="input-group">
+  <label>{{ label }}</label>
+
+  <input 
+    type="date"
+    [value]="dateForInput"
+    (change)="onDateChange($event)"
+  />
+</div>

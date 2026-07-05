@@ -1,0 +1,58 @@
+.btn-other {
+  background-color: var(--color-btn-other);
+  border: none;
+  padding: 0.5rem 3rem;
+}
+
+.btn-other:hover {
+  background-color: var(--color-btn-other-hover);
+}
+
+/* SCROLLBAR */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-scrollbar-thumb) var(--color-scrollbar-track);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-scrollbar-thumb);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-scrollbar-thumb-hover);
+}
+
+/* CHATBOT (Dialogflow Messenger) */
+df-messenger {
+  z-index: 9999;
+
+  /* Icono flotante y cabecera */
+  --df-messenger-button-titlebar-color: var(--color-bg-panel);
+
+  /* Fondo del chat y estructura */
+  --df-messenger-chat-background-color: var(--color-bg-main);
+  --df-messenger-chat-border-radius: var(--radius-default);
+
+  /* Colores de las burbujas de chat */
+  --df-messenger-bot-message: #2a335e;
+  --df-messenger-user-message: #1e3a8a;
+
+  /* Textos e Inputs globales */
+  --df-messenger-font-color: var(--color-text-primary);
+  --df-messenger-input-font-color: #000000;
+  --df-messenger-send-icon: #000000;
+
+  --df-messenger-input-box-color: rgba(255, 255, 255, 0.08);
+  --df-messenger-input-placeholder-font-color: var(--color-text-secondary);
+  --df-messenger-minimized-chat-close-icon-color: #ffffff;
+}

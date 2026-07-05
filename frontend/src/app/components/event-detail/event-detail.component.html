@@ -1,0 +1,87 @@
+<section
+  class="event-detail"
+  role="region"
+  [attr.aria-labelledby]="'event-detail-title-' + evento._id"
+>
+  <button
+    type="button"
+    class="event-detail__back btn btn-sm w-100"
+    aria-label="Volver a la lista de eventos"
+    (click)="cerrar.emit()"
+  >
+    <i class="bi bi-arrow-left"></i> Volver a eventos
+  </button>
+
+  @if (evento.imagen_url) {
+    <div class="event-detail__hero">
+      <img
+        [src]="evento.imagen_url"
+        [alt]="'Imagen de ' + evento.nombre"
+        class="event-detail__hero-img"
+      />
+    </div>
+  }
+
+  <div class="event-detail__meta-row">
+    <span [ngClass]="badgeClasses">{{ etiquetaTipo }}</span>
+    <span class="event-detail__fecha-chip">{{ fechaLargaPico }}</span>
+  </div>
+
+  <h2 class="event-detail__headline" [id]="'event-detail-title-' + evento._id">
+    {{ evento.nombre }}
+  </h2>
+
+  <ul class="event-detail__facts list-unstyled mb-0">
+    @if (evento.hora_pico_utc) {
+      <li class="event-detail__fact">
+        <i class="bi bi-clock event-detail__fact-icon" aria-hidden="true"></i>
+        <span
+          ><span class="event-detail__fact-label">Hora pico UTC:</span>
+          {{ evento.hora_pico_utc }}</span
+        >
+      </li>
+    }
+    @if (evento.mejor_hora_local) {
+      <li class="event-detail__fact">
+        <i class="bi bi-globe2 event-detail__fact-icon" aria-hidden="true"></i>
+        <span
+          ><span class="event-detail__fact-label">Mejor hora local:</span>
+          {{ evento.mejor_hora_local }}</span
+        >
+      </li>
+    }
+    @if (textoUbicacion) {
+      <li class="event-detail__fact">
+        <i class="bi bi-geo-alt event-detail__fact-icon" aria-hidden="true"></i>
+        <span
+          ><span class="event-detail__fact-label">Ubicación:</span>
+          {{ textoUbicacion }}</span
+        >
+      </li>
+    }
+    @if (ventanaActividad) {
+      <li class="event-detail__fact">
+        <i
+          class="bi bi-calendar-range event-detail__fact-icon"
+          aria-hidden="true"
+        ></i>
+        <span
+          ><span class="event-detail__fact-label">Rango:</span>
+          {{ rangoActividad }}</span
+        >
+      </li>
+    }
+  </ul>
+
+  @if (evento.descripcion) {
+    <p class="event-detail__desc">{{ evento.descripcion }}</p>
+  }
+
+  @if (evento.fuente) {
+    <p class="event-detail__fuente mb-0">
+      <i class="bi bi-link-45deg me-1" aria-hidden="true"></i>
+      <span class="event-detail__fact-label">Fuente:</span>
+      {{ evento.fuente }}
+    </p>
+  }
+</section>

@@ -1,0 +1,131 @@
+<div class="side-pannel-container" [class.open]="isPanelOpen">
+  <!-- Fondo de panel oculto -->
+  @if (isPanelOpen) {
+    <div class="side-panel-backdrop" (click)="togglePanel()"></div>
+  }
+
+  <!-- Panel lateral -->
+  <div
+    class="side-pannel d-flex flex-column"
+    [class.side-pannel-expanded]="isPanelExpanded"
+  >
+    <div
+      class="panel-header px-0 py-3 d-flex align-items-center"
+      [ngClass]="
+        isPanelExpanded
+          ? 'justify-content-start px-3'
+          : 'justify-content-center'
+      "
+    >
+      <div class="d-flex align-items-center gap-3">
+        <app-avatar></app-avatar>
+        @if (isPanelExpanded || isPanelOpen) {
+          <span class="user-label">
+            @if (
+              authService.isAuthenticated() && authService.currentUser();
+              as user
+            ) {
+              @if (getDisplayName(user); as displayName) {
+                <span class="user-name">{{ displayName.nombre }}</span>
+                @if (displayName.apellidos) {
+                  <span class="user-surname">{{ displayName.apellidos }}</span>
+                }
+              }
+            } @else {
+              <button
+                type="button"
+                class="login-link"
+                tabindex="0"
+                (click)="navigateToLogin()"
+                (keydown.enter)="navigateToLogin()"
+                (keydown.space)="navigateToLogin(); $event.preventDefault()"
+              >
+                Iniciar sesión
+              </button>
+            }
+          </span>
+        }
+      </div>
+    </div>
+
+    <div class="panel-separator w-100" aria-hidden="true"></div>
+
+    <!-- Botón para expandir/colapsar el panel -->
+    <button
+      class="panel-toggle-btn btn d-none d-md-flex align-items-center py-2 mb-3 w-100 border-0 rounded-0"
+      tabindex="0"
+      [ngClass]="
+        isPanelExpanded
+          ? 'justify-content-start px-3'
+          : 'justify-content-center px-0'
+      "
+      [title]="isPanelExpanded ? 'Colapsar' : 'Expandir'"
+      (click)="togglePanelExpanded()"
+      (keydown.enter)="togglePanelExpanded()"
+      (keydown.space)="togglePanelExpanded(); $event.preventDefault()"
+    >
+      <i
+        class="bi fs-4 opacity-75 tab-icon"
+        [ngClass]="isPanelExpanded ? 'bi-chevron-left' : 'bi-chevron-right'"
+      ></i>
+      @if (isPanelExpanded) {
+        <span class="menu-description ms-3 fw-medium opacity-75">Menú</span>
+      }
+    </button>
+
+    <div class="panel-separator w-100 mb-3" aria-hidden="true"></div>
+
+    <!-- Contenedor de pestañas -->
+    <div class="tabs-container d-flex flex-column gap-2 px-2 pb-3 flex-grow-1">
+      <button
+        *ngFor="let tab of visibleTabs; let i = index"
+        class="tab btn d-flex align-items-center w-100 border-0"
+        tabindex="0"
+        [ngClass]="
+          isPanelExpanded
+            ? 'justify-content-start px-3'
+            : 'justify-content-center px-0'
+        "
+        [class.tab-active]="i === activeTabIndex"
+        [class.tab-down]="i === firstBottomIndex"
+        [title]="tab.title"
+        (click)="setActiveTab(i, tab.action)"
+        (keydown.enter)="setActiveTab(i, tab.action)"
+        (keydown.space)="setActiveTab(i, tab.action); $event.preventDefault()"
+      >
+        <i class="bi tab-icon" [ngClass]="tab.icon"></i>
+        @if (isPanelExpanded || isPanelOpen) {
+          <span class="menu-description ms-3 text-start">{{ tab.title }}</span>
+        }
+      </button>
+    </div>
+  </div>
+
+  <!-- Botón para mostrar/ocultar el panel (móvil) -->
+  <button
+    class="hidden-menu-button btn btn-primary position-absolute d-md-none"
+    tabindex="0"
+    [title]="isPanelOpen ? 'Cerrar menú' : 'Abrir menú'"
+    (click)="togglePanel()"
+    (keydown.enter)="togglePanel()"
+    (keydown.space)="togglePanel(); $event.preventDefault()"
+  >
+    <i class="bi" [ngClass]="isPanelOpen ? 'bi-x' : 'bi-list'"></i>
+  </button>
+</div>
+
+@if (isPhotoGalleryOpen) {
+  <app-photo-gallery
+    [isOpen]="isPhotoGalleryOpen"
+    (closePanel)="closePhotoGallery()"
+  >
+  </app-photo-gallery>
+}
+
+@if (isAnimationsGalleryOpen) {
+  <app-animations-gallery
+    [isOpen]="isAnimationsGalleryOpen"
+    (closePanel)="closeAnimationsGallery()"
+  >
+  </app-animations-gallery>
+}

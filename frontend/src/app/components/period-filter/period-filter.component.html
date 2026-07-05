@@ -1,0 +1,21 @@
+<div class="period-filter">
+  <div class="period-filter__label">
+    <i class="bi bi-calendar3-range"></i>
+    <span>Filtrar por periodo:</span>
+  </div>
+  <div
+    class="period-filter__options"
+    role="group"
+    aria-label="Seleccionar periodo"
+  >
+    <button
+      *ngFor="let preset of presets"
+      type="button"
+      class="period-btn"
+      [class.period-btn--active]="selectedDays === preset.days"
+      (click)="select(preset.days)"
+    >
+      {{ preset.label }}
+    </button>
+  </div>
+</div>

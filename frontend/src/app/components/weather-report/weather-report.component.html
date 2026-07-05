@@ -1,0 +1,101 @@
+<div *ngIf="visible" class="weather-report-modal" (click)="close()">
+  <article
+    class="weather-report-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="weather-report-title"
+    (click)="$event.stopPropagation()"
+  >
+    <header class="report-header">
+      <div>
+        <h2 id="weather-report-title">Informe detallado de 7 días</h2>
+        <p class="report-subtitle">
+          Resumen simple para planificar observaciones.
+        </p>
+      </div>
+      <button
+        #closeButton
+        class="close-btn"
+        type="button"
+        aria-label="Cerrar informe detallado"
+        (click)="close()"
+      >
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </header>
+
+    <app-loading
+      *ngIf="loading"
+      text="Cargando informe detallado..."
+    ></app-loading>
+
+    <ng-container *ngIf="!loading && data">
+      <section class="hours-section">
+        <h3>Próximas 24 horas</h3>
+        <div class="hours-carousel">
+          <button
+            type="button"
+            class="hours-nav-btn hours-nav-btn-left"
+            aria-label="Ver horas anteriores"
+            [disabled]="!canGoPrevHours"
+            (click)="prevHours()"
+          >
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          <div class="hours-list">
+            <article class="hour-chip" *ngFor="let h of displayedHours">
+              <span class="hour-time">{{ h.time }}</span>
+              <i class="bi hour-icon" [ngClass]="h.icon"></i>
+              <span class="hour-temp">{{ h.temp }}°C</span>
+            </article>
+          </div>
+          <button
+            type="button"
+            class="hours-nav-btn hours-nav-btn-right"
+            aria-label="Ver horas siguientes"
+            [disabled]="!canGoNextHours"
+            (click)="nextHours()"
+          >
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+      </section>
+
+      <section class="days-section">
+        <h3>Próximos días</h3>
+        <div class="days-grid">
+          <article class="day-card" *ngFor="let d of days">
+            <div class="day-card-top">
+              <h4>{{ d.date }}</h4>
+              <i class="bi day-icon" [ngClass]="d.icon"></i>
+            </div>
+
+            <div class="day-metrics">
+              <p>
+                <span>Temp.</span><strong>{{ d.min }}-{{ d.max }}°C</strong>
+              </p>
+              <p>
+                <span>Humedad</span><strong>{{ d.humidity }}%</strong>
+              </p>
+              <p>
+                <span>Presión</span><strong>{{ d.pressure }} hPa</strong>
+              </p>
+              <p>
+                <span>Viento</span><strong>{{ d.wind }} km/h</strong>
+              </p>
+              <p>
+                <span>Precipitación</span><strong>{{ d.rain }}%</strong>
+              </p>
+              <p>
+                <span>Punto de rocío</span><strong>{{ d.dew }}°C</strong>
+              </p>
+              <p>
+                <span>Nubosidad</span><strong>{{ d.clouds }}%</strong>
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </ng-container>
+  </article>
+</div>

@@ -1,0 +1,8 @@
+<button
+  class="bookmark-btn"
+  (click)="toggleBookmark()"
+  [attr.aria-pressed]="isActive"
+  title="Agregar a favoritos"
+>
+  <i class="bi" [ngClass]="isActive ? 'bi-bookmark-fill' : 'bi-bookmark'"></i>
+</button>

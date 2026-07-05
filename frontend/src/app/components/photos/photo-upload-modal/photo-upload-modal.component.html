@@ -1,0 +1,198 @@
+<div
+  class="photo-upload-modal__backdrop"
+  [class.show]="isOpen"
+  (click)="handleClose()"
+  role="presentation"
+  aria-hidden="true"
+></div>
+<div
+  class="photo-upload-modal"
+  [class.show]="isOpen"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modalTitle"
+>
+  <div class="photo-upload-modal__content">
+    <header class="photo-upload-modal__header">
+      <h2 id="modalTitle" class="photo-upload-modal__title">
+        Subir nueva foto
+      </h2>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Cerrar modal"
+        (click)="handleClose()"
+        [disabled]="isUploading"
+      ></button>
+    </header>
+
+    <form (ngSubmit)="onSubmit()" class="photo-upload-modal__form">
+      <div class="photo-upload-modal__body">
+        <div class="row g-4">
+          <div class="col-12 col-md-5">
+            <div class="photo-upload-modal__file-section">
+              <span class="form-label">
+                Imagen <span class="text-danger">*</span>
+              </span>
+              <app-input-type-file
+                label=""
+                [reset]="resetFile"
+                (fileSelected)="onFileSelected($event)"
+              ></app-input-type-file>
+              <div class="photo-upload-modal__file-hint">
+                <i class="bi bi-info-circle"></i>
+                Tamaño máximo: 5MB
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-7">
+            <div class="photo-upload-modal__fields">
+              <div class="photo-upload-modal__field">
+                <label for="titulo" class="form-label">
+                  Título <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="titulo"
+                  class="form-control"
+                  placeholder="Ej: Aurora boreal en Islandia"
+                  [(ngModel)]="titulo"
+                  name="titulo"
+                  maxlength="100"
+                  [disabled]="isUploading"
+                  aria-describedby="tituloHelp"
+                />
+                <small id="tituloHelp" class="form-hint">
+                  {{ titulo.length }} / 100 caracteres
+                </small>
+              </div>
+
+              <div class="photo-upload-modal__field">
+                <label for="fechaCreacion" class="form-label">
+                  Fecha de captura <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="date"
+                  id="fechaCreacion"
+                  class="form-control"
+                  [(ngModel)]="fechaCreacion"
+                  name="fechaCreacion"
+                  [disabled]="isUploading"
+                />
+                <small class="form-hint">
+                  Fecha en que fue tomada la fotografía
+                </small>
+              </div>
+
+              <div class="photo-upload-modal__field">
+                <label for="referencias" class="form-label">
+                  Etiquetas (Opcional)
+                </label>
+                <input
+                  type="text"
+                  id="referencias"
+                  class="form-control"
+                  placeholder="Ej: M42, Espacio profundo, H-Alpha"
+                  [(ngModel)]="referencias"
+                  name="referencias"
+                  [disabled]="isUploading"
+                />
+                <small class="form-hint">
+                  Separa las etiquetas con comas
+                </small>
+              </div>
+
+              <div class="photo-upload-modal__field">
+                <label class="form-label">Ubicación (Opcional)</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Nombre del lugar (ej: Teide, Tenerife)"
+                  [(ngModel)]="locNombre"
+                  name="locNombre"
+                  [disabled]="isUploading"
+                />
+                <div class="row g-2 mt-2">
+                  <div class="col-6">
+                    <div class="input-group">
+                      <span class="input-group-text">Lat</span>
+                      <input
+                        type="number"
+                        step="any"
+                        class="form-control"
+                        placeholder="0.0000"
+                        [(ngModel)]="locLat"
+                        name="locLat"
+                        [disabled]="isUploading"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="input-group">
+                      <span class="input-group-text">Lng</span>
+                      <input
+                        type="number"
+                        step="any"
+                        class="form-control"
+                        placeholder="0.0000"
+                        [(ngModel)]="locLng"
+                        name="locLng"
+                        [disabled]="isUploading"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="photo-upload-modal__messages">
+        @if (errorMessage) {
+          <div class="alert alert-error" role="alert">
+            <i class="bi bi-exclamation-circle"></i>
+            {{ errorMessage }}
+            <button
+              type="button"
+              class="alert-close"
+              aria-label="Cerrar alerta"
+              (click)="errorMessage = ''"
+            >
+              <i class="bi bi-x"></i>
+            </button>
+          </div>
+        }
+
+        @if (successMessage) {
+          <div class="alert alert-success" role="alert">
+            <i class="bi bi-check-circle"></i>
+            {{ successMessage }}
+          </div>
+        }
+      </div>
+
+      <footer class="photo-upload-modal__actions">
+        <button
+          type="button"
+          class="btn btn-cancel"
+          (click)="handleClose()"
+          [disabled]="isUploading"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="isUploading || !selectedFile"
+        >
+          @if (isUploading) {
+            <span class="spinner"></span>
+          }
+          {{ isUploading ? "Subiendo..." : "Subir foto" }}
+        </button>
+      </footer>
+    </form>
+  </div>
+</div>

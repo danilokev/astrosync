@@ -1,0 +1,60 @@
+<div
+  class="photo-card"
+  (mouseenter)="showActions = true"
+  (mouseleave)="showActions = false"
+  (click)="handleClick()"
+  (keydown.enter)="handleClick()"
+  (keydown.space)="handleClick(); $event.preventDefault()"
+  role="button"
+  tabindex="0"
+  [attr.aria-label]="'Fotografía: ' + photoName"
+>
+  <div class="photo-card__image-wrapper">
+    <img
+      [src]="imageUrl"
+      [alt]="photoName"
+      class="photo-card__image"
+      loading="lazy"
+    />
+    <div class="photo-card__overlay"></div>
+
+    <div
+      class="photo-card__actions"
+      [class.show]="showActions"
+      [attr.aria-hidden]="!showActions"
+    >
+      <button
+        type="button"
+        class="photo-card__btn photo-card__btn--edit"
+        (click)="handleEdit($event)"
+        title="Editar fotografía"
+        aria-label="Editar fotografía"
+      >
+        <i class="bi bi-pencil-fill"></i>
+      </button>
+
+      <button
+        type="button"
+        class="photo-card__btn photo-card__btn--delete"
+        (click)="handleDelete($event)"
+        title="Eliminar fotografía"
+        aria-label="Eliminar fotografía"
+      >
+        <i class="bi bi-trash-fill"></i>
+      </button>
+    </div>
+
+    <span class="photo-card__date" *ngIf="photoDate">
+      <i class="bi bi-calendar3"></i>
+      {{ photoDate }}
+    </span>
+  </div>
+
+  <div class="photo-card__footer">
+    <h3 class="photo-card__name" [title]="photoName">{{ photoName }}</h3>
+    <span class="photo-card__location" *ngIf="location" [title]="location">
+      <i class="bi bi-geo-alt-fill"></i>
+      {{ location }}
+    </span>
+  </div>
+</div>

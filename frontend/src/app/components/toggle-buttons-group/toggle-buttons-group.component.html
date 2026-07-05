@@ -1,0 +1,34 @@
+<div class="toggle-group">
+  <!-- Botón 1 -->
+  <button
+    class="btn-toggle"
+    [class.active]="btn1Active"
+    [attr.aria-pressed]="btn1Active"
+    (click)="activate(1)"
+  >
+    <span class="label">Contaminación lumínica</span>
+    <i class="bi bi-lightbulb-fill"></i>
+  </button>
+
+  <!-- Botón 2 -->
+  <button
+    class="btn-toggle"
+    [class.active]="btn2Active"
+    [attr.aria-pressed]="btn2Active"
+    (click)="activate(2)"
+  >
+    <span class="label">Localizaciones guardadas</span>
+    <i class="bi bi-geo-alt-fill"></i>
+  </button>
+
+  <!-- Botón 3 -->
+  <button
+    class="btn-toggle"
+    [class.active]="btn3Active"
+    [attr.aria-pressed]="btn3Active"
+    (click)="activate(3)"
+  >
+    <span class="label">Localización actual</span>
+    <i class="bi bi-crosshair"></i>
+  </button>
+</div>

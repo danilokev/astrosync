@@ -1,0 +1,241 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.engine-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.engine-controls {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  background-color: transparent;
+  color: var(--color-text-primary);
+  border: none;
+  border-radius: 8px;
+  /* padding-right: 6px; */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.search-center-wrapper {
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+/*.action-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 4px 12px;
+  border-radius: 50px;
+  backdrop-filter: blur(4px);
+  color: #fff;
+}*/
+
+.action-item {
+  padding: 8px 10px;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 50px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease;
+}
+
+.action-item:hover {
+  background: var(--color-secondary-hover-bg);
+}
+
+::ng-deep .action-item .btn-icon:hover {
+  background-color: transparent !important;
+  transform: none !important;
+  cursor: inherit !important;
+}
+
+::ng-deep .action-item .btn {
+  --bs-btn-padding-x: 0 !important;
+  --bs-btn-padding-y: 0 !important;
+  margin-right: 8px !important;
+}
+
+.top-bar .search-box {
+  width: 100%;
+}
+
+.bottom-ui-container {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0 20px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.bottom-ui-container > * {
+  pointer-events: auto;
+}
+
+/*#idRenderCanvas{
+  width: 100%;
+  height: 100%;
+}*/
+
+/* Estilos mapa */
+.maplibre-mini {
+  /* height: 250px; */
+  /* width: 250px; */
+  position: absolute;
+  bottom: 0;
+  left: 75px;
+  /* display: flex; */
+  z-index: 10000;
+  height: 150px;
+  width: 230px;
+
+  .maplibregl-ctrl-bottom-right {
+    display: none !important;
+  }
+}
+
+app-engine {
+  position: relative;
+}
+
+.maplibre {
+  position: absolute;
+  /* left: 75px; */
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+
+  .maplibregl-ctrl-bottom-right {
+    /* width: 100%; */
+    left: 0;
+  }
+}
+
+/* MEDIA QUERIES */
+@media (max-width: 1600px) {
+  .bottom-ui-container {
+    bottom: 15px;
+  }
+
+  .action-item {
+    padding: 4px 8px;
+  }
+
+  .action-item .btn-text {
+    font-size: 0.875rem;
+  }
+
+  .search-center-wrapper {
+    max-width: 400px;
+  }
+
+  .top-bar {
+    padding: 0.4rem 0.6rem !important;
+  }
+}
+
+@media (max-width: 800px) {
+  .top-bar {
+    padding: 0.4rem 0.6rem;
+  }
+
+  .search-center-wrapper {
+    display: none;
+  }
+
+  .top-actions {
+    gap: 6px;
+  }
+
+  .action-item {
+    padding: 8px;
+    min-width: 46px;
+    min-height: 46px;
+    border-radius: 50%;
+  }
+
+  .action-item .btn-text {
+    display: none;
+  }
+
+  .date-floating {
+    position: static;
+    width: 100%;
+    padding: 10px 14px 24px;
+    transform: none;
+  }
+
+  .maplibre-mini {
+    display: none !important;
+  }
+
+  .bottom-ui-container {
+    padding: 0 12px;
+  }
+}
+
+.form-check {
+  position: relative;
+  z-index: 50;
+}
+
+.object-label {
+  position: absolute;
+  color: white;
+  font-size: 14px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}

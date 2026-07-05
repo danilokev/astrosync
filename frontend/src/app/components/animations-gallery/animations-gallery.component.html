@@ -1,0 +1,90 @@
+<div class="anim-overlay" *ngIf="isOpen" (click)="close()"></div>
+
+<div class="anim-panel" [class.open]="isOpen">
+  <!-- Header -->
+  <div class="anim-header">
+    <div class="anim-header-left">
+      <i class="bi bi-stars"></i>
+      <span>Animaciones</span>
+    </div>
+    <button class="anim-close-btn" (click)="close()" title="Cerrar">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+
+  <!-- Layout dos columnas -->
+  <div class="anim-body">
+    <!-- Columna izquierda: grid de cards -->
+    <div class="anim-left">
+      <div class="anim-grid">
+        <div
+          class="anim-card"
+          *ngFor="let anim of animations"
+          [class.selected]="selectedAnimation?.id === anim.id"
+          (click)="openAnimation(anim)"
+        >
+          <div class="anim-card-thumb">
+            <i class="bi {{ anim.thumbnail }} anim-icon"></i>
+            <div class="anim-card-play">
+              <i class="bi bi-play-fill"></i>
+            </div>
+          </div>
+          <div class="anim-card-body">
+            <h4 class="anim-card-title" [title]="anim.title">
+              {{ anim.title }}
+            </h4>
+            <p class="anim-card-desc" [title]="anim.description">
+              {{ anim.description }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Columna derecha: descripcion + animación -->
+    <div class="anim-right">
+      <!-- Estado vacío -->
+      <div class="anim-empty" *ngIf="!selectedAnimation">
+        <i class="bi bi-play-circle"></i>
+        <p>Selecciona una animación</p>
+      </div>
+
+      <!-- Animación seleccionada -->
+      <ng-container *ngIf="selectedAnimation">
+        <div class="anim-preview-header">
+          <div class="anim-preview-info">
+            <i
+              class="bi {{ selectedAnimation.thumbnail }} anim-preview-icon"
+            ></i>
+            <div>
+              <h3 class="anim-preview-title" [title]="selectedAnimation.title">
+                {{ selectedAnimation.title }}
+              </h3>
+              <p
+                class="anim-preview-desc"
+                [title]="selectedAnimation.description"
+              >
+                {{ selectedAnimation.description }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nebulosa WebGL2 — motor propio AstroSync, sin iframe -->
+        <app-nebula-webgl
+          *ngIf="selectedAnimation.id === 'nebula-webgl'"
+          class="anim-iframe">
+        </app-nebula-webgl>
+
+        <!-- Resto de animaciones Three.js — con iframe  -->
+        <iframe
+          *ngIf="selectedAnimation.id !== 'nebula-webgl'"
+          class="anim-iframe"
+          [src]="selectedAnimation.file | safeUrl"
+          allowfullscreen>
+        </iframe>
+
+      </ng-container>
+    </div>
+  </div>
+</div>

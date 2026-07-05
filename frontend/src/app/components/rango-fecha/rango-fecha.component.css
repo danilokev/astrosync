@@ -1,0 +1,346 @@
+.ctrl-bar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--color-bg-panel);
+  border: 1.5px solid var(--color-border-default);
+  backdrop-filter: var(--backdrop-blur-default);
+  border-radius: var(--radius-default);
+  padding: 16px 20px;
+  user-select: none;
+  box-shadow: var(--shadow-floating);
+  z-index: 15;
+}
+
+/* Ítem con icono + texto */
+.ctrl-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+}
+
+.ctrl-clickable {
+  cursor: pointer;
+}
+
+.ctrl-clickable:hover,
+.ctrl-item--active {
+  background-color: rgba(188, 122, 255, 0.3);
+  box-shadow: 0 0 0 1.5px rgba(188, 122, 255, 0.6);
+}
+
+.ctrl-label {
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* Separador vertical */
+.ctrl-sep {
+  width: 1px;
+  height: 28px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+/* Botones icono redondos */
+.ctrl-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  width: 42px;
+  height: 42px;
+  background-color: var(--color-secondary-bg);
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--color-border-default);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ctrl-btn:hover {
+  background-color: rgba(188, 122, 255, 0.3);
+  border-color: rgba(188, 122, 255, 0.8);
+}
+
+/* Botón de velocidad */
+.ctrl-speed-wrapper {
+  position: relative;
+}
+
+.ctrl-speed-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: auto;
+  border-radius: 20px;
+  padding: 4px 10px;
+}
+
+.speed-label {
+  font-weight: 600;
+  min-width: 22px;
+  text-align: center;
+}
+
+/* Paneles flotantes */
+.floating-panel {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  background-color: var(--color-bg-panel-floating);
+  border: 1px solid var(--color-border-primary);
+  border-radius: 16px;
+  padding: 16px;
+  backdrop-filter: var(--backdrop-blur-heavy);
+  z-index: 10;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+  animation: fadeUp 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Panel de hora */
+.time-panel {
+  left: 0;
+  width: 600px;
+}
+
+.time-slider-labels {
+  display: flex;
+  justify-content: space-between;
+  opacity: 0.7;
+  margin-bottom: 6px;
+}
+
+.time-slider {
+  width: 100%;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.time-presets {
+  display: flex;
+  gap: 6px;
+}
+
+.time-presets button {
+  flex: 1;
+  padding: 5px 4px;
+  border-radius: 20px;
+  border: 1.5px solid var(--color-border-light);
+  background-color: var(--color-secondary-bg);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+
+.time-presets button:hover {
+  background-color: rgba(188, 122, 255, 0.3);
+  border-color: rgba(188, 122, 255, 0.8);
+}
+
+/* Datepicker flotante */
+.datepicker-panel {
+  left: 0;
+  padding: 10px;
+}
+
+.datepicker-panel .date-input {
+  width: 0;
+  height: 0;
+  border: none;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+}
+
+/* Selector de velocidades */
+.speed-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  right: 0;
+  left: auto;
+  width: 76px;
+  padding: 8px;
+}
+
+.speed-option {
+  padding: 6px;
+  border-radius: 10px;
+  border: 1.5px solid var(--color-border-light);
+  background-color: var(--color-secondary-bg);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  text-align: center;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
+}
+
+.speed-option:hover:not(.speed-option--active) {
+  background-color: rgba(188, 122, 255, 0.3);
+  border-color: rgba(188, 122, 255, 0.8);
+}
+
+.speed-option--active {
+  background-color: var(--color-primary-active);
+  color: var(--color-text-inverse);
+  font-weight: 500;
+}
+
+@media (max-width: 1600px) {
+  .ctrl-bar {
+    padding: 14px 18px;
+    gap: 8px;
+  }
+
+  .ctrl-item {
+    font-size: 14px;
+    padding: 4px 8px;
+  }
+
+  .ctrl-sep {
+    height: 26px;
+    margin: 0 2px;
+  }
+
+  .ctrl-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  .ctrl-speed-btn {
+    width: auto;
+    height: 30px;
+    padding: 0 8px;
+    gap: 4px;
+  }
+
+  .speed-label {
+    min-width: 18px;
+    font-size: 14px;
+  }
+
+  .time-panel {
+    width: 450px;
+  }
+
+  .time-slider-labels span {
+    font-size: 14px;
+  }
+
+  .time-presets button {
+    font-size: 14px;
+  }
+
+  .speed-option {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 800px) {
+  .ctrl-bar {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 14px;
+  }
+
+  .ctrl-item {
+    flex: 1 1 120px;
+    min-width: 110px;
+    padding: 8px 10px;
+  }
+
+  .ctrl-sep {
+    display: none;
+  }
+
+  .ctrl-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 1rem;
+  }
+
+  .ctrl-speed-btn {
+    padding: 0 10px;
+  }
+
+  .speed-label {
+    min-width: 20px;
+    font-size: 0.95rem;
+  }
+
+  .time-panel,
+  .datepicker-panel {
+    width: min(100vw - 24px, 340px);
+    max-width: 340px;
+  }
+
+  .floating-panel {
+    width: min(100vw - 24px, 340px);
+    left: auto;
+    right: 0;
+  }
+
+  .time-slider-labels span,
+  .time-presets button,
+  .speed-option {
+    font-size: 0.9rem;
+  }
+
+  .time-presets {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+}
+
+/* Botón de cambio de motor WebGL (temporal) */
+.motor-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: auto;
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+.motor-toggle-btn.ctrl-item--active {
+  background-color: rgba(188, 122, 255, 0.25);
+  color: var(--color-text-primary);
+}
+
+.motor-label {
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+@media (max-width: 1600px) {
+  .motor-toggle-btn {
+    padding: 4px 8px;
+  }
+
+  .motor-label {
+    font-size: 14px;
+  }
+}

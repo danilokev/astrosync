@@ -1,0 +1,290 @@
+/* ===== BANNER DE COOKIES ===== */
+.cookie-banner {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  width: 420px;
+  max-width: calc(100vw - 3rem);
+  z-index: 1000;
+  background: var(--color-bg-panel-floating);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-default);
+  padding: 1rem 1.25rem;
+  backdrop-filter: var(--backdrop-blur-default);
+  box-shadow: var(--shadow-floating);
+  animation: bannerSlideUp 0.25s ease-out;
+}
+
+@keyframes bannerSlideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cookie-banner__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.cookie-banner__text {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-base);
+  margin: 0;
+}
+
+.cookie-banner__link {
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: var(--color-primary);
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: rgba(188, 122, 255, 0.4);
+}
+
+.cookie-banner__link:hover {
+  color: var(--color-primary-hover-bg);
+  text-decoration-color: var(--color-primary-hover-bg);
+}
+
+.cookie-banner__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* ===== BOTONES COMPARTIDOS ===== */
+.btn {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  padding: 0.4375rem 0.875rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.btn--primary,
+.btn--secondary,
+.btn--ghost {
+  background: var(--color-secondary-bg);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-default);
+}
+
+.btn--primary:hover,
+.btn--secondary:hover,
+.btn--ghost:hover {
+  background: var(--color-secondary-hover-bg);
+  border-color: var(--color-border-primary);
+}
+
+/* ===== MODAL DE PREFERENCIAS ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  /* Sin backdrop-filter aquí — evita el parpadeo al hacer scroll interno */
+  background: rgba(4, 0, 30, 0.82);
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: overlayFadeIn 0.2s ease-out;
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal {
+  background: var(--color-bg-panel-floating);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-default);
+  width: 100%;
+  max-width: 540px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-floating);
+  animation: modalSlideDown 0.22s ease-out;
+  overflow: hidden;
+  /* El blur va aquí, en el modal, no en el overlay */
+  backdrop-filter: var(--backdrop-blur-heavy);
+}
+
+@keyframes modalSlideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.modal__header {
+  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid var(--color-border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.modal__title {
+  font-family: var(--font-heading);
+  font-size: var(--h4-size);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: var(--heading-line-height);
+  margin: 0;
+}
+
+.modal__close {
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-md);
+  transition: color 0.15s, background 0.15s;
+  line-height: 1;
+}
+
+.modal__close:hover {
+  color: var(--color-text-primary);
+  background: var(--color-secondary-hover-bg);
+}
+
+.modal__body {
+  padding: 1.25rem 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.modal__body::-webkit-scrollbar { width: 4px; }
+.modal__body::-webkit-scrollbar-track { background: var(--color-scrollbar-track); }
+.modal__body::-webkit-scrollbar-thumb {
+  background: var(--color-scrollbar-thumb);
+  border-radius: 2px;
+}
+
+.modal__intro {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-base);
+  margin: 0 0 1.25rem;
+}
+
+.modal__footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--color-border-light);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* ===== FILAS DE CATEGORÍAS ===== */
+.cookie-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  background: var(--color-secondary-bg);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  margin-bottom: 0.625rem;
+}
+
+.cookie-row:last-of-type {
+  margin-bottom: 0;
+}
+
+.cookie-row__info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cookie-row__name {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.cookie-row__desc {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+/* ===== TOGGLE SWITCH ===== */
+.toggle {
+  width: 40px;
+  height: 22px;
+  border-radius: var(--radius-pill);
+  background: var(--color-secondary-active-bg);
+  border: 1px solid var(--color-border-default);
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-text-secondary);
+  transition: left 0.2s, background 0.2s;
+}
+
+.toggle--on {
+  background: var(--color-primary);
+  border-color: var(--color-border-primary);
+}
+
+.toggle--on::after {
+  left: 21px;
+  background: var(--color-text-inverse);
+}
+
+.toggle--locked {
+  opacity: 0.55;
+  cursor: default;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 500px) {
+  .cookie-banner {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+    border-radius: var(--radius-default) var(--radius-default) 0 0;
+    border-bottom: none;
+  }
+
+  .modal {
+    max-height: 95vh;
+    border-radius: var(--radius-default) var(--radius-default) 0 0;
+    align-self: flex-end;
+  }
+}

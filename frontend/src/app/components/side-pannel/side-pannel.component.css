@@ -1,0 +1,286 @@
+.side-pannel-container {
+  height: 100vh;
+  width: fit-content;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  pointer-events: auto;
+}
+
+.side-panel-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+}
+
+.side-pannel-container.open .side-panel-backdrop {
+  display: block;
+}
+
+.side-pannel {
+  height: 100%;
+  background-color: var(--color-bg-panel);
+  backdrop-filter: var(--backdrop-blur-default);
+  width: 64px; /* Ancho base colapsado */
+  transition: width 0.3s ease;
+  overflow-x: hidden;
+}
+
+.side-pannel.side-pannel-expanded {
+  width: 285px; /* Ancho expandido */
+}
+
+/* Estilos header */
+.panel-header {
+  min-height: 4.5rem;
+  transition: padding 0.3s ease;
+}
+
+/* Estilos de nombre y apellido del usuario */
+.user-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-name {
+  font-weight: 500;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.user-surname {
+  color: var(--color-text-secondary);
+  font-size: 0.9em;
+  line-height: 1.2;
+}
+
+/* Estilos botón de login */
+.login-link {
+  background-color: transparent;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-default);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+
+.login-link:hover {
+  background-color: var(--color-menu-hover-bg);
+  border-color: var(--color-primary);
+}
+
+/* Estilos separador */
+/*.panel-separator {
+  height: 1px;
+  background-color: var(--color-border-light);
+}*/
+
+/* Botón expandir/colapsar */
+.panel-toggle-btn {
+  background-color: transparent;
+  color: var(--color-text-primary);
+}
+
+.panel-toggle-btn:hover {
+  background-color: var(--color-menu-hover-bg);
+}
+
+/* Estilos de Tabs  */
+.tab-down {
+  margin-top: auto !important;
+}
+
+.tab {
+  background-color: transparent;
+  color: var(--color-text-primary);
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  min-height: 46px;
+  position: relative;
+}
+
+/* Foco visible al navegar con Tab */
+.tab:focus-visible,
+.panel-toggle-btn:focus-visible,
+.hidden-menu-button:focus-visible,
+.login-link:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.tab:hover {
+  background-color: var(--color-menu-hover-bg);
+}
+
+.tab.tab-active {
+  background-color: var(--color-menu-hover-bg);
+  font-weight: 500;
+}
+
+.tab::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 3px;
+  border-radius: 2px;
+  background-color: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.tab.tab-active::before {
+  background-color: var(--color-primary);
+}
+
+.tab.tab-active i {
+  color: var(--color-primary);
+}
+
+.tab i {
+  font-size: 28px;
+}
+
+/* Iconos de tab */
+.tab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-description {
+  white-space: normal;
+  word-wrap: break-word;
+  line-height: 1.2;
+}
+
+/* Ajustes del Backdrop. No estoy seguro para que sirve */
+/* Lo mantengo por si fuera necesario */
+/* Esta propiedad ya estaba incluida antes de los ajutes que he hecho */
+
+/* .side-panel-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  animation: fadeIn 0.2s ease forwards;
+} */
+
+/* @keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+} */
+
+/* Botón flotante móvil */
+.hidden-menu-button {
+  top: 16px;
+  left: 16px;
+  z-index: 1002;
+  transition: top 0.3s ease;
+}
+
+.side-pannel-container.open .hidden-menu-button {
+  top: 16px;
+}
+
+@media (max-width: 800px) {
+  .side-pannel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    min-width: 280px;
+    transform: translateX(-100%);
+    transition:
+      transform 0.3s ease,
+      width 0.3s ease;
+    box-shadow: 16px 0 50px rgba(0, 0, 0, 0.35);
+    z-index: 1001;
+    padding-top: 72px;
+    padding-inline: 12px;
+  }
+
+  .side-pannel-container.open .side-pannel {
+    transform: translateX(0);
+  }
+
+  .side-pannel.side-pannel-expanded {
+    width: 280px;
+  }
+
+  .panel-toggle-btn {
+    display: none !important;
+  }
+
+  .panel-header {
+    min-height: 3.8rem;
+    justify-content: flex-start !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .tabs-container {
+    align-items: stretch;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .panel-separator {
+    display: none;
+  }
+
+  .tab {
+    min-height: 48px;
+    justify-content: flex-start !important;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .tab-icon {
+    font-size: 22px;
+  }
+
+  .menu-description {
+    font-size: 0.95rem;
+    text-align: left;
+  }
+
+  .login-link {
+    padding: 0.35rem 0.85rem;
+  }
+}
+
+@media (max-width: 1600px) {
+  .side-pannel {
+    width: 58px;
+  }
+
+  .tab i {
+    font-size: 24px;
+  }
+
+  .menu-description {
+    font-size: 14px;
+  }
+
+  .panel-toggle-btn .tab-icon {
+    font-size: 20px !important;
+  }
+
+  .login-link {
+    font-size: 14px;
+  }
+
+  .tab {
+    min-height: 42px;
+  }
+}

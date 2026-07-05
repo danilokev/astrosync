@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Big Bang - Origen del Universo</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#0a0d1f; overflow:hidden; width:100vw; height:100vh; font-family:'Roboto',sans-serif; }
+
+#hud { position:fixed; inset:0; pointer-events:none; z-index:10; }
+
+#era-name { position:absolute; top:22px; left:50%; transform:translateX(-50%); text-align:center; }
+#era-name h1 { font-family:'Montserrat',sans-serif; font-size:26px; font-weight:700; letter-spacing:6px; text-transform:uppercase; color:rgba(160,210,255,0.92); text-shadow:0 0 24px rgba(100,170,255,0.4); transition:all 0.8s; }
+#era-name p  { font-family:'Roboto',sans-serif; font-size:15px; letter-spacing:3px; margin-top:10px; color:rgba(188,122,255,0.75); }
+
+/* Barra interactiva */
+#timeline-wrap {
+  position:absolute; bottom:28px; left:50%; transform:translateX(-50%);
+  width:72%; max-width:660px; pointer-events:all;
+}
+#t-val-display {
+  text-align:center; margin-bottom:10px;
+  font-family:'Montserrat',sans-serif; font-size:13px; letter-spacing:4px;
+  color:rgba(160,210,255,0.72); pointer-events:none;
+}
+#timeline-track {
+  position:relative; height:6px;
+  background:rgba(255,255,255,0.08); border-radius:8px;
+  cursor:pointer; user-select:none;
+}
+#timeline-fill {
+  height:100%; border-radius:8px; pointer-events:none;
+  background:linear-gradient(to right,rgba(188,122,255,0.4),rgba(188,122,255,0.85),rgba(210,175,255,1));
+  width:0%; transition:width 0.06s;
+}
+#timeline-thumb {
+  position:absolute; top:50%; left:0%;
+  width:14px; height:14px;
+  background:#fff; border:2px solid rgba(188,122,255,0.9);
+  border-radius:50%; pointer-events:none;
+  transform:translate(-50%,-50%);
+  box-shadow:0 0 10px rgba(188,122,255,0.6);
+  transition:transform 0.15s;
+}
+#timeline-track:hover #timeline-thumb { transform:translate(-50%,-50%) scale(1.25); }
+#timeline-labels {
+  display:flex; justify-content:space-between; margin-top:10px;
+  font-family:'Montserrat',sans-serif; font-size:8px; letter-spacing:2px;
+  color:rgba(188,122,255,0.38); text-transform:uppercase; pointer-events:all;
+}
+#timeline-labels span { cursor:pointer; transition:color 0.2s; padding:2px 0; }
+#timeline-labels span:hover { color:rgba(188,122,255,0.9); }
+
+/* Controles */
+#controls { position:absolute; bottom:44px; right:20px; display:flex; flex-direction:column; gap:6px; pointer-events:all; }
+#controls button {
+  background:rgba(14,18,50,0.82); border:1px solid rgba(188,122,255,0.2);
+  color:rgba(188,122,255,0.85); font-family:'Montserrat',sans-serif;
+  font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase;
+  padding:7px 16px; cursor:pointer; border-radius:8px; transition:all 0.2s;
+}
+#controls button:hover { background:rgba(30,20,70,0.92); border-color:rgba(188,122,255,0.55); color:#fff; }
+
+/* Boton info */
+#info-btn {
+  position:fixed; bottom:22px; left:20px; z-index:20;
+  width:40px; height:40px; border-radius:50%;
+  background:rgba(14,18,50,0.85); border:1px solid rgba(188,122,255,0.35);
+  color:rgba(188,122,255,0.95); font-size:20px; font-weight:700;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:all 0.2s; pointer-events:all; font-family:'Montserrat',sans-serif;
+  box-shadow:0 2px 14px rgba(0,0,0,0.45);
+}
+#info-btn:hover { background:rgba(30,20,80,0.95); border-color:rgba(188,122,255,0.7); color:#fff; box-shadow:0 0 18px rgba(188,122,255,0.28); }
+
+/* Panel info */
+#info-panel {
+  position:fixed; top:0; left:0; bottom:0; width:320px;
+  background:rgba(10,13,32,0.96); border-right:1px solid rgba(188,122,255,0.14);
+  backdrop-filter:blur(14px); z-index:30;
+  display:flex; flex-direction:column;
+  transform:translateX(-100%); transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  pointer-events:none;
+}
+#info-panel.open { transform:translateX(0); pointer-events:all; }
+#info-head { display:flex; align-items:center; justify-content:space-between; padding:20px 20px 16px; border-bottom:1px solid rgba(188,122,255,0.1); flex-shrink:0; }
+#info-head-left { display:flex; align-items:center; gap:10px; }
+#info-emoji { font-size:20px; }
+#info-title { font-family:'Montserrat',sans-serif; font-size:15px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:rgba(210,175,255,0.95); }
+#info-x { background:none; border:none; color:rgba(188,122,255,0.45); font-size:18px; cursor:pointer; padding:2px 6px; border-radius:6px; line-height:1; transition:all 0.2s; }
+#info-x:hover { color:#fff; background:rgba(188,122,255,0.12); }
+#info-body { overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:16px; flex:1; }
+#info-body::-webkit-scrollbar { width:3px; }
+#info-body::-webkit-scrollbar-thumb { background:rgba(188,122,255,0.2); border-radius:3px; }
+.info-p { font-family:'Roboto',sans-serif; font-size:15px; color:rgba(200,185,240,0.72); line-height:1.8; margin:0; }
+
+#flash { position:absolute; inset:0; background:white; opacity:0; pointer-events:none; transition:opacity 0.1s; }
+</style>
+</head>
+<body>
+<div id="hud">
+  <div id="era-name">
+    <h1 id="era-h1">SINGULARIDAD</h1>
+    <p  id="era-p">t = 0 — Densidad y temperatura infinitas</p>
+  </div>
+
+  <div id="timeline-wrap">
+    <div id="t-val-display">T + <span id="t-val">0 s</span></div>
+    <div id="timeline-track">
+      <div id="timeline-fill"></div>
+      <div id="timeline-thumb"></div>
+    </div>
+    <div id="timeline-labels">
+      <span onclick="bbSeek(0.00)">Singularidad</span>
+      <span onclick="bbSeek(0.20)">Quark</span>
+      <span onclick="bbSeek(0.32)">Nucleosintesis</span>
+      <span onclick="bbSeek(0.45)">Fotones</span>
+      <span onclick="bbSeek(0.75)">Galaxias</span>
+      <span onclick="bbSeek(1.00)">Hoy</span>
+    </div>
+  </div>
+
+  <div id="controls">
+    <button onclick="bbRestart()">REINICIAR</button>
+    <button onclick="bbPause()" id="bb-pause-btn">PAUSA</button>
+    <button onclick="bbSpeed(0.5)">LENTO</button>
+    <button onclick="bbSpeed(1.0)">NORMAL</button>
+    <button onclick="bbSpeed(1.5)">RAPIDO</button>
+  </div>
+  <div id="flash"></div>
+</div>
+
+<button id="info-btn" onclick="toggleInfo()" title="Informacion cientifica">i</button>
+
+<div id="info-panel">
+  <div id="info-head">
+    <div id="info-head-left">
+      <span id="info-title">Big Bang</span>
+    </div>
+    <button id="info-x" onclick="toggleInfo()">✕</button>
+  </div>
+  <div id="info-body">
+    <p class="info-p">La teoria del Big Bang es el modelo cosmologico predominante para los periodos conocidos mas antiguos del universo y su posterior evolucion a gran escala.</p>
+    <p class="info-p">El modelo afirma que el universo se hallaba en un estado de muy alta densidad y temperatura y luego se expandio. Mediciones modernas datan este momento hace aproximadamente 13.800 millones de años, que seria por tanto la edad del universo.</p>
+    <p class="info-p">Despues de la expansion inicial, el universo se enfrio lo suficiente para permitir la formacion de las particulas subatomicas y mas tarde simples atomos. Nubes gigantes de estos elementos se unieron mas tarde debido a la gravedad y formaron estrellas y galaxias.</p>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+var bbPaused=false, bbSpeedMult=1.0, bbTime=0, bbFlashDone=false, bbScrubbing=false;
+
+function bbRestart(){ bbTime=0; bbFlashDone=false; bbPaused=false; var b=document.getElementById("bb-pause-btn"); if(b) b.textContent="PAUSA"; camera.position.set(0,0,600); document.getElementById('flash').style.opacity='0'; }
+function bbPause(){ bbPaused=!bbPaused; document.getElementById("bb-pause-btn").textContent=bbPaused?"REANUDAR":"PAUSA"; }
+function bbSpeed(v){ bbSpeedMult=v; }
+function bbSeek(t){ bbTime=Math.max(0,Math.min(1,t)); }
+function toggleInfo(){ document.getElementById('info-panel').classList.toggle('open'); }
+
+// Scrubbing
+var track=document.getElementById('timeline-track');
+function seekEv(e){
+  var rect=track.getBoundingClientRect();
+  var cx=e.touches?e.touches[0].clientX:e.clientX;
+  bbSeek((cx-rect.left)/rect.width);
+}
+track.addEventListener('mousedown',function(e){ bbScrubbing=true; seekEv(e); });
+track.addEventListener('touchstart',function(e){ bbScrubbing=true; seekEv(e); },{passive:true});
+document.addEventListener('mousemove',function(e){ if(bbScrubbing) seekEv(e); });
+document.addEventListener('touchmove',function(e){ if(bbScrubbing) seekEv(e); },{passive:true});
+document.addEventListener('mouseup',function(){ bbScrubbing=false; });
+document.addEventListener('touchend',function(){ bbScrubbing=false; });
+
+// Renderer
+var renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.setSize(window.innerWidth,window.innerHeight);
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.0;
+document.body.appendChild(renderer.domElement);
+var scene=new THREE.Scene();
+var camera=new THREE.PerspectiveCamera(70,window.innerWidth/window.innerHeight,0.1,50000);
+camera.position.set(0,0,600);
+window.addEventListener('resize',function(){ camera.aspect=window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth,window.innerHeight); });
+
+var VS=['attribute float aSize;attribute float aAlpha;varying vec3 vCol;varying float vAlp;','void main(){vCol=color;vAlp=aAlpha;vec4 mv=modelViewMatrix*vec4(position,1.0);','gl_PointSize=aSize*(500.0/-mv.z);gl_PointSize=clamp(gl_PointSize,0.3,200.0);gl_Position=projectionMatrix*mv;}'].join('\n');
+var FS=['varying vec3 vCol;varying float vAlp;','void main(){float d=length(gl_PointCoord-0.5)*2.0;float s=pow(1.0-smoothstep(0.0,1.0,d),2.0);','gl_FragColor=vec4(vCol,vAlp*s);if(gl_FragColor.a<0.003)discard;}'].join('\n');
+function makeMat(add){ if(add===undefined)add=true; return new THREE.ShaderMaterial({vertexShader:VS,fragmentShader:FS,vertexColors:true,transparent:true,depthWrite:false,blending:add?THREE.AdditiveBlending:THREE.NormalBlending}); }
+function mkgeo(n,pf,cf,sf,af){ var g=new THREE.BufferGeometry(),p=new Float32Array(n*3),c=new Float32Array(n*3),s=new Float32Array(n),a=new Float32Array(n); for(var i=0;i<n;i++){var pv=pf(i);p[i*3]=pv.x;p[i*3+1]=pv.y;p[i*3+2]=pv.z;var cv=cf(i);c[i*3]=cv.r;c[i*3+1]=cv.g;c[i*3+2]=cv.b;s[i]=sf(i);a[i]=af(i);} g.setAttribute('position',new THREE.BufferAttribute(p,3));g.setAttribute('color',new THREE.BufferAttribute(c,3));g.setAttribute('aSize',new THREE.BufferAttribute(s,1));g.setAttribute('aAlpha',new THREE.BufferAttribute(a,1));return g; }
+
+var ERAS=[{t:0.00,name:"SINGULARIDAD",sub:"t = 0 — Densidad y temperatura infinitas",fogCol:0x000000},{t:0.04,name:"ERA DE PLANCK",sub:"t = 10^-43 s — Gravedad cuantica domina",fogCol:0x110000},{t:0.10,name:"INFLACION COSMICA",sub:"t = 10^-36 s — Expansion exponencial",fogCol:0x220500},{t:0.20,name:"ERA DE QUARKS",sub:"t = 10^-12 s — Quarks y gluones libres",fogCol:0x330800},{t:0.32,name:"NUCLEOSINTESIS",sub:"t = 3 min — Protones y neutrones se fusionan",fogCol:0x221500},{t:0.45,name:"ERA DE RADIACION",sub:"t = 380.000 años — Universo opaco de fotones",fogCol:0x0a0a20},{t:0.60,name:"EDAD OSCURA",sub:"t = 150 M años — Sin estrellas, solo H y He",fogCol:0x000008},{t:0.75,name:"PRIMERAS ESTRELLAS",sub:"t = 400 M años — Poblacion III, metal cero",fogCol:0x000510},{t:0.88,name:"FORMACION GALACTICA",sub:"t = 1.000 M años — Galaxias y cumulos emergen",fogCol:0x000308},{t:1.00,name:"UNIVERSO ACTUAL",sub:"t = 13.800 M años — Tu estas aqui",fogCol:0x000205}];
+function getEra(t){ var e=ERAS[0]; for(var i=0;i<ERAS.length;i++) if(t>=ERAS[i].t) e=ERAS[i]; return e; }
+
+var PLASMA_N=8000,plasmaData=[];
+for(var i=0;i<PLASMA_N;i++) plasmaData.push({theta:Math.random()*Math.PI*2,phi:Math.acos(2*Math.random()-1),r:Math.pow(Math.random(),0.4),speed:0.3+Math.random()*1.5,phase:Math.random()*Math.PI*2,hue:0.04+Math.random()*0.12});
+var plasmaGeo=mkgeo(PLASMA_N,function(i){var d=plasmaData[i],R=d.r*5;return{x:R*Math.sin(d.phi)*Math.cos(d.theta),y:R*Math.sin(d.phi)*Math.sin(d.theta),z:R*Math.cos(d.phi)};},function(i){var c=new THREE.Color();c.setHSL(plasmaData[i].hue,1,0.7);return c;},function(){return 2+Math.random()*4;},function(){return 0.5+Math.random()*0.5;});
+scene.add(new THREE.Points(plasmaGeo,makeMat(true)));
+
+var WAVE_N=15000,waveData=[];
+for(var i=0;i<WAVE_N;i++) waveData.push({theta:Math.random()*Math.PI*2,phi:Math.acos(2*Math.random()-1),speed:0.6+Math.random()*1.2,size:1+Math.random()*5,hue:Math.random()<0.5?0.05+Math.random()*0.1:0.55+Math.random()*0.1,phase:Math.random()*Math.PI*2,layer:Math.floor(Math.random()*3)});
+var wPA=new Float32Array(WAVE_N*3),wCA=new Float32Array(WAVE_N*3),wSA=new Float32Array(WAVE_N),wAA=new Float32Array(WAVE_N);
+var waveGeo=new THREE.BufferGeometry();
+waveGeo.setAttribute('position',new THREE.BufferAttribute(wPA,3));waveGeo.setAttribute('color',new THREE.BufferAttribute(wCA,3));waveGeo.setAttribute('aSize',new THREE.BufferAttribute(wSA,1));waveGeo.setAttribute('aAlpha',new THREE.BufferAttribute(wAA,1));
+scene.add(new THREE.Points(waveGeo,makeMat(true)));
+
+var GALAXY_N=3000,galaxyData=[];
+for(var i=0;i<GALAXY_N;i++) galaxyData.push({x:(Math.random()-0.5)*2,y:(Math.random()-0.5)*2,z:(Math.random()-0.5)*2,size:2+Math.random()*8,hue:0.55+Math.random()*0.15,alpha:0.3+Math.random()*0.7});
+var galaxyGeo=mkgeo(GALAXY_N,function(i){var d=galaxyData[i];return{x:d.x,y:d.y,z:d.z};},function(i){var c=new THREE.Color();c.setHSL(galaxyData[i].hue,0.6,0.65);return c;},function(i){return galaxyData[i].size;},function(i){return galaxyData[i].alpha;});
+scene.add(new THREE.Points(galaxyGeo,makeMat(true)));
+
+var CMB_N=6000;
+var cmbGeo=mkgeo(CMB_N,function(){var r=1200+Math.random()*300,t2=Math.random()*Math.PI*2,p=Math.acos(2*Math.random()-1);return{x:r*Math.sin(p)*Math.cos(t2),y:r*Math.sin(p)*Math.sin(t2),z:r*Math.cos(p)};},function(){var c=new THREE.Color();c.setHSL(0.05+Math.random()*0.05,0.9,0.55);return c;},function(){return 3+Math.random()*6;},function(){return 0.08+Math.random()*0.15;});
+scene.add(new THREE.Points(cmbGeo,makeMat(true)));
+
+var STAR_N=5000;
+var starGeo=mkgeo(STAR_N,function(){var r=2000+Math.random()*3000,t2=Math.random()*Math.PI*2,p=Math.acos(2*Math.random()-1);return{x:r*Math.sin(p)*Math.cos(t2),y:r*Math.sin(p)*Math.sin(t2),z:r*Math.cos(p)};},function(){var c=new THREE.Color();c.setHSL(0.6+Math.random()*0.15,0.4+Math.random()*0.3,0.7+Math.random()*0.3);return c;},function(){return 0.5+Math.random()*2;},function(){return 0.3+Math.random()*0.7;});
+scene.add(new THREE.Points(starGeo,makeMat(true)));
+
+var centralLight=new THREE.PointLight(0xffaa44,20,2000); scene.add(centralLight);
+scene.add(new THREE.AmbientLight(0x050510,1));
+var singMesh=new THREE.Mesh(new THREE.SphereGeometry(1,16,16),new THREE.MeshBasicMaterial({color:0xffffff})); scene.add(singMesh);
+var glowMat=new THREE.MeshBasicMaterial({color:0xff8800,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.BackSide});
+var glowMesh=new THREE.Mesh(new THREE.SphereGeometry(1,16,16),glowMat); scene.add(glowMesh);
+
+var bbClock=new THREE.Clock();
+
+function updateParticles(t,et){
+  var expansion=Math.pow(t,0.35)*1800,phase0=t<0.05,phase1=t<0.25;
+  singMesh.scale.setScalar(phase0?1+Math.sin(et*8)*0.3:0);
+  glowMesh.scale.setScalar(phase0?0.5:Math.min(t*60,30));
+  glowMat.opacity=phase0?0.4:Math.max(0,0.3-t*0.5);
+  centralLight.intensity=phase0?80:Math.max(0,60*(1-t*1.2));
+  centralLight.color.setHSL(0.08-t*0.05,1,0.7);
+  var pp=plasmaGeo.attributes.position.array,pc=plasmaGeo.attributes.color.array,pa=plasmaGeo.attributes.aAlpha.array,ps=plasmaGeo.attributes.aSize.array;
+  for(var i=0;i<PLASMA_N;i++){var d=plasmaData[i],R=d.r*expansion*0.15+Math.sin(et*d.speed+d.phase)*2;pp[i*3]=R*Math.sin(d.phi)*Math.cos(d.theta+et*d.speed*0.01);pp[i*3+1]=R*Math.sin(d.phi)*Math.sin(d.theta+et*d.speed*0.01);pp[i*3+2]=R*Math.cos(d.phi);var c=new THREE.Color().setHSL(d.hue+t*0.2,1,0.5+0.3*Math.sin(et*d.speed+d.phase));pc[i*3]=c.r;pc[i*3+1]=c.g;pc[i*3+2]=c.b;pa[i]=(phase1?1:0)*(0.3+0.5*Math.sin(et*d.speed+d.phase));ps[i]=(2+Math.random()*3)*(1+t*2);}
+  plasmaGeo.attributes.position.needsUpdate=true;plasmaGeo.attributes.color.needsUpdate=true;plasmaGeo.attributes.aAlpha.needsUpdate=true;plasmaGeo.attributes.aSize.needsUpdate=true;
+  for(var i=0;i<WAVE_N;i++){var d=waveData[i],R=expansion*(0.7+d.layer*0.12+d.speed*0.15)+Math.sin(et*0.5+d.phase)*5;wPA[i*3]=R*Math.sin(d.phi)*Math.cos(d.theta);wPA[i*3+1]=R*Math.sin(d.phi)*Math.sin(d.theta);wPA[i*3+2]=R*Math.cos(d.phi);var h=t<0.3?0.06-t*0.1:0.55+(t-0.3)*0.1;var c2=new THREE.Color().setHSL(Math.max(0,h),t<0.5?0.9:0.5,0.4+0.3*Math.sin(et+d.phase));wCA[i*3]=c2.r;wCA[i*3+1]=c2.g;wCA[i*3+2]=c2.b;wSA[i]=d.size*(1+t*3);wAA[i]=phase0?0:(d.layer===0?0.4:0.12)*Math.min(1,t*8);}
+  waveGeo.attributes.position.needsUpdate=true;waveGeo.attributes.color.needsUpdate=true;waveGeo.attributes.aSize.needsUpdate=true;waveGeo.attributes.aAlpha.needsUpdate=true;
+  var gp=galaxyGeo.attributes.position.array,ga=galaxyGeo.attributes.aAlpha.array,gs=galaxyGeo.attributes.aSize.array,gv=Math.max(0,(t-0.55)*4);
+  for(var i=0;i<GALAXY_N;i++){var d=galaxyData[i],R=expansion*0.85;gp[i*3]=d.x*R;gp[i*3+1]=d.y*R;gp[i*3+2]=d.z*R;ga[i]=gv*d.alpha*(0.7+0.3*Math.sin(et*0.3+i));gs[i]=d.size*(1+gv*3);}
+  galaxyGeo.attributes.position.needsUpdate=true;galaxyGeo.attributes.aAlpha.needsUpdate=true;galaxyGeo.attributes.aSize.needsUpdate=true;
+  var ca=cmbGeo.attributes.aAlpha.array,cv=(t>0.3&&t<0.7)?Math.min(1,(t-0.3)*5)*Math.min(1,(0.7-t)*5):0;
+  for(var i=0;i<CMB_N;i++) ca[i]=cv*(0.05+Math.random()*0.08);
+  cmbGeo.attributes.aAlpha.needsUpdate=true;
+  var sa=starGeo.attributes.aAlpha.array,sv=Math.max(0,(t-0.65)*4);
+  for(var i=0;i<STAR_N;i++) sa[i]=sv*(0.2+Math.random()*0.5);
+  starGeo.attributes.aAlpha.needsUpdate=true;
+}
+
+function updateHUD(t){
+  var era=getEra(t);
+  document.getElementById('era-h1').textContent=era.name;
+  document.getElementById('era-p').textContent=era.sub;
+  var pct=(t*100).toFixed(1);
+  document.getElementById('timeline-fill').style.width=pct+'%';
+  document.getElementById('timeline-thumb').style.left=pct+'%';
+  var tv='0 s';
+  if(t<0.05) tv='0 s';
+  else if(t<0.15) tv='10^-36 s';
+  else if(t<0.30) tv='10^-12 s';
+  else if(t<0.45) tv='3 min';
+  else if(t<0.60) tv='380.000 años';
+  else if(t<0.75) tv='150 M años';
+  else if(t<0.88) tv='400 M años';
+  else tv='13.800 M años';
+  document.getElementById('t-val').textContent=tv;
+}
+
+function loop(){
+  requestAnimationFrame(loop);
+  var dt=Math.min(bbClock.getDelta(),0.05),et=bbClock.getElapsedTime();
+  if(!bbPaused&&!bbScrubbing) bbTime=Math.min(bbTime+dt*0.012*bbSpeedMult,1.0);
+  if(bbTime>0.01&&!bbFlashDone){
+    bbFlashDone=true;
+    var fl=document.getElementById('flash');
+    fl.style.transition='opacity 0.05s'; fl.style.opacity='1';
+    setTimeout(function(){ fl.style.transition='opacity 2s'; fl.style.opacity='0'; },100);
+  }
+  updateParticles(bbTime,et);
+  updateHUD(bbTime);
+  var tz=50+Math.pow(bbTime,0.5)*1400;
+  camera.position.z+=(tz-camera.position.z)*0.02;
+  camera.position.x=Math.sin(et*0.04)*30*bbTime;
+  camera.position.y=Math.cos(et*0.03)*20*bbTime;
+  camera.lookAt(0,0,0);
+  scene.fog=new THREE.FogExp2(getEra(bbTime).fogCol,0.0003+(1-bbTime)*0.001);
+  renderer.render(scene,camera);
+}
+loop();
+</script>
+</body>
+</html>

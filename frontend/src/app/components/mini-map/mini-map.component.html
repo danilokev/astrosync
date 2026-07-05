@@ -1,0 +1,11 @@
+<div class="mini-map-container" (click)="onClick()">
+  <img #mapImg src="assets/images/world-map.png" alt="World Map" class="map-img" />
+
+  <div
+    class="marker"
+    [style.left.px]="markerX"
+    [style.top.px]="markerY"
+  >
+    <i class="bi bi-geo-alt-fill"></i>
+  </div>
+</div>

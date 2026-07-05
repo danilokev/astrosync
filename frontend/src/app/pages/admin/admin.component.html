@@ -1,0 +1,238 @@
+<div class="admin-page" [style.--sidebar-offset.px]="uiService.sidebarOffset()">
+  <app-side-pannel></app-side-pannel>
+  <div class="main-content-admin">
+    <app-navbar-horizontal (activeTabChange)="onTabChange($event)">
+    </app-navbar-horizontal>
+
+    <ng-container [ngSwitch]="activeTab">
+      <!-- Página de monitorización (Dashboard) -->
+      <div *ngSwitchCase="0" class="dashboard">
+        <header class="section-header dashboard-header">
+          <div class="header-left">
+            <h1>Dashboard</h1>
+            <p>Métricas y estadísticas del proyecto</p>
+          </div>
+          <div class="header-right">
+            <app-period-filter
+              [selectedDays]="selectedPeriod"
+              (periodChange)="onPeriodChange($event)"
+            ></app-period-filter>
+            <span class="last-update" *ngIf="lastUpdate">
+              Actualizado: {{ lastUpdate | date: "HH:mm" }}
+            </span>
+          </div>
+        </header>
+
+        <div class="dashboard-grid">
+          <!-- Usuarios registrados -->
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <i class="bi bi-people-fill"></i>
+              <span>Usuarios registrados</span>
+            </div>
+            <div class="kpi-value">{{ totalUsuarios }}</div>
+            <div class="kpi-description">
+              Total de usuarios en la plataforma
+            </div>
+          </div>
+
+          <!-- Usuarios activos 30d -->
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <i class="bi bi-person-check-fill"></i>
+              <span>Usuarios activos</span>
+            </div>
+            <div class="kpi-value">{{ usuariosActivos30d }}</div>
+            <div class="kpi-description">
+              Usuarios con acceso en los últimos {{ selectedPeriod }} días
+            </div>
+          </div>
+
+          <!-- Fotos subidas -->
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <i class="bi bi-image-fill"></i>
+              <span>Fotos en BD</span>
+            </div>
+            <div class="kpi-value">{{ totalFotos }}</div>
+            <div class="kpi-description">Total de fotografías almacenadas</div>
+          </div>
+
+          <!-- Evolución de registros -->
+          <div class="chart-card chart-full">
+            <h3>Registros en los últimos {{ selectedPeriod }} días</h3>
+            <div class="chart-container">
+              <div *ngIf="metricsLoading" class="chart-loading">
+                <span>Cargando...</span>
+              </div>
+              <div *ngIf="metricsError" class="chart-error">
+                {{ metricsError }}
+              </div>
+              <canvas
+                *ngIf="!metricsLoading && !metricsError"
+                baseChart
+                [data]="lineChartData"
+                [options]="lineChartOptions"
+                [type]="lineChartType"
+              ></canvas>
+            </div>
+          </div>
+
+          <!-- Charts row: doughnut + ranking + bar -->
+          <div class="charts-row">
+            <!-- Distribución de favoritos -->
+            <div class="chart-card chart-doughnut">
+              <h3>Distribución de favoritos</h3>
+              <div class="chart-container chart-container-sm">
+                <canvas
+                  *ngIf="!metricsLoading && !metricsError"
+                  baseChart
+                  [data]="doughnutChartData"
+                  [options]="doughnutChartOptions"
+                  [type]="doughnutChartType"
+                ></canvas>
+              </div>
+            </div>
+
+            <div class="right-charts-col">
+              <!-- Ranking de objetos celestes -->
+              <div class="chart-card chart-ranking">
+                <h3>Top objetos celestes más guardados</h3>
+                <div class="ranking-legend">
+                  <span class="ranking-legend-item"
+                    ><i style="background: #bc7aff"></i>Estrellas</span
+                  >
+                  <span class="ranking-legend-item"
+                    ><i style="background: #7ad4ff"></i>Planetas</span
+                  >
+                  <span class="ranking-legend-item"
+                    ><i style="background: #ffbc7a"></i>Lunas</span
+                  >
+                  <span class="ranking-legend-item"
+                    ><i style="background: #7affbc"></i>Constelaciones</span
+                  >
+                </div>
+                <div class="chart-container chart-ranking-container">
+                  <div *ngIf="metricsLoading" class="chart-loading">
+                    <span>Cargando...</span>
+                  </div>
+                  <div
+                    *ngIf="!metricsLoading && rankingData.length === 0"
+                    class="chart-empty"
+                  >
+                    <span>No hay datos de ranking disponibles</span>
+                  </div>
+                  <canvas
+                    *ngIf="!metricsLoading && rankingData.length > 0"
+                    baseChart
+                    [data]="rankingChartData"
+                    [options]="rankingChartOptions"
+                    [type]="rankingChartType"
+                  ></canvas>
+                </div>
+              </div>
+
+              <!-- Fotos subidas últimos X días -->
+              <div class="chart-card chart-bar">
+                <h3>Fotos subidas en los últimos {{ selectedPeriod }} días</h3>
+                <div class="chart-container">
+                  <div *ngIf="metricsLoading" class="chart-loading">
+                    <span>Cargando...</span>
+                  </div>
+                  <div *ngIf="metricsError" class="chart-error">
+                    {{ metricsError }}
+                  </div>
+                  <div
+                    *ngIf="!metricsLoading && !metricsError && !fotosHasData"
+                    class="chart-empty"
+                  >
+                    <span>No hay fotos subidas en este periodo</span>
+                  </div>
+                  <canvas
+                    *ngIf="!metricsLoading && !metricsError && fotosHasData"
+                    baseChart
+                    [data]="barChartData"
+                    [options]="barChartOptions"
+                    [type]="barChartType"
+                  ></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Página de usuario -->
+      <section *ngSwitchCase="1" class="admin-section users-section">
+        <header class="section-header">
+          <h1>Gestión de usuarios</h1>
+          <p>
+            Filtra, busca y administra las cuentas registradas de forma rápida.
+          </p>
+        </header>
+
+        <div class="section-card">
+          <div class="filters-container">
+            <app-search
+              [showFilter]="false"
+              placeholder="Buscar usuarios..."
+              (valueChange)="onSearch($event)"
+            >
+            </app-search>
+            <app-input-select
+              [defaultValue]="''"
+              (selectionChange)="onSelectChange($event)"
+            >
+              <option value="">Cualquier rol</option>
+              <option value="ROL_ADMIN">Administradores</option>
+              <option value="ROL_USU">Usuarios</option>
+            </app-input-select>
+          </div>
+
+          <div class="table-wrapper">
+            <app-table
+              [headers]="tableHeaders"
+              [data]="users"
+              (userUpdated)="reloadUsers()"
+            >
+            </app-table>
+          </div>
+
+          <div class="pagination-wrapper">
+            <app-pagination
+              [totalPages]="totalPages"
+              [currentPage]="currentPage"
+              (valueChange)="onPageChanged($event)"
+            >
+            </app-pagination>
+          </div>
+        </div>
+      </section>
+
+      <!-- Página subir catálogos -->
+      <section *ngSwitchCase="2" class="admin-section load-star-catalog">
+        <header class="section-header">
+          <h1>Cargar catálogos</h1>
+          <p>Gestiona la importación de catálogos a la base de datos</p>
+        </header>
+
+        <div class="section-card upload-card">
+          <app-input-type-file
+            label="Selecciona el CSV con el catálogo de estrellas para importarlo en la base de datos:"
+            acceptTypes=".csv"
+            [reset]="resetFile"
+            (fileSelected)="onFileSelected($event)"
+          >
+          </app-input-type-file>
+          <app-progressbar
+            [progress]="importProgress"
+            [showProgress]="showProgress"
+          ></app-progressbar>
+          <app-button (click)="importStars()" [disabled]="butDisabled"
+            >Importar</app-button
+          >
+        </div>
+      </section>
+    </ng-container>
+  </div>
+</div>

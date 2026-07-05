@@ -1,0 +1,261 @@
+<app-header-auth></app-header-auth>
+<main class="container">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-5" style="margin-bottom: 80px">
+      <section class="card shadow border-0">
+        <div class="card-body p-md-5">
+          <h1 class="text-center mb-1 fw-bold text-white heading">
+            Crear cuenta
+          </h1>
+          <p class="text-center text-secondary mb-4">
+            Únete a nuestra comunidad astronómica
+          </p>
+
+          <button
+            type="button"
+            class="btn btn-danger w-100 mb-3 d-flex align-items-center justify-content-center gap-2"
+            (click)="loginWithGoogle()"
+            [disabled]="isLoading"
+          >
+            <i class="bi bi-google"></i> Continuar con Google
+          </button>
+
+          <div class="d-flex align-items-center my-4" role="separator">
+            <hr class="flex-grow-1 border-secondary" aria-hidden="true" />
+            <span class="px-3 text-secondary small">O continúa con</span>
+            <hr class="flex-grow-1 border-secondary" aria-hidden="true" />
+          </div>
+
+          @if (errorMessage) {
+            <div
+              class="alert alert-danger d-flex align-items-center mb-4"
+              role="alert"
+            >
+              <i class="bi bi-exclamation-circle-fill me-2"></i>
+              {{ errorMessage }}
+            </div>
+          }
+
+          <form [formGroup]="registerForm" (ngSubmit)="register()" novalidate>
+            <div class="row g-3 mb-3">
+              <div class="col-6">
+                <label for="nombre" class="form-label text-white fw-semibold">
+                  Nombre
+                </label>
+                <div class="input-group">
+                  <span class="input-group-text bg-dark border-secondary">
+                    <i class="bi bi-person text-secondary"></i>
+                  </span>
+                  <input
+                    id="nombre"
+                    type="text"
+                    class="form-control bg-dark border-secondary text-white"
+                    formControlName="nombre"
+                    placeholder="Tu nombre"
+                    autocomplete="given-name"
+                    [ngClass]="{
+                      'is-invalid':
+                        registerForm.get('nombre')?.invalid &&
+                        (registerForm.get('nombre')?.touched ||
+                          registerForm.get('nombre')?.dirty),
+                    }"
+                  />
+                </div>
+                @if (
+                  registerForm.get("nombre")?.invalid &&
+                  (registerForm.get("nombre")?.touched ||
+                    registerForm.get("nombre")?.dirty)
+                ) {
+                  <div class="invalid-feedback d-block">
+                    <i class="bi bi-exclamation-circle"></i> Mín. 2 caracteres
+                  </div>
+                }
+              </div>
+
+              <div class="col-6">
+                <label
+                  for="apellidos"
+                  class="form-label text-white fw-semibold"
+                >
+                  Apellidos
+                </label>
+                <input
+                  id="apellidos"
+                  type="text"
+                  class="form-control bg-dark border-secondary text-white"
+                  formControlName="apellidos"
+                  placeholder="Tus apellidos"
+                  autocomplete="family-name"
+                  [ngClass]="{
+                    'is-invalid':
+                      registerForm.get('apellidos')?.invalid &&
+                      (registerForm.get('apellidos')?.touched ||
+                        registerForm.get('apellidos')?.dirty),
+                  }"
+                />
+                @if (
+                  registerForm.get("apellidos")?.invalid &&
+                  (registerForm.get("apellidos")?.touched ||
+                    registerForm.get("apellidos")?.dirty)
+                ) {
+                  <div class="invalid-feedback d-block">
+                    <i class="bi bi-exclamation-circle"></i> Mín. 2 caracteres
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label text-white fw-semibold">
+                Correo electrónico
+              </label>
+              <div class="input-group">
+                <span class="input-group-text bg-dark border-secondary">
+                  <i class="bi bi-envelope text-secondary"></i>
+                </span>
+                <input
+                  id="email"
+                  type="email"
+                  class="form-control bg-dark border-secondary text-white"
+                  formControlName="email"
+                  placeholder="correo@ejemplo.com"
+                  autocomplete="email"
+                  [ngClass]="{
+                    'is-invalid':
+                      registerForm.get('email')?.invalid &&
+                      (registerForm.get('email')?.touched ||
+                        registerForm.get('email')?.dirty),
+                  }"
+                />
+              </div>
+              @if (
+                registerForm.get("email")?.errors?.["required"] &&
+                (registerForm.get("email")?.touched ||
+                  registerForm.get("email")?.dirty)
+              ) {
+                <div class="invalid-feedback d-block">
+                  <i class="bi bi-exclamation-circle"></i> El correo electrónico
+                  es requerido
+                </div>
+              }
+              @if (
+                registerForm.get("email")?.errors?.["email"] &&
+                (registerForm.get("email")?.touched ||
+                  registerForm.get("email")?.dirty)
+              ) {
+                <div class="invalid-feedback d-block">
+                  <i class="bi bi-exclamation-circle"></i> Ingresa un correo
+                  electrónico válido
+                </div>
+              }
+            </div>
+
+            <div class="mb-4">
+              <label for="password" class="form-label text-white fw-semibold">
+                Contraseña
+              </label>
+              <div class="input-group">
+                <input
+                  id="password"
+                  [type]="showPassword ? 'text' : 'password'"
+                  class="form-control bg-dark border-secondary text-white"
+                  formControlName="password"
+                  placeholder="Mín. 6 caracteres"
+                  autocomplete="new-password"
+                  [ngClass]="{
+                    'is-invalid':
+                      registerForm.get('password')?.invalid &&
+                      (registerForm.get('password')?.touched ||
+                        registerForm.get('password')?.dirty),
+                  }"
+                />
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="togglePasswordVisibility()"
+                  title="Mostrar/ocultar contraseña"
+                >
+                  <i
+                    [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"
+                  ></i>
+                </button>
+              </div>
+              @if (
+                registerForm.get("password")?.invalid &&
+                (registerForm.get("password")?.touched ||
+                  registerForm.get("password")?.dirty)
+              ) {
+                <div class="invalid-feedback d-block">
+                  <i class="bi bi-exclamation-circle"></i> La contraseña es
+                  requerida (mín. 6 caracteres)
+                </div>
+              }
+            </div>
+
+            <div class="mb-4 form-check">
+              <input
+                id="acceptTerms"
+                type="checkbox"
+                class="form-check-input"
+                formControlName="acceptTerms"
+                [ngClass]="{
+                  'is-invalid':
+                    registerForm.get('acceptTerms')?.invalid &&
+                    (registerForm.get('acceptTerms')?.touched ||
+                      registerForm.get('acceptTerms')?.dirty),
+                }"
+              />
+              <label for="acceptTerms" class="form-check-label text-secondary">
+                He leído y acepto los
+                <a
+                  href="https://www.astrosync.ovh/nautiCoders/politica-de-privacidad/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-primary text-decoration-none"
+                >
+                  Términos y Política de Privacidad
+                </a>
+              </label>
+              @if (
+                registerForm.get("acceptTerms")?.invalid &&
+                (registerForm.get("acceptTerms")?.touched ||
+                  registerForm.get("acceptTerms")?.dirty)
+              ) {
+                <div class="invalid-feedback d-block">
+                  <i class="bi bi-exclamation-circle"></i> Debes aceptar los
+                  términos y la política de privacidad
+                </div>
+              }
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-primary w-100 py-2 fw-semibold"
+              [disabled]="registerForm.invalid || isLoading"
+            >
+              @if (isLoading) {
+                <span
+                  class="spinner-border spinner-border-sm me-2"
+                  role="status"
+                ></span>
+                Creando cuenta...
+              } @else {
+                Crear cuenta
+              }
+            </button>
+          </form>
+
+          <p class="text-center text-secondary mt-4 mb-0">
+            ¿Ya tienes cuenta?
+            <a
+              routerLink="/login"
+              class="text-primary fw-semibold text-decoration-none"
+            >
+              Inicia sesión
+            </a>
+          </p>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,111 @@
+<h1 style="text-align:center;">{{title}}</h1>
+
+{{#if imageUrl}}
+<p style="text-align:center;">
+  <img src="{{imageUrl}}" style="max-width:400px;height:auto;" />
+</p>
+{{/if}}
+
+<p>{{description}}</p>
+
+{{#if articleUrl}}
+<p>
+  Artículo en Wikipedia:
+  <a href="{{articleUrl}}">{{articleUrl}}</a>
+</p>
+{{/if}}
+
+{{#if attributionRequired}}
+<p class="attribution">
+  Créditos imagen:
+  {{#if artistText}}<span>{{artistText}}</span>{{/if}}
+  {{#if artistName}} <a href="{{artistProfileUrl}}">{{artistName}}</a>{{/if}}
+  {{#if license}}, <a href="{{licenseUrl}}">{{license}}</a>{{/if}}
+  {{#if wikimediaUrl}}, via <a href="{{wikimediaUrl}}">Wikimedia Commons</a>{{/if}}
+</p>
+{{/if}}
+
+{{#if hasCharacteristics}}
+<h2>Características</h2>
+
+<table style="width:100%; border-collapse: collapse;">
+
+  {{#if hip}}
+  <tr>
+    <td><a href="https://es.wikipedia.org/wiki/Cat%C3%A1logo_Hipparcos">Hipparcos Catalog ID</a></td>
+    <td>HIP {{hip}}</td>
+  </tr>
+  {{/if}}
+
+  {{#if hd}}
+  <tr>
+    <td><a href="https://es.wikipedia.org/wiki/Cat%C3%A1logo_Henry_Draper">Henry Draper Catalog ID</a></td>
+    <td>HD {{hd}}</td>
+  </tr>
+  {{/if}}
+
+  {{#if hr}}
+  <tr>
+    <td><a href="https://es.wikipedia.org/wiki/Bright_Star_Catalogue">Yale Bright Star Catalog ID</a></td>
+    <td>HR {{hr}}</td>
+  </tr>
+  {{/if}}
+
+  {{#if gl}}
+  <tr>
+    <td><a href="https://es.wikipedia.org/wiki/Cat%C3%A1logo_Gliese">Gliese Catalog</a></td>
+    <td>{{gl}}</td>
+  </tr>
+  {{/if}}
+
+  {{#if ra}}
+  <tr>
+    <td><a href="https://es.wikipedia.org/wiki/Ascensi%C3%B3n_recta">Right Ascension</a></td>
+    <td>{{ra}}</td>
+  </tr>
+  {{/if}}
+
+  {{#if dec}}
+  <tr>
+    <td><a href="https://es.wikipedia.org/wiki/Declinaci%C3%B3n_(astronom%C3%ADa)">Declination</a></td>
+    <td>{{dec}}</td>
+  </tr>
+  {{/if}}
+
+  {{#if mag}}
+  <tr>
+    <td><a href="https://es.wikipedia.org/wiki/Magnitud_aparente">Apparent Magnitude</a></td>
+    <td>{{mag}}</td>
+  </tr>
+  {{/if}}
+
+  {{#if dist}}
+  <tr>
+    <td>Distance</td>
+    <td>{{dist}} años de luz</td>
+  </tr>
+  {{/if}}
+
+  {{#if spect}}
+  <tr>
+    <td><a href="https://es.wikipedia.org/wiki/Clasificaci%C3%B3n_estelar">Spectral Type</a></td>
+    <td>{{spect}}</td>
+  </tr>
+  {{/if}}
+
+  {{#if ci}}
+  <tr>
+    <td>Color Index</td>
+    <td>{{ci}}</td>
+  </tr>
+  {{/if}}
+
+  {{#if con}}
+  <tr>
+    <td>Constellation</td>
+    <td>{{con}}</td>
+  </tr>
+  {{/if}}
+
+</table>
+{{/if}}

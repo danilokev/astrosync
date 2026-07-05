@@ -1,0 +1,27 @@
+.avatar-link {
+  display: block;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.avatar-profile {
+  width: 40px;
+  height: 40px;
+  background-color: var(--color-text-secondary);
+  object-fit: cover;
+  border: 1.5px solid var(--color-border-default);
+  transition:
+    border-color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+}
+
+.avatar-link:hover .avatar-profile {
+  box-shadow: 0 0 0 4px var(--color-primary-hover-border);
+}
+
+@media (max-width: 1600px) {
+  .avatar-profile {
+    width: 36px;
+    height: 36px;
+  }
+}

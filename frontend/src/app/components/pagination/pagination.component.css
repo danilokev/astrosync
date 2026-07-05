@@ -1,0 +1,29 @@
+.pagination-container{
+    gap: .5em;
+    button{
+        padding: .5em;
+    }
+
+    .no-spinner::-webkit-outer-spin-button,
+    .no-spinner::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .no-spinner {
+        -moz-appearance: textfield; /* Firefox */
+
+        width: 4em;
+        height: 2em;
+        text-align: center;
+        font-size: 16pt;
+    }
+
+    p{
+        margin: 0;
+        font-size: 16pt;
+        span{
+            margin-left: .5em;
+        }
+    }
+}

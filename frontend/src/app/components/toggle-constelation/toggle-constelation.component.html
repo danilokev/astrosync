@@ -1,0 +1,31 @@
+<div class="d-flex align-items-center gap-2">
+  <button
+    class="ctrl-btn-text"
+    [class.ctrl-btn-text--active]="btn1Active"
+    (click)="activate(1)"
+    title="Mostrar/ocultar constelaciones"
+  >
+    <i class="bi bi-stars"></i>
+    <span>Constelaciones</span>
+  </button>
+
+  <button
+    class="ctrl-btn-text"
+    [class.ctrl-btn-text--active]="btn2Active"
+    (click)="activate(2)"
+    title="Mostrar/ocultar formas de constelaciones"
+  >
+    <i class="bi bi-diagram-3"></i>
+    <span>Formas</span>
+  </button>
+
+  <button
+    class="ctrl-btn-text"
+    [class.ctrl-btn-text--active]="btn3Active"
+    (click)="activate(3)"
+    title="Mostrar/ocultar paisaje (skybox)"
+  >
+    <i class="bi bi-image"></i>
+    <span>Paisaje</span>
+  </button>
+</div>

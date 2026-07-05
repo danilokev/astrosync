@@ -1,0 +1,145 @@
+<div class="ctrl-bar">
+  <!-- Fecha -->
+  <div
+    class="ctrl-item ctrl-clickable"
+    [class.ctrl-item--active]="openPanel === 'date'"
+    (click)="togglePanel('date', $event)"
+    (keydown.enter)="togglePanel('date', $event)"
+    (keydown.space)="togglePanel('date', $event); $event.preventDefault()"
+    tabindex="0"
+    aria-label="Seleccionar fecha"
+  >
+    <i class="bi bi-calendar3"></i>
+    <span class="ctrl-label">{{ fechaStr }}</span>
+  </div>
+
+  <!-- Panel flotante: datepicker -->
+  <div
+    class="floating-panel datepicker-panel"
+    *ngIf="openPanel === 'date'"
+    (click)="$event.stopPropagation()"
+  >
+    <input
+      #dateInput
+      type="text"
+      class="date-input"
+      aria-label="Seleccionar fecha"
+    />
+  </div>
+
+  <div class="ctrl-sep"></div>
+
+  <!-- Hora -->
+  <div
+    class="ctrl-item ctrl-clickable"
+    [class.ctrl-item--active]="openPanel === 'time'"
+    (click)="togglePanel('time', $event)"
+    (keydown.enter)="togglePanel('time', $event)"
+    (keydown.space)="togglePanel('time', $event); $event.preventDefault()"
+    tabindex="0"
+    aria-label="Seleccionar hora"
+  >
+    <i class="bi bi-clock"></i>
+    <span class="ctrl-label">{{ timeString }}</span>
+  </div>
+
+  <!-- Panel flotante: slider + presets -->
+  <div
+    class="floating-panel time-panel"
+    *ngIf="openPanel === 'time'"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="time-slider-labels">
+      <span>00:00</span>
+      <span>{{ timeString }}</span>
+      <span>23:59</span>
+    </div>
+    <input
+      type="range"
+      class="time-slider"
+      min="0"
+      max="86399"
+      [value]="elapsedSeconds"
+      (input)="onSliderInput($event)"
+      (change)="onSliderChange($event)"
+    />
+    <div class="time-presets">
+      <button (click)="setPreset('dawn')">Amanecer</button>
+      <button (click)="setPreset('noon')">Mediodía</button>
+      <button (click)="setPreset('dusk')">Atardecer</button>
+      <button (click)="setPreset('midnight')">Medianoche</button>
+    </div>
+  </div>
+
+  <div class="ctrl-sep"></div>
+
+  <!-- Reset / Pausa-Play -->
+  <button
+    class="ctrl-btn"
+    (click)="resetTime()"
+    title="Restablecer al tiempo actual"
+    aria-label="Restablecer al tiempo actual"
+  >
+    <i class="bi bi-arrow-counterclockwise"></i>
+  </button>
+
+  <button
+    class="ctrl-btn"
+    (click)="togglePause()"
+    [title]="isPaused ? 'Reanudar' : 'Pausar'"
+    [attr.aria-label]="isPaused ? 'Reanudar tiempo' : 'Pausar tiempo'"
+  >
+    <i [class]="isPaused ? 'bi bi-play-fill' : 'bi bi-pause-fill'"></i>
+  </button>
+
+  <!-- Velocidad -->
+  <div class="ctrl-speed-wrapper">
+    <button
+      class="ctrl-btn ctrl-speed-btn"
+      [class.ctrl-item--active]="openPanel === 'speed'"
+      (click)="togglePanel('speed', $event)"
+      title="Velocidad de simulación del tiempo"
+      aria-label="Cambiar velocidad de simulación"
+    >
+      <span class="speed-label">{{ currentSpeed }}x</span>
+      <i class="bi bi-chevron-up"></i>
+    </button>
+
+    <!-- Selector vertical de velocidades -->
+    <div
+      class="floating-panel speed-panel"
+      *ngIf="openPanel === 'speed'"
+      (click)="$event.stopPropagation()"
+    >
+      <button
+        *ngFor="let s of speedOptions"
+        class="speed-option"
+        [class.speed-option--active]="s === currentSpeed"
+        (click)="setSpeed(s)"
+      >
+        {{ s }}x
+      </button>
+    </div>
+  </div>
+
+  <div class="ctrl-sep"></div>
+
+  <ng-content></ng-content>
+
+  <div class="ctrl-sep"></div>
+
+  <button
+    class="ctrl-btn motor-toggle-btn"
+    [class.ctrl-item--active]="motorThree"
+    (click)="toggleMotor()"
+    title="Cambiar Motor WebGL"
+    aria-label="Cambiar Motor WebGL"
+  >
+    <i
+      class="bi"
+      [class.bi-gear-fill]="!motorThree"
+      [class.bi-gear]="motorThree"
+    ></i>
+    <span class="motor-label">Motor WebGL</span>
+  </button>
+</div>

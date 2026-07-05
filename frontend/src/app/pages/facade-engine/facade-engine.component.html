@@ -1,0 +1,139 @@
+<div
+  class="page-main-structure"
+  [style.--sidebar-offset.px]="uiService.sidebarOffset()"
+>
+  <app-side-pannel
+    #sidePanel
+    [class.hidden]="isUiHidden"
+    (chatbotStarRequested)="onChatbotStarRequested($event)"
+  ></app-side-pannel>
+  <app-panel (goToStar)="onChatbotStarRequested($event)"> </app-panel>
+  <div class="engine-wrapper">
+    <canvas #rendererCanvas id="idRenderCanvas"></canvas>
+    <app-marker
+      [title]="marker.title"
+      [lat]="marker.lat"
+      [lon]="marker.lon"
+      [pos2D]="marker.pos2D"
+      [visible]="marker.visible && useMarker"
+      (closed)="onMarkerClosed()"
+      (useAsCurrentLocation)="updateCurrentLocation($event)"
+      (toggleUserLocation)="handleToggleUserLocation($event)"
+    ></app-marker>
+
+    <header class="top-bar position-absolute top-0 start-0 end-0 p-3">
+      <div
+        class="search-center-wrapper"
+        *ngIf="!isUiHidden && !isPlacesTabActive()"
+      >
+        <app-global-search
+          class="search-box"
+          (itemSelected)="onSearchItemSelected($event)"
+        ></app-global-search>
+      </div>
+
+      <div class="top-actions">
+        <div class="action-item" (click)="toggleUi()">
+          <app-icon-btn
+            [icon]="isUiHidden ? 'bi-eye' : 'bi-eye-slash'"
+            title="Ocultar"
+          ></app-icon-btn>
+          <span class="btn-text d-none d-lg-inline">Ocultar paneles</span>
+        </div>
+
+        <div class="action-item" (click)="toggleFullscreen()">
+          <app-icon-btn
+            icon="bi-fullscreen"
+            title="Pantalla Completa"
+          ></app-icon-btn>
+          <span class="btn-text d-none d-lg-inline">Pantalla completa</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="engine-controls" *ngIf="!isUiHidden">
+      <app-toggle-buttons-group
+        *ngIf="sidePanel.activeTabIndex === 1"
+        [toggleTierra]="toggleTierraProxy"
+        (toggleFavoritePanel)="handleToggleFavoritePanel($event)"
+        (toggleUserLocation)="handleToggleUserLocation($event)"
+      ></app-toggle-buttons-group>
+    </div>
+
+    <app-favorite-location
+      [isOpen]="isFavoritePanelOpen"
+      (closePanel)="handleCloseFavoritePanel()"
+      (useAsCurrentLocation)="updateCurrentLocation($event)"
+      (toggleUserLocation)="handleToggleUserLocation($event)"
+      (removeLocationMarker)="onRemoveFavoriteMarker($event)"
+    ></app-favorite-location>
+
+    <div class="bottom-ui-container" *ngIf="!isUiHidden">
+      <div class="date-floating" *ngIf="!isPlacesTabActive()">
+        <app-rango-fecha
+          [motorThree]="motorThree"
+          (horaElegida)="changePosition($event)"
+          (fechaElegida)="onDateChanged($event)"
+          (motorCambiado)="onSwitchChange($event)"
+        >
+          <app-toggle-constelation></app-toggle-constelation>
+        </app-rango-fecha>
+      </div>
+
+      <!-- <div class="d-none d-md-block">
+        <app-mini-map
+          [lat]="userLat"
+          [lon]="userLon"
+          (miniMapClicked)="sidePanel.setActiveTab(1)"
+        ></app-mini-map>
+      </div> -->
+      <!-- Componente con mapa -->
+      <!-- <div class="minimap-libre-container"> -->
+      <app-map-libre
+        *ngIf="!isPlacesTabActive()"
+        [ngClass]="'maplibre-mini'"
+        [zoom]="0.2"
+        [currentLocation]="currentLocation"
+        (mapClick)="onMapClick($event)"
+      >
+      </app-map-libre>
+      <!-- </div> -->
+    </div>
+
+    <app-celestial-card
+      *ngIf="showCelestialCard"
+      [celestial]="selectedCelestial"
+      [loading]="celestialLoading"
+      [undoZoom]="undoZoomFn"
+      (onClose)="closeCelestialCard()"
+      class="position-absolute top-0 end-0 m-3"
+    ></app-celestial-card>
+  </div>
+</div>
+
+<!-- <div class="map" *ngIf="isPlacesTabActive()">
+  <app-map-libre [ngClass]="'maplibre'" [zoom]="2" [markers]="markers" (mapClick)="onMapClick($event)"></app-map-libre>
+</div> -->
+
+<app-map-libre
+  *ngIf="isPlacesTabActive()"
+  [ngClass]="'maplibre'"
+  [zoom]="2"
+  [markers]="markers"
+  (mapClick)="onMapClick($event)"
+  (markerClick)="onMarkerClick($event)"
+  [currentStyle]="mapStyle"
+  [currentLocation]="currentLocation"
+  [current]="isUserLocationVisible"
+  [favourites]="isFavouriteLocationsVisible"
+  [flyToZoom]="3"
+></app-map-libre>
+
+<div
+  *ngIf="selectedHoverObject"
+  [style.left.px]="labelPosition.x"
+  [style.top.px]="labelPosition.y"
+  class="object-label"
+>
+  {{ selectedHoverObject }}
+</div>

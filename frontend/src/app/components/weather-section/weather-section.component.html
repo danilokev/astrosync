@@ -1,0 +1,142 @@
+<div class="weather-panel" [class.hidden]="!visible">
+  <div *ngIf="!weather" class="loading-state text-center py-5">
+    <app-loading text="Cargando pronóstico del tiempo..."></app-loading>
+  </div>
+
+  <div *ngIf="weather" class="weather-content">
+    <!-- Header con ubicación y fecha/hora -->
+    <div class="weather-header">
+      <div class="location-info">
+        <i class="bi bi-geo-alt-fill me-2"></i>
+        <span class="location-name">{{ getLocationName() }}</span>
+      </div>
+      <div class="datetime-info">
+        <div class="date">{{ weather.date }}</div>
+        <div class="time">{{ weather.time }}</div>
+      </div>
+    </div>
+
+    <!-- Temperatura y condición principal -->
+    <div class="weather-main">
+      <div class="weather-icon-container">
+        <i class="bi weather-icon" [ngClass]="'bi-' + weather.icon"></i>
+      </div>
+      <div class="weather-primary-info">
+        <div class="temperature">{{ weather.temp }}</div>
+        <div class="condition">{{ weather.text }}</div>
+      </div>
+    </div>
+
+    <!-- Indicador de calidad para observación -->
+    <div *ngIf="evaluation" class="observation-quality-indicator">
+      <div class="quality-header">
+        <span class="quality-label">Calidad para observación astronómica</span>
+        <span
+          class="quality-badge"
+          [class.badge-good]="evaluation.category === 'good'"
+          [class.badge-medium]="evaluation.category === 'medium'"
+          [class.badge-bad]="evaluation.category === 'bad'"
+        >
+          {{ getCategoryShortText(evaluation.category) }}
+        </span>
+      </div>
+
+      <!-- Resumen expandible -->
+      <div class="quality-summary">
+        <button
+          type="button"
+          class="quality-details-toggle"
+          (click)="showEvaluationDetails = !showEvaluationDetails"
+        >
+          <span>{{ getQualitySummary(evaluation) }}</span>
+          <i
+            class="bi ms-2"
+            [ngClass]="
+              showEvaluationDetails ? 'bi-chevron-up' : 'bi-chevron-down'
+            "
+          ></i>
+        </button>
+      </div>
+
+      <!-- Detalles expandidos -->
+      <div *ngIf="showEvaluationDetails" class="quality-details-expanded">
+        <div *ngFor="let item of evaluation.interpretation" class="detail-item">
+          <i class="bi" [ngClass]="getIconFromLine(item)"></i>
+          <span>{{ cleanLine(item) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid de detalles meteorológicos -->
+    <div class="weather-details-grid">
+      <div class="detail-card">
+        <i class="bi bi-droplet-fill detail-icon"></i>
+        <div class="detail-content">
+          <span class="detail-label">Humedad</span>
+          <span class="detail-value">{{ weather.humidity }}</span>
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <i class="bi bi-speedometer2 detail-icon"></i>
+        <div class="detail-content">
+          <span class="detail-label">Presión</span>
+          <span class="detail-value">{{ weather.pressure }}</span>
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <i class="bi bi-wind detail-icon"></i>
+        <div class="detail-content">
+          <span class="detail-label">Viento</span>
+          <span class="detail-value">{{ weather.wind }}</span>
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <i class="bi bi-cloud-rain-fill detail-icon"></i>
+        <div class="detail-content">
+          <span class="detail-label">Precipitación</span>
+          <span class="detail-value">{{ weather.rain }}</span>
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <i class="bi bi-moisture detail-icon"></i>
+        <div class="detail-content">
+          <span class="detail-label">Pto. de rocío</span>
+          <span class="detail-value">{{ weather.dewPoint }}</span>
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <i class="bi bi-clouds-fill detail-icon"></i>
+        <div class="detail-content">
+          <span class="detail-label">Nubosidad</span>
+          <span class="detail-value">{{ weather.clouds }}%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón para informe completo -->
+    <div class="action-section">
+      <button
+        type="button"
+        class="btn btn-primary w-100"
+        (click)="openReport()"
+      >
+        <i class="bi bi-file-earmark-bar-graph me-2"></i>
+        Ver informe detallado de 7 días
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de informe completo -->
+<app-weather-report
+  [data]="weatherFullData"
+  [loading]="reportLoading"
+  [visible]="reportVisible"
+  (closeEvent)="reportVisible = false"
+>
+</app-weather-report>

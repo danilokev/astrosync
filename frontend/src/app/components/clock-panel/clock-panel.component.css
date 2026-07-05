@@ -1,0 +1,47 @@
+.clock-box {
+  background: #060040;
+  padding: 14px 18px;
+  border-radius: 18px;
+  border: 2px solid #ffffffaa;
+  color: white;
+  width: 160px;
+  text-align: center;
+  font-family: monospace;
+}
+
+.time {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.date {
+  font-size: 14px;
+  margin-top: 4px;
+  opacity: 0.9;
+}
+
+.controls {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.controls button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.controls button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}

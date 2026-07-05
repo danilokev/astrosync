@@ -1,0 +1,14 @@
+<a
+  class="avatar-link"
+  role="button"
+  (click)="redirectToLogin()"
+  [attr.title]="authService.isAuthenticated() ? 'Mi cuenta' : 'Iniciar sesión'"
+>
+  <img
+    [src]="profilePhoto()"
+    class="rounded-circle avatar-profile"
+    alt="Avatar del perfil de usuario"
+    referrerpolicy="no-referrer"
+    loading="lazy"
+  />
+</a>

@@ -1,0 +1,40 @@
+<!-- <nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item disabled">
+            <a class="page-link" href="/admin" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item active"><a class="page-link" href="/admin">1</a></li>
+        <li class="page-item"><a class="page-link" href="/admin">2</a></li>
+        <li class="page-item"><a class="page-link" href="/admin">3</a></li>
+        <li class="page-item">
+        <a class="page-link" href="/admin" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+        </a>
+        </li>
+    </ul>
+</nav> -->
+<div class="pagination-container d-flex justify-content-center align-items-center">
+    <app-button
+        (click) = "previousPage()"
+    >
+        <i class="bi bi-chevron-double-left"></i>
+    </app-button>
+    <input
+        #pageInput
+        type="number"
+        class="no-spinner"
+        min="1"
+        step="1"
+        [ngModel]="currentPage"
+        (ngModelChange)="onChange($event)"
+        (keyup.enter)="onEnter(pageInput)"
+    >
+    <p>/<span>{{totalPages}}</span></p>
+    <app-button
+        (click) = "nextPage()"
+    >
+        <i class="bi bi-chevron-double-right"></i>
+    </app-button>
+</div>

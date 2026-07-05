@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Cinturón de Asteroides</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#0a0d1f; overflow:hidden; width:100vw; height:100vh; font-family:'Roboto',sans-serif; }
+canvas { display:block; }
+#hud { position:fixed; inset:0; pointer-events:none; z-index:10; }
+#title { position:absolute; top:22px; left:50%; transform:translateX(-50%); text-align:center; }
+#title h1 { font-family:'Montserrat',sans-serif; font-size:26px; font-weight:700; letter-spacing:6px; text-transform:uppercase; color:rgba(160,210,255,0.92); text-shadow:0 0 24px rgba(100,170,255,0.4); }
+#title p  { font-family:'Roboto',sans-serif; font-size:15px; letter-spacing:3px; margin-top:10px; color:rgba(188,122,255,0.7); }
+#tabs { position:absolute; bottom:16px; left:50%; transform:translateX(-50%); display:flex; gap:6px; pointer-events:all; }
+#tabs button { background:rgba(14,18,50,0.82); border:1px solid rgba(188,122,255,0.2); color:rgba(188,122,255,0.85); font-family:'Montserrat',sans-serif; font-size:10px; font-weight:600; letter-spacing:2px; padding:7px 16px; cursor:pointer; text-transform:uppercase; border-radius:8px; transition:all 0.2s; }
+#tabs button.on, #tabs button:hover { background:rgba(30,20,70,0.92); color:#fff; border-color:rgba(188,122,255,0.55); }
+#controls { position:absolute; bottom:60px; right:20px; display:flex; flex-direction:column; gap:6px; pointer-events:all; }
+#controls button { background:rgba(14,18,50,0.82); border:1px solid rgba(188,122,255,0.2); color:rgba(188,122,255,0.85); font-family:'Montserrat',sans-serif; font-size:10px; font-weight:600; letter-spacing:2px; padding:7px 16px; cursor:pointer; text-transform:uppercase; border-radius:8px; transition:all 0.2s; }
+#controls button:hover { background:rgba(30,20,70,0.92); color:#fff; border-color:rgba(188,122,255,0.55); }
+#info-btn { position:fixed; bottom:22px; left:20px; z-index:20; width:40px; height:40px; border-radius:50%; background:rgba(14,18,50,0.85); border:1px solid rgba(188,122,255,0.35); color:rgba(188,122,255,0.95); font-size:20px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; pointer-events:all; font-family:'Montserrat',sans-serif; }
+#info-btn:hover { background:rgba(30,20,80,0.95); border-color:rgba(188,122,255,0.7); color:#fff; box-shadow:0 0 16px rgba(188,122,255,0.28); }
+#info-panel { position:fixed; top:0; left:0; bottom:0; width:320px; background:rgba(10,13,32,0.96); border-right:1px solid rgba(188,122,255,0.14); backdrop-filter:blur(14px); z-index:30; display:flex; flex-direction:column; transform:translateX(-100%); transition:transform 0.3s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+#info-panel.open { transform:translateX(0); pointer-events:all; }
+#info-head { display:flex; align-items:center; justify-content:space-between; padding:20px 20px 16px; border-bottom:1px solid rgba(188,122,255,0.1); flex-shrink:0; }
+#info-title { font-family:'Montserrat',sans-serif; font-size:15px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:rgba(210,175,255,0.95); }
+#info-x { background:none; border:none; color:rgba(188,122,255,0.45); font-size:18px; cursor:pointer; padding:2px 6px; border-radius:6px; line-height:1; transition:all 0.2s; }
+#info-x:hover { color:#fff; background:rgba(188,122,255,0.12); }
+#info-body { overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:16px; flex:1; }
+#info-body::-webkit-scrollbar { width:3px; }
+#info-body::-webkit-scrollbar-thumb { background:rgba(188,122,255,0.2); border-radius:3px; }
+.info-p { font-family:'Roboto',sans-serif; font-size:15px; color:rgba(200,185,240,0.72); line-height:1.8; margin:0; }
+</style>
+</head>
+<body>
+<div id="hud">
+  <div id="title">
+    <h1>Cinturón de Asteroides</h1>
+    <p id="sub-txt">Entre Marte y Júpiter · 2,2 a 3,2 UA · Más de 1 millón de asteroides</p>
+  </div>
+  <div id="tabs">
+    <button class="on" onclick="setView('fly')">VUELO ENTRE ASTEROIDES</button>
+    <button onclick="setView('top')">VISTA ORBITAL</button>
+    <button onclick="setView('ceres')">CERES DE CERCA</button>
+  </div>
+  <div id="controls">
+    <button onclick="doPause()" id="pause-btn">PAUSA</button>
+    <button onclick="doSpeed(0.4)">LENTO</button>
+    <button onclick="doSpeed(1.0)">NORMAL</button>
+    <button onclick="doSpeed(2.0)">RÁPIDO</button>
+  </div>
+</div>
+
+<button id="info-btn" onclick="toggleInfo()">i</button>
+<div id="info-panel">
+  <div id="info-head">
+    <span id="info-title">Cinturón de Asteroides</span>
+    <button id="info-x" onclick="toggleInfo()">✕</button>
+  </div>
+  <div id="info-body">
+    <p class="info-p">El cinturón de asteroides es una región del Sistema Solar entre las órbitas de Marte y Júpiter, entre 2,2 y 3,2 UA del Sol, que contiene la mayoría de los asteroides del sistema.</p>
+    <p class="info-p">A pesar de contener más de un millón de asteroides de más de 1 km, el cinturón es en realidad muy vacío. Si pudieras volar a través de él, la probabilidad de golpear un asteroide sería mínima. Las sondas Voyager lo cruzaron sin problemas.</p>
+    <p class="info-p">Las lagunas de Kirkwood son zonas vacías en el cinturón causadas por resonancias orbitales con Júpiter.</p>
+    <p class="info-p">Ceres es el objeto más grande del cinturón con 940 km de diámetro. Fue reclasificado como planeta enano en 2006. La sonda Dawn lo visitó en 2015 y descubrió misteriosas manchas brillantes de sal en el cráter Occator.</p>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+
+var paused=false, speedMult=1.0, view='fly';
+var elapsed=0, lastT=performance.now()/1000;
+
+window.doPause   =function(){ paused=!paused; document.getElementById('pause-btn').textContent=paused?'REANUDAR':'PAUSA'; };
+window.doSpeed   =function(v){ speedMult=v; };
+window.toggleInfo=function(){ document.getElementById('info-panel').classList.toggle('open'); };
+window.setView   =function(v){
+  view=v;
+  document.querySelectorAll('#tabs button').forEach(function(b,i){ b.className=['fly','top','ceres'][i]===v?'on':''; });
+  var subs={
+    fly:'Entre Marte y Júpiter · 2,2 a 3,2 UA · Más de 1 millón de asteroides',
+    top:'Vista orbital · Lagunas de Kirkwood visibles',
+    ceres:'Ceres · Planeta enano · 940 km de diámetro'
+  };
+  document.getElementById('sub-txt').textContent=subs[v];
+};
+
+var renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.1;
+document.body.appendChild(renderer.domElement);
+var scene=new THREE.Scene();
+var camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,0.1,2000000);
+window.addEventListener('resize',function(){ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight); });
+
+// Shader de asteroides — forma irregular simulada con ruido en el borde
+var VS=[
+  'attribute float aSize;attribute float aAlpha;attribute float aRough;',
+  'varying vec3 vCol;varying float vAlp;varying float vRough;',
+  'void main(){',
+  '  vCol=color;vAlp=aAlpha;vRough=aRough;',
+  '  vec4 mv=modelViewMatrix*vec4(position,1.0);',
+  '  gl_PointSize=aSize*(500.0/-mv.z);',
+  '  gl_PointSize=clamp(gl_PointSize,0.8,180.0);',
+  '  gl_Position=projectionMatrix*mv;',
+  '}'
+].join('\n');
+
+// Fragment shader con forma de roca irregular — no circular
+var FS=[
+  'varying vec3 vCol;varying float vAlp;varying float vRough;',
+  'void main(){',
+  '  vec2 uv=gl_PointCoord-0.5;',
+  // Distorsión angular para simular forma irregular
+  '  float ang=atan(uv.y,uv.x);',
+  '  float r=length(uv);',
+  // Perturbación de radio con 5 frecuencias distintas por asteroid (vRough)
+  '  float shape=0.5',
+  '    -0.08*sin(ang*3.0+vRough*6.28)',
+  '    -0.06*sin(ang*5.0+vRough*12.56)',
+  '    -0.04*sin(ang*7.0+vRough*9.42)',
+  '    -0.03*cos(ang*4.0+vRough*3.14);',
+  '  float edge=smoothstep(shape+0.04,shape-0.04,r);',
+  // Iluminación: más brillante en el lado izquierdo-superior (hacia el sol)
+  '  float lit=0.4+0.6*max(0.0,dot(normalize(uv+vec2(0.3,0.3)),vec2(0.7,0.7)));',
+  '  vec3 rockCol=vCol*lit;',
+  // Borde oscuro (sombra)
+  '  float rimDark=smoothstep(shape-0.06,shape,r);',
+  '  rockCol=mix(rockCol,rockCol*0.2,rimDark*0.7);',
+  '  gl_FragColor=vec4(rockCol,vAlp*edge);',
+  '  if(gl_FragColor.a<0.01)discard;',
+  '}'
+].join('\n');
+
+function mkmat(){
+  return new THREE.ShaderMaterial({
+    vertexShader:VS, fragmentShader:FS,
+    vertexColors:true, transparent:true, depthWrite:false,
+    blending:THREE.NormalBlending  // NormalBlending para que se vean sólidos
+  });
+}
+
+// Shader simple para el sol, estrellas y órbitas
+var VS2='attribute float aSize;attribute float aAlpha;varying vec3 vCol;varying float vAlp;void main(){vCol=color;vAlp=aAlpha;vec4 mv=modelViewMatrix*vec4(position,1.0);gl_PointSize=aSize*(500.0/-mv.z);gl_PointSize=clamp(gl_PointSize,0.5,120.0);gl_Position=projectionMatrix*mv;}';
+var FS2='varying vec3 vCol;varying float vAlp;void main(){float d=length(gl_PointCoord-0.5)*2.0;float s=pow(1.0-smoothstep(0.0,1.0,d),2.0);gl_FragColor=vec4(vCol,vAlp*s);if(gl_FragColor.a<0.003)discard;}';
+function pmat2(add){ if(add===undefined)add=true; return new THREE.ShaderMaterial({vertexShader:VS2,fragmentShader:FS2,vertexColors:true,transparent:true,depthWrite:false,blending:add?THREE.AdditiveBlending:THREE.NormalBlending}); }
+
+function mkgeo(n){
+  var g=new THREE.BufferGeometry();
+  g.setAttribute('position',new THREE.BufferAttribute(new Float32Array(n*3),3));
+  g.setAttribute('color',   new THREE.BufferAttribute(new Float32Array(n*3),3));
+  g.setAttribute('aSize',   new THREE.BufferAttribute(new Float32Array(n),1));
+  g.setAttribute('aAlpha',  new THREE.BufferAttribute(new Float32Array(n),1));
+  return g;
+}
+function mkgeoRock(n){
+  var g=new THREE.BufferGeometry();
+  g.setAttribute('position',new THREE.BufferAttribute(new Float32Array(n*3),3));
+  g.setAttribute('color',   new THREE.BufferAttribute(new Float32Array(n*3),3));
+  g.setAttribute('aSize',   new THREE.BufferAttribute(new Float32Array(n),1));
+  g.setAttribute('aAlpha',  new THREE.BufferAttribute(new Float32Array(n),1));
+  g.setAttribute('aRough',  new THREE.BufferAttribute(new Float32Array(n),1));
+  return g;
+}
+
+var UA=15000;
+
+// ── SOL — brillante anaranjado ────────────────────────────────────────────────
+// Esfera central brillante
+var sunCoreMat=new THREE.MeshBasicMaterial({color:0xff9900});
+var sunCore=new THREE.Mesh(new THREE.SphereGeometry(2200,32,32),sunCoreMat);
+scene.add(sunCore);
+
+// Capas de glow — naranja → amarillo → blanco en el centro
+var sunGlowColors=[
+  {sc:1.0, col:0xffcc00, op:0.9},  // corona interior amarilla
+  {sc:1.4, col:0xff8800, op:0.35},
+  {sc:2.0, col:0xff6600, op:0.18},
+  {sc:3.2, col:0xff4400, op:0.08},
+  {sc:5.5, col:0xff2200, op:0.03},
+];
+sunGlowColors.forEach(function(g){
+  var m=new THREE.Mesh(
+    new THREE.SphereGeometry(2200*g.sc,16,16),
+    new THREE.MeshBasicMaterial({color:g.col,transparent:true,opacity:g.op,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.BackSide})
+  );
+  scene.add(m);
+});
+
+// Luz solar
+var sunLight=new THREE.PointLight(0xffcc88,5,0);
+scene.add(sunLight);
+scene.add(new THREE.AmbientLight(0x080818,1));
+
+// ── PLANETAS ─────────────────────────────────────────────────────────────────
+var planets=[
+  {r:1.52*UA, size:80,  col:0xcc4422, speed:0.000524},
+  {r:5.20*UA, size:900, col:0xc8a060, speed:0.000083},
+];
+var planetMeshes=planets.map(function(p){
+  var m=new THREE.Mesh(new THREE.SphereGeometry(p.size,16,16),new THREE.MeshBasicMaterial({color:p.col}));
+  scene.add(m); return {mesh:m,data:p,angle:Math.random()*Math.PI*2};
+});
+planets.forEach(function(p){
+  var geo=new THREE.BufferGeometry(),pts=[];
+  for(var i=0;i<=128;i++){var a=i/128*Math.PI*2;pts.push(new THREE.Vector3(p.r*Math.cos(a),0,p.r*Math.sin(a)));}
+  geo.setFromPoints(pts);
+  scene.add(new THREE.Line(geo,new THREE.LineBasicMaterial({color:0x223366,transparent:true,opacity:0.18})));
+});
+
+// ── ASTEROIDES — con shader de roca ─────────────────────────────────────────
+var AST_N=80000;
+var astGeo=mkgeoRock(AST_N);
+var astData=[];
+{
+  var ap=astGeo.attributes.position.array,
+      ac=astGeo.attributes.color.array,
+      as2=astGeo.attributes.aSize.array,
+      aa=astGeo.attributes.aAlpha.array,
+      ar=astGeo.attributes.aRough.array;
+
+  var gaps=[2.06*UA,2.50*UA,2.82*UA,2.96*UA,3.28*UA];
+  var gapWidth=0.06*UA;
+
+  for(var i=0;i<AST_N;i++){
+    var r, att=0;
+    do{
+      r=(2.2+Math.random()*1.0)*UA; att++;
+      var inGap=false;
+      for(var g=0;g<gaps.length;g++) if(Math.abs(r-gaps[g])<gapWidth){inGap=true;break;}
+      if(!inGap) break;
+    }while(att<20);
+
+    var angle=Math.random()*Math.PI*2;
+    var incl=(Math.random()-0.5)*0.28*UA;
+    var ecc=(Math.random()-0.5)*0.14*UA;
+    ap[i*3]=(r+ecc)*Math.cos(angle);
+    ap[i*3+1]=incl*Math.sin(angle*2)*0.3;
+    ap[i*3+2]=(r+ecc)*Math.sin(angle);
+
+    // Color roca: tonos tierra apagados — beige, gris, marrón oscuro
+    var type=Math.random();
+    var col;
+    if(type<0.60){
+      // C-type: gris oscuro carbonáceo
+      var v=0.18+Math.random()*0.18;
+      col=new THREE.Color(v*1.05, v*0.98, v*0.90);
+    } else if(type<0.85){
+      // S-type: beige silicático
+      var v=0.35+Math.random()*0.22;
+      col=new THREE.Color(v*1.15, v*0.95, v*0.72);
+    } else if(type<0.96){
+      // M-type: gris metálico
+      var v=0.45+Math.random()*0.28;
+      col=new THREE.Color(v, v*1.02, v*0.98);
+    } else {
+      // V-type: ligeramente rojizo (familia Vesta)
+      var v=0.38+Math.random()*0.2;
+      col=new THREE.Color(v*1.3, v*0.78, v*0.62);
+    }
+    ac[i*3]=col.r; ac[i*3+1]=col.g; ac[i*3+2]=col.b;
+
+    // Tamaño pequeño — rocas diminutas
+    as2[i]=0.6+Math.random()*2.2;
+    aa[i]=0.55+Math.random()*0.42;
+    ar[i]=Math.random(); // forma única por asteroide
+
+    astData.push({r:r,angle:angle,incl:incl,ecc:ecc,speed:(1/Math.sqrt(r/UA))*0.000015});
+  }
+  ['position','color','aSize','aAlpha','aRough'].forEach(function(k){ astGeo.attributes[k].needsUpdate=true; });
+}
+scene.add(new THREE.Points(astGeo,mkmat()));
+
+// ── CERES ────────────────────────────────────────────────────────────────────
+var ceresMesh=new THREE.Mesh(
+  new THREE.SphereGeometry(470,32,32),
+  new THREE.MeshLambertMaterial({color:0x786654})
+);
+scene.add(ceresMesh);
+var ceresAngle=Math.PI*0.7, ceresR=2.77*UA;
+// Manchas brillantes cráter Occator
+for(var i=0;i<6;i++){
+  var sp=new THREE.Mesh(
+    new THREE.SphereGeometry(20+i*8,8,8),
+    new THREE.MeshBasicMaterial({color:0xeeeeff,transparent:true,opacity:0.35-i*0.05,blending:THREE.AdditiveBlending,depthWrite:false})
+  );
+  ceresMesh.add(sp);
+  sp.position.set((Math.random()-0.5)*350,(Math.random()-0.5)*350,(Math.random()-0.5)*350);
+}
+
+// ── ESTRELLAS FONDO ──────────────────────────────────────────────────────────
+var bgGeo=mkgeo(3500);
+{
+  var p=bgGeo.attributes.position.array,c=bgGeo.attributes.color.array,s=bgGeo.attributes.aSize.array,a=bgGeo.attributes.aAlpha.array;
+  for(var i=0;i<3500;i++){
+    var r=800000+Math.random()*1000000,t2=Math.random()*Math.PI*2,ph=Math.acos(2*Math.random()-1);
+    p[i*3]=r*Math.sin(ph)*Math.cos(t2);p[i*3+1]=r*Math.sin(ph)*Math.sin(t2);p[i*3+2]=r*Math.cos(ph);
+    var col=new THREE.Color().setHSL(0.6+Math.random()*0.1,0.3,0.6+Math.random()*0.4);
+    c[i*3]=col.r;c[i*3+1]=col.g;c[i*3+2]=col.b;
+    s[i]=1+Math.random()*3; a[i]=0.3+Math.random()*0.7;
+  }
+  ['position','color','aSize','aAlpha'].forEach(function(k){ bgGeo.attributes[k].needsUpdate=true; });
+}
+scene.add(new THREE.Points(bgGeo,pmat2(true)));
+
+// ── LOOP ─────────────────────────────────────────────────────────────────────
+function loop(){
+  requestAnimationFrame(loop);
+  var now=performance.now()/1000, rawDt=now-lastT; lastT=now;
+  var dt=Math.min(rawDt,0.05);
+  if(!paused) elapsed+=dt;
+  var et=elapsed;
+
+  // Planetas
+  planetMeshes.forEach(function(pm){
+    pm.angle+=pm.data.speed*speedMult;
+    pm.mesh.position.set(pm.data.r*Math.cos(pm.angle),0,pm.data.r*Math.sin(pm.angle));
+  });
+
+  // Ceres
+  ceresAngle+=0.000012*speedMult;
+  ceresMesh.position.set(ceresR*Math.cos(ceresAngle),0,ceresR*Math.sin(ceresAngle));
+  ceresMesh.rotation.y=et*0.05;
+
+  // Asteroides
+  if(!paused){
+    var ap=astGeo.attributes.position.array;
+    for(var i=0;i<AST_N;i++){
+      astData[i].angle+=astData[i].speed*speedMult;
+      var d=astData[i];
+      ap[i*3]=(d.r+d.ecc)*Math.cos(d.angle);
+      ap[i*3+1]=d.incl*Math.sin(d.angle*2)*0.3;
+      ap[i*3+2]=(d.r+d.ecc)*Math.sin(d.angle);
+    }
+    astGeo.attributes.position.needsUpdate=true;
+  }
+
+  // Sol pulsa levemente
+  var pulse=1+Math.sin(et*0.8)*0.012;
+  sunCore.scale.setScalar(pulse);
+
+  // Cámara
+  if(view==='fly'){
+    var flyR=2.6*UA, flyAng=et*0.04*speedMult;
+    camera.position.set(flyR*Math.cos(flyAng), 2000+Math.sin(et*0.08)*1500, flyR*Math.sin(flyAng));
+    camera.lookAt(flyR*Math.cos(flyAng+0.15), 0, flyR*Math.sin(flyAng+0.15));
+  } else if(view==='top'){
+    var dist=6*UA;
+    camera.position.set(Math.sin(et*0.015*speedMult)*dist*0.2, dist, Math.cos(et*0.015*speedMult)*dist*0.2);
+    camera.lookAt(0,0,0);
+  } else {
+    var cd=3500+Math.sin(et*0.05)*800;
+    camera.position.set(
+      ceresMesh.position.x+cd*Math.cos(et*0.08*speedMult),
+      ceresMesh.position.y+cd*0.4,
+      ceresMesh.position.z+cd*Math.sin(et*0.08*speedMult)
+    );
+    camera.lookAt(ceresMesh.position);
+  }
+
+  scene.fog=new THREE.FogExp2(0x00010a, view==='top'?0.0000008:0.0000018);
+  renderer.render(scene,camera);
+}
+loop();
+
+})();
+</script>
+</body>
+</html>

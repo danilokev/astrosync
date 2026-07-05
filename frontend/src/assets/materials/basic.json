@@ -1,0 +1,21 @@
+{
+  "shader": "basic_shader",
+  "textures": {
+    "albedo": "basic_albedo_texture",
+    "normal": "basic_normal_texture"
+  },
+  "params": {
+    "albedo": [1.0, 1.0, 1.0],
+    "specular": [1.0, 1.0, 1.0],
+    "shininess": 32.0,
+    "opacity": 1.0,
+    "emissive": [0, 0, 0],
+    "alphaCutoff": 0
+  },
+  "render_state": {
+    "transparent": false,
+    "depthWrite": true,
+    "cull": true,
+    "blending": true
+  }
+}

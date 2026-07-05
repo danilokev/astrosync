@@ -1,0 +1,313 @@
+.drawer-container {
+  position: fixed;
+  top: 0;
+  left: var(--sidebar-offset, 92px);
+  width: 100%;
+  max-width: 460px;
+  height: auto;
+  background: var(--color-bg-panel-floating);
+  backdrop-filter: var(--backdrop-blur-default);
+  border-radius: var(--radius-default);
+  border: 1px solid var(--color-border-primary);
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.35),
+    0 0 24px rgba(80, 120, 255, 0.1);
+  padding: 20px;
+  z-index: 80;
+  overflow: hidden;
+  transition:
+    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.2s ease;
+}
+
+.weather-section,
+.panel-favorites {
+  max-height: 82vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-scrollbar-thumb) var(--color-scrollbar-track);
+}
+
+.panel-favorites {
+  padding-right: 8px;
+}
+
+/* Panel completamente oculto al inicio */
+.drawer-container.hidden {
+  display: none;
+}
+
+/* Header y botón */
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+}
+
+/* Botón de cerrar panel */
+.btn-back {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--color-text-secondary);
+  border: none !important;
+  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  transition: background-color 0.2 ease;
+}
+
+.btn-back:hover {
+  color: var(--color-text-primary);
+  background-color: var(--color-cancel-hover);
+}
+
+.btn-back:active {
+  background-color: var(--color-cancel-active);
+}
+
+.btn-back:focus-visible {
+  outline: 2px solid var(--color-primary-active);
+  outline-offset: 2px;
+}
+
+/* Sección eventos: scroll personalizado */
+.panel-events {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.panel-events__view {
+  animation: panel-events-view-in 0.28s ease;
+}
+
+@keyframes panel-events-view-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.panel-events__detail-view {
+  max-height: min(72vh, 640px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-scrollbar-thumb) var(--color-scrollbar-track);
+}
+
+.panel-events__detail-view::-webkit-scrollbar {
+  width: 6px;
+}
+
+.panel-events__detail-view::-webkit-scrollbar-track {
+  background: var(--color-scrollbar-track);
+  border-radius: 4px;
+}
+
+.panel-events__detail-view::-webkit-scrollbar-thumb {
+  background: var(--color-scrollbar-thumb);
+  border-radius: 4px;
+}
+
+.panel-events__scroll {
+  max-height: 50vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-scrollbar-thumb) var(--color-scrollbar-track);
+  margin-top: 2px;
+}
+
+.panel-events__scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.panel-events__scroll::-webkit-scrollbar-track {
+  background: var(--color-scrollbar-track);
+  border-radius: 4px;
+}
+
+.panel-events__scroll::-webkit-scrollbar-thumb {
+  background: var(--color-scrollbar-thumb);
+  border-radius: 4px;
+}
+
+.panel-events__scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-scrollbar-thumb-hover);
+}
+
+.panel-events__card {
+  flex-shrink: 0;
+}
+
+.panel-events__footer {
+  flex-shrink: 0;
+}
+
+/* Estilos para los filtros de eventos próximos */
+.panel-events__filters .form-label {
+  font-weight: 500;
+}
+
+.panel-events__select {
+  background-color: var(--color-bg-main);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-default);
+
+  &:hover:not(:disabled) {
+    border-color: var(--color-primary);
+  }
+
+  &:focus {
+    border-color: var(--color-primary-active);
+    box-shadow: 0 0 0 0.2rem var(--color-secondary-active-bg);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: rgba(9, 4, 67, 0.8);
+  }
+}
+
+/* Estilos para el estado vacío de favoritos */
+.empty-state {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  > p {
+    text-wrap: pretty;
+  }
+}
+
+.empty-state .badge {
+  font-size: 0.85rem;
+  color: var(--color-text-inverse) !important;
+  font-weight: 500;
+  border-radius: 8px;
+}
+
+.empty-state .badge.bg-primary {
+  background-color: var(--color-primary) !important;
+}
+
+.btn-events {
+  transition: all 0.2s ease;
+}
+
+/* Loading spinner - triple ring animation */
+.panel-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.panel-loading .loading-spinner {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+}
+
+.panel-loading .spinner-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 3px solid transparent;
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+}
+
+.panel-loading .spinner-ring:nth-child(2) {
+  width: 75%;
+  height: 75%;
+  top: 12.5%;
+  left: 12.5%;
+  border-top-color: var(--color-primary-hover-bg);
+  animation-duration: 1s;
+  animation-direction: reverse;
+}
+
+.panel-loading .spinner-ring:nth-child(3) {
+  width: 50%;
+  height: 50%;
+  top: 25%;
+  left: 25%;
+  border-top-color: var(--color-primary-active);
+  animation-duration: 0.8s;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.panel-loading .loading-text {
+  color: var(--color-text-primary);
+  font-size: 0.875rem;
+}
+
+/* MEDIA QUERIES */
+@media (max-width: 1600px) {
+  .drawer-container {
+    max-height: 90vh;
+    padding: 16px;
+  }
+
+  .drawer-header > h3 {
+    font-size: 24px;
+  }
+
+  .weather-section,
+  .panel-favorites {
+    max-height: 76vh;
+  }
+
+  .btn-back {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-width: 800px) {
+  .drawer-container {
+    position: static;
+    top: 0;
+    left: var(--sidebar-offset, 92px);
+    width: auto;
+    height: auto;
+    margin-top: 130px;
+    background-color: var(--color-secondary);
+    color: var(--color-text-primary);
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    padding: var(--h3-size);
+    z-index: 50;
+    overflow-y: auto;
+  }
+  /* .weather-section {
+    margin-top: 10px;
+    height: 400px;
+    overflow-y: auto;
+  } */
+}

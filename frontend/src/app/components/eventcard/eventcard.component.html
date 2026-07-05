@@ -1,0 +1,91 @@
+<article
+  class="event-card card h-100 border-0 shadow-sm"
+  role="button"
+  tabindex="0"
+  [attr.aria-label]="'Abrir detalle de ' + evento.nombre"
+  (click)="onRowActivate()"
+  (keydown.enter)="onRowActivate()"
+  (keydown.space)="$event.preventDefault(); onRowActivate()"
+>
+  <div class="event-card__inner">
+    <div class="event-card__top">
+      <span
+        [ngClass]="badgeClasses"
+        [attr.aria-label]="'Tipo: ' + etiquetaTipo"
+      >
+        {{ etiquetaTipo }}
+      </span>
+      <time class="event-card__fecha" [attr.datetime]="evento.fecha_pico">
+        {{ evento.fecha_pico | date: "dd/MM/yyyy" }}
+      </time>
+    </div>
+
+    <div class="event-card__main">
+      <div class="event-card__media rounded overflow-hidden flex-shrink-0">
+        @if (evento.imagen_url) {
+          <img
+            [src]="evento.imagen_url"
+            [alt]="evento.nombre"
+            class="event-card__img"
+          />
+        } @else {
+          <div
+            class="event-card__media-placeholder d-flex align-items-center justify-content-center"
+            aria-hidden="true"
+          >
+            <i class="bi bi-image text-secondary"></i>
+          </div>
+        }
+      </div>
+
+      <div class="event-card__content flex-grow-1 min-w-0">
+        <h3 class="event-card__nombre mb-2" [title]="evento.nombre">
+          {{ evento.nombre }}
+        </h3>
+
+        @if (ubicacionCorta) {
+          <p class="event-card__line event-card__line--ubic mb-1">
+            <i
+              class="bi bi-geo-alt-fill event-card__icon"
+              aria-hidden="true"
+            ></i>
+            <span>{{ ubicacionCorta }}</span>
+          </p>
+        }
+
+        @if (rangoActividad) {
+          <p class="event-card__line event-card__line--rango mb-1">
+            <i
+              class="bi bi-calendar-range event-card__icon"
+              aria-hidden="true"
+            ></i>
+            <span>{{ rangoActividad }}</span>
+          </p>
+        }
+
+        @if (mejorHoraLocal) {
+          <p class="event-card__line event-card__line--hora mb-2">
+            <i class="bi bi-clock event-card__icon" aria-hidden="true"></i>
+            <span>Mejor hora local: {{ mejorHoraLocal }}</span>
+          </p>
+        }
+
+        @if (evento.descripcion) {
+          <p
+            class="event-card__desc text-body-secondary mb-2"
+            [title]="evento.descripcion"
+          >
+            {{ evento.descripcion }}
+          </p>
+        }
+
+        @if (evento.fuente) {
+          <p class="event-card__fuente text-body-secondary mb-0">
+            <i class="bi bi-link-45deg me-1" aria-hidden="true"></i>
+            {{ evento.fuente }}
+          </p>
+        }
+      </div>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,71 @@
+<div class="table-scroll">
+  <table
+    class="table table-dark table-striped table-responsive"
+    *ngIf="data.length > 0"
+  >
+    <thead>
+      <tr>
+        <th *ngFor="let head of headers">
+          {{ head.label }}
+        </th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let row of data">
+        <td>{{ row["email"] }}</td>
+        <td>{{ row["nombre"] }}</td>
+        <td>{{ row["apellidos"] }}</td>
+        <td>
+          <app-input-select
+            [defaultValue]="row['rol']"
+            (selectionChange)="onRoleChange(row['uid'], $event)"
+          >
+            <option value="ROL_USU">Usuario</option>
+            <option value="ROL_ADMIN">Administrador</option>
+          </app-input-select>
+        </td>
+        <td>
+          <app-button
+            (click)="
+              openDeleteDialog(
+                row['uid'],
+                row['email'],
+                row['nombre'],
+                row['apellidos']
+              )
+            "
+          >
+            <i class="bi bi-trash-fill"></i>
+          </app-button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="table-empty" *ngIf="data.length === 0">
+  <p>No se han encontrado usuarios.</p>
+</div>
+
+<app-dialog
+  #deleteDialog
+  dialogTitle="Eliminación del usuario"
+  [dialogMessageObj]="textObj"
+  closeButtonText="Cancelar"
+  confirmButtonText="Eliminar"
+  (confirmed)="deleteUser()"
+>
+</app-dialog>
+
+<app-dialog
+  #roleDialog
+  dialogTitle="Confirmar cambio de rol"
+  [dialogMessageObj]="roleTextObj"
+  closeButtonText="Cancelar"
+  confirmButtonText="Confirmar"
+  (confirmed)="confirmRoleChange()"
+  (canceled)="cancelRoleChange()"
+>
+</app-dialog>

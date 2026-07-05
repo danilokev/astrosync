@@ -1,0 +1,157 @@
+<app-header-auth></app-header-auth>
+<main class="container">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-5">
+      <section class="card shadow border-0">
+        <div class="card-body p-md-5">
+          <h1 class="text-center mb-1 fw-bold text-white heading">
+            Inicia sesión
+          </h1>
+          <p class="text-center text-secondary mb-4">
+            Bienvenido de nuevo a Astrosync
+          </p>
+
+          <button
+            type="button"
+            class="btn btn-danger w-100 mb-3 d-flex align-items-center justify-content-center gap-2"
+            (click)="loginWithGoogle()"
+            [disabled]="isLoading"
+          >
+            <i class="bi bi-google"></i> Continuar con Google
+          </button>
+
+          <div class="d-flex align-items-center my-4" role="separator">
+            <hr class="flex-grow-1 border-secondary" aria-hidden="true" />
+            <span class="px-3 text-secondary small">O continúa con</span>
+            <hr class="flex-grow-1 border-secondary" aria-hidden="true" />
+          </div>
+
+          @if (errorMessage) {
+            <div
+              class="alert alert-danger d-flex align-items-center mb-4"
+              role="alert"
+            >
+              <i class="bi bi-exclamation-circle-fill me-2"></i>
+              {{ errorMessage }}
+            </div>
+          }
+
+          <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+            <div class="mb-3">
+              <label for="email" class="form-label text-white fw-semibold">
+                Correo electrónico
+              </label>
+              <div class="input-group">
+                <span class="input-group-text bg-dark border-secondary">
+                  <i class="bi bi-envelope text-secondary"></i>
+                </span>
+                <input
+                  id="email"
+                  type="email"
+                  class="form-control bg-dark border-secondary text-white"
+                  formControlName="email"
+                  placeholder="correo@ejemplo.com"
+                  autocomplete="email"
+                  [ngClass]="{
+                    'is-invalid':
+                      loginForm.get('email')?.invalid &&
+                      (loginForm.get('email')?.touched ||
+                        loginForm.get('email')?.dirty),
+                  }"
+                />
+              </div>
+              @if (
+                loginForm.get("email")?.errors?.["required"] &&
+                (loginForm.get("email")?.touched ||
+                  loginForm.get("email")?.dirty)
+              ) {
+                <div class="invalid-feedback d-block">
+                  <i class="bi bi-exclamation-circle"></i> El correo electrónico
+                  es requerido
+                </div>
+              }
+              @if (
+                loginForm.get("email")?.errors?.["email"] &&
+                (loginForm.get("email")?.touched ||
+                  loginForm.get("email")?.dirty)
+              ) {
+                <div class="invalid-feedback d-block">
+                  <i class="bi bi-exclamation-circle"></i> Ingresa un correo
+                  electrónico válido
+                </div>
+              }
+            </div>
+
+            <div class="mb-4">
+              <label for="password" class="form-label text-white fw-semibold">
+                Contraseña
+              </label>
+              <div class="input-group">
+                <input
+                  id="password"
+                  [type]="showPassword ? 'text' : 'password'"
+                  class="form-control bg-dark border-secondary text-white"
+                  formControlName="password"
+                  placeholder="Tu contraseña"
+                  autocomplete="current-password"
+                  [ngClass]="{
+                    'is-invalid':
+                      loginForm.get('password')?.invalid &&
+                      (loginForm.get('password')?.touched ||
+                        loginForm.get('password')?.dirty),
+                  }"
+                />
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="togglePasswordVisibility()"
+                  title="Mostrar/ocultar contraseña"
+                >
+                  <i
+                    [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"
+                  ></i>
+                </button>
+              </div>
+              @if (
+                loginForm.get("password")?.errors?.["required"] &&
+                (loginForm.get("password")?.touched ||
+                  loginForm.get("password")?.dirty)
+              ) {
+                <div class="invalid-feedback d-block">
+                  <i class="bi bi-exclamation-circle"></i> La contraseña es
+                  requerida
+                </div>
+              }
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-primary w-100 py-2 fw-semibold"
+              [disabled]="loginForm.invalid || isLoading"
+            >
+              @if (isLoading) {
+                <span
+                  class="spinner-border spinner-border-sm me-2"
+                  role="status"
+                ></span>
+                Iniciando sesión...
+              } @else {
+                Iniciar sesión
+              }
+            </button>
+          </form>
+
+          <p class="text-center text-secondary mt-4 mb-0">
+            ¿No tienes cuenta?
+            <a
+              routerLink="/register"
+              class="text-primary fw-semibold text-decoration-none"
+            >
+              Regístrate
+            </a>
+          </p>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>

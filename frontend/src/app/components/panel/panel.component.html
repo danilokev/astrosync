@@ -1,0 +1,182 @@
+<div
+  class="drawer-container"
+  [class.hidden]="!(uiService.isOpen$ | async) || !hasPanelBeenOpened"
+>
+  <div
+    class="drawer-header d-flex justify-content-between align-items-center mb-4"
+  >
+    <h3 class="fw-bold m-0 text-white">
+      {{ uiService.title$ | async }}
+    </h3>
+
+    <button
+      class="btn btn-back"
+      aria-label="Cerrar panel"
+      title="Cerrar"
+      (click)="togglePanel()"
+    >
+      <i class="bi bi-x fs-4"></i>
+    </button>
+  </div>
+
+  <div
+    class="drawer-content"
+    *ngIf="uiService.isOpen$ | async"
+    [ngSwitch]="uiService.activeContent$ | async"
+  >
+    <!-- FAVORITOS -->
+    <div *ngSwitchCase="'save'" class="panel-favorites">
+      <div *ngIf="loadingFavoritos" class="panel-loading">
+        <div class="loading-spinner">
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+        </div>
+        <p class="loading-text">Cargando favoritos...</p>
+      </div>
+
+      <ng-container *ngIf="!loadingFavoritos">
+        <div *ngIf="favoritos.length > 0; else noFavoritos">
+          <app-favorite-card
+            *ngFor="let fav of favoritos"
+            [title]="fav.label"
+            [imageUrl]="fav.wikidataImage || ''"
+            [tipo]="fav.tipo"
+            (location)="verLocation($event)"
+            (delete)="eliminarFavorito(fav._id!)"
+          ></app-favorite-card>
+        </div>
+
+        <ng-template #noFavoritos>
+          <div class="empty-state text-center py-5 px-4">
+            <i
+              class="bi bi-bookmark-star display-1 text-white opacity-50 mb-3"
+            ></i>
+            <h5 class="fw-semibold mb-3">No hay objetos celestes guardados</h5>
+            <p class="small opacity-75 mb-3">
+              Explora el cielo nocturno, descubre estrellas, planetas y
+              constelaciones fascinantes. Cuando encuentres algo que te
+              interese, guárdalo como favorito para acceder rápidamente.
+            </p>
+            <div class="d-flex justify-content-center">
+              <span class="badge bg-primary px-3 py-2">
+                <i class="bi bi-lightbulb me-2"></i>
+                Tip: Haz clic en cualquier objeto celeste para guardarlo
+              </span>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
+    </div>
+
+    <!-- TIEMPO -->
+    <div *ngSwitchCase="'weather'" class="weather-section">
+      <app-weather-section></app-weather-section>
+    </div>
+
+    <!-- EVENTOS -->
+    <div *ngSwitchCase="'calendar'" class="panel-events">
+      @if (loadingEventos) {
+        <div class="panel-loading">
+          <div class="loading-spinner">
+            <div class="spinner-ring"></div>
+            <div class="spinner-ring"></div>
+            <div class="spinner-ring"></div>
+          </div>
+          <p class="loading-text">Cargando eventos...</p>
+        </div>
+      } @else if (selectedEvento) {
+        <div class="panel-events__detail-view panel-events__view">
+          <app-event-detail
+            [evento]="selectedEvento"
+            (cerrar)="clearSelection()"
+          ></app-event-detail>
+        </div>
+      } @else {
+        <div class="panel-events__view">
+          <div class="panel-events__filters mb-3">
+            <label for="filtro-tipo" class="form-label small text-white mb-1">
+              <i class="bi bi-funnel me-2" aria-hidden="true"></i>
+              Tipo de evento
+            </label>
+            <select
+              id="filtro-tipo"
+              class="form-select form-select-sm panel-events__select"
+              [value]="filtroTipo"
+              (change)="onFiltroTipoChange($any($event.target).value)"
+              aria-label="Filtrar eventos por tipo"
+            >
+              @for (opt of opcionesTipo; track opt.value) {
+                <option
+                  [value]="opt.value"
+                  [selected]="filtroTipo === opt.value"
+                >
+                  {{ opt.label }}
+                </option>
+              }
+            </select>
+
+            <label
+              for="filtro-mes"
+              class="form-label small text-white mb-1 mt-2"
+            >
+              <i class="bi bi-calendar3 me-2" aria-hidden="true"></i>
+              Mes
+            </label>
+            <select
+              id="filtro-mes"
+              class="form-select form-select-sm panel-events__select"
+              [value]="filtroMes"
+              (change)="onFiltroMesChange($any($event.target).value)"
+              aria-label="Filtrar eventos por mes"
+            >
+              @for (opt of opcionesMes; track opt.value) {
+                <option
+                  [value]="opt.value"
+                  [selected]="filtroMes === opt.value"
+                >
+                  {{ opt.label }}
+                </option>
+              }
+            </select>
+
+            @if (filtroTipo || filtroMes) {
+              <div
+                class="alert alert-info alert-sm mt-3 py-2 px-3 small mb-0"
+                role="status"
+              >
+                <i class="bi bi-info-circle me-2" aria-hidden="true"></i>
+                <strong>{{ eventos.length }}</strong> evento{{
+                  eventos.length !== 1 ? "s" : ""
+                }}
+                encontrado{{ eventos.length !== 1 ? "s" : "" }}
+                con tus filtros
+              </div>
+            }
+          </div>
+
+          <div class="panel-events__scroll d-flex flex-column gap-2">
+            <app-eventcard
+              *ngFor="let ev of eventosPaginados; trackBy: trackEventoById"
+              [evento]="ev"
+              (selectEvento)="selectEvento($event)"
+              class="panel-events__card"
+            ></app-eventcard>
+          </div>
+          @if (hayMasEventos) {
+            <div class="panel-events__footer mt-3">
+              <button
+                type="button"
+                class="btn btn-events btn-outline-light btn-sm w-100"
+                (click)="verMasEventos()"
+              >
+                <i class="bi bi-chevron-down me-1" aria-hidden="true"></i>
+                Ver más ({{ eventos.length - eventosVisibles }} restantes)
+              </button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>

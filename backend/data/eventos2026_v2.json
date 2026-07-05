@@ -1,0 +1,387 @@
+{
+  "año": 2026,
+  "fecha_generacion": "2026-01-27T14:25:41.738Z",
+  "total_eventos": 22,
+  "resumen": {
+    "eclipses_solares": 2,
+    "eclipses_lunares": 2,
+    "superlunas": 4,
+    "lluvias_meteoros": 14
+  },
+  "eventos": [
+    {
+      "nombre": "Eclipse Solar Anular",
+      "tipo": "eclipse_solar",
+      "fecha_pico": "2026-02-17T14:28:00Z",
+      "fecha_inicio": null,
+      "fecha_fin": null,
+      "hora_pico_utc": "14:28",
+      "mejor_hora_local": null,
+      "descripcion": "Eclipse solar anular visible desde Groenlandia, norte de Canadá, Groenlandia, Islandia y Portugal. Magnitud: 0.942",
+      "imagen_url": "https://images-assets.nasa.gov/image/NHQ202106100012/NHQ202106100012~medium.jpg",
+      "fuente": "Astronomy Engine",
+      "ubicacion": {
+        "lat": 64.1466,
+        "lon": -21.9426,
+        "nombre": "Reykjavik, Islandia"
+      }
+    },
+    {
+      "nombre": "Eclipse Solar Total",
+      "tipo": "eclipse_solar",
+      "fecha_pico": "2026-08-12T09:09:00Z",
+      "fecha_inicio": null,
+      "fecha_fin": null,
+      "hora_pico_utc": "09:09",
+      "mejor_hora_local": null,
+      "descripcion": "Eclipse solar total visible desde Groenlandia, norte de Canadá, España y Portugal. Duración máxima: 2m 18s. Magnitud: 1.039",
+      "imagen_url": "https://images-assets.nasa.gov/image/NHQ201708210100/NHQ201708210100~medium.jpg",
+      "fuente": "Astronomy Engine",
+      "ubicacion": {
+        "lat": 40.4168,
+        "lon": -3.7038,
+        "nombre": "Madrid, España"
+      }
+    },
+    {
+      "nombre": "Eclipse Lunar Parcial",
+      "tipo": "eclipse_lunar",
+      "fecha_pico": "2026-02-02T00:29:00Z",
+      "fecha_inicio": null,
+      "fecha_fin": null,
+      "hora_pico_utc": "00:29",
+      "mejor_hora_local": null,
+      "descripcion": "Eclipse lunar parcial visible desde Europa, África, Asia, Australia. Magnitud umbral: 0.268. Iniciará en 23:22 UT",
+      "imagen_url": "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001515/GSFC_20171208_Archive_e001515~orig.jpg",
+      "fuente": "Astronomy Engine",
+      "ubicacion": {
+        "lat": 51.5074,
+        "lon": -0.1278,
+        "nombre": "Londres, Reino Unido"
+      }
+    },
+    {
+      "nombre": "Eclipse Lunar Parcial",
+      "tipo": "eclipse_lunar",
+      "fecha_pico": "2026-07-31T12:58:00Z",
+      "fecha_inicio": null,
+      "fecha_fin": null,
+      "hora_pico_utc": "12:58",
+      "mejor_hora_local": null,
+      "descripcion": "Eclipse lunar parcial visible desde América del Sur, Europa, África, Asia, Australia. Magnitud umbral: 0.383",
+      "imagen_url": "https://images-assets.nasa.gov/image/GRC-2024-C-10128/GRC-2024-C-10128~medium.jpg",
+      "fuente": "Astronomy Engine",
+      "ubicacion": {
+        "lat": 51.5074,
+        "lon": -0.1278,
+        "nombre": "Londres, Reino Unido"
+      }
+    },
+    {
+      "nombre": "Superluna de Enero",
+      "tipo": "supermoon",
+      "fecha_pico": "2026-01-03T17:58:00Z",
+      "fecha_inicio": null,
+      "fecha_fin": null,
+      "hora_pico_utc": "17:58",
+      "mejor_hora_local": null,
+      "descripcion": "Luna llena en el perigeo (punto más cercano a la Tierra) a 357,311 km. Aparecerá aproximadamente un 14% más brillante y un 30% más grande que una luna llena promedio.",
+      "imagen_url": "https://images-assets.nasa.gov/image/201408100002HQ/201408100002HQ~medium.jpg",
+      "fuente": "Astronomy Engine",
+      "ubicacion": {
+        "lat": -22.9068,
+        "lon": -68.2041,
+        "nombre": "Desierto de Atacama, Chile"
+      }
+    },
+    {
+      "nombre": "Superluna de Febrero",
+      "tipo": "supermoon",
+      "fecha_pico": "2026-02-02T00:29:00Z",
+      "fecha_inicio": null,
+      "fecha_fin": null,
+      "hora_pico_utc": "00:29",
+      "mejor_hora_local": null,
+      "descripcion": "Luna llena en el perigeo a 357,953 km. Segunda superluna consecutiva de 2026.",
+      "imagen_url": "https://images-assets.nasa.gov/image/201408100002HQ/201408100002HQ~medium.jpg",
+      "fuente": "Astronomy Engine",
+      "ubicacion": {
+        "lat": -22.9068,
+        "lon": -68.2041,
+        "nombre": "Desierto de Atacama, Chile"
+      }
+    },
+    {
+      "nombre": "Superluna de Octubre",
+      "tipo": "supermoon",
+      "fecha_pico": "2026-10-01T11:27:00Z",
+      "fecha_inicio": null,
+      "fecha_fin": null,
+      "hora_pico_utc": "11:27",
+      "mejor_hora_local": null,
+      "descripcion": "Luna llena en el perigeo a 357,990 km. Tercera superluna importante del año.",
+      "imagen_url": "https://images-assets.nasa.gov/image/201408100002HQ/201408100002HQ~medium.jpg",
+      "fuente": "Astronomy Engine",
+      "ubicacion": {
+        "lat": -22.9068,
+        "lon": -68.2041,
+        "nombre": "Desierto de Atacama, Chile"
+      }
+    },
+    {
+      "nombre": "Superluna de Octubre (2ª)",
+      "tipo": "supermoon",
+      "fecha_pico": "2026-10-31T20:14:00Z",
+      "fecha_inicio": null,
+      "fecha_fin": null,
+      "hora_pico_utc": "20:14",
+      "mejor_hora_local": null,
+      "descripcion": "Luna llena en el perigeo a 358,079 km. Segunda superluna de octubre.",
+      "imagen_url": "https://images-assets.nasa.gov/image/201408100002HQ/201408100002HQ~medium.jpg",
+      "fuente": "Astronomy Engine",
+      "ubicacion": {
+        "lat": -22.9068,
+        "lon": -68.2041,
+        "nombre": "Desierto de Atacama, Chile"
+      }
+    },
+    {
+      "nombre": "Quadrantids",
+      "tipo": "meteor_shower",
+      "fecha_pico": "2026-01-03T21:00:00.000Z",
+      "fecha_inicio": "2026-01-01T00:00:00.000Z",
+      "fecha_fin": "2026-01-12T00:00:00.000Z",
+      "hora_pico_utc": "21:00",
+      "mejor_hora_local": null,
+      "descripcion": "Primera gran lluvia meteórica del año con hasta 80 meteoros por hora en condiciones ideales. Originada del asteroide 2003 EH1.",
+      "imagen_url": "https://starwalk.space/gallery/images/quadrantids-by-lamberto-sassoli/1333x750.jpg",
+      "fuente": "IMO Meteor Shower Calendar 2026",
+      "ubicacion": {
+        "lat": 65,
+        "lon": -19,
+        "nombre": "Islandia"
+      }
+    },
+    {
+      "nombre": "γ-Ursae Minorids",
+      "tipo": "meteor_shower",
+      "fecha_pico": "2026-01-18T00:00:00.000Z",
+      "fecha_inicio": "2026-01-10T00:00:00.000Z",
+      "fecha_fin": "2026-01-22T00:00:00.000Z",
+      "hora_pico_utc": "00:00",
+      "mejor_hora_local": null,
+      "descripcion": "Lluvia meteórica menor desde el norte circumpolar. ZHR ≈ 3. Radiante disponible toda la noche desde latitudes norte.",
+      "imagen_url": "https://starwalk.space/gallery/images/meteor-showers-january/1360x765.jpg",
+      "fuente": "IMO Meteor Shower Calendar 2026",
+      "ubicacion": {
+        "lat": 65,
+        "lon": -19,
+        "nombre": "Islandia"
+      }
+    },
+    {
+      "nombre": "α-Centaurids",
+      "tipo": "meteor_shower",
+      "fecha_pico": "2026-02-08T00:00:00.000Z",
+      "fecha_inicio": "2026-01-31T00:00:00.000Z",
+      "fecha_fin": "2026-02-20T00:00:00.000Z",
+      "hora_pico_utc": "00:00",
+      "mejor_hora_local": null,
+      "descripcion": "Lluvia meteórica del hemisferio sur. Históricamente produce ráfagas de 20-30 meteoros/hora. ZHR variable, usualmente ≈ 6.",
+      "imagen_url": "https://starwalk.space/gallery/images/meteor-showers-january/1360x765.jpg",
+      "fuente": "IMO Meteor Shower Calendar 2026",
+      "ubicacion": {
+        "lat": -41,
+        "lon": 172,
+        "nombre": "Nueva Zelanda"
+      }
+    },
+    {
+      "nombre": "April Lyrids",
+      "tipo": "meteor_shower",
+      "fecha_pico": "2026-04-22T19:40:00.000Z",
+      "fecha_inicio": "2026-04-14T00:00:00.000Z",
+      "fecha_fin": "2026-04-30T00:00:00.000Z",
+      "hora_pico_utc": "19:40",
+      "mejor_hora_local": null,
+      "descripcion": "Una de las lluvias anuales más antiguas registradas, asociada con el cometa Thatcher (C/1861 G1). ZHR = 18. Sin interferencia lunar.",
+      "imagen_url": "https://upload.wikimedia.org/wikipedia/commons/3/36/Lyrid_meteor_shower_radiant_point.jpeg",
+      "fuente": "IMO Meteor Shower Calendar 2026",
+      "ubicacion": {
+        "lat": 40,
+        "lon": -3,
+        "nombre": "España"
+      }
+    },
+    {
+      "nombre": "η-Aquariids",
+      "tipo": "meteor_shower",
+      "fecha_pico": "2026-05-06T00:00:00.000Z",
+      "fecha_inicio": "2026-04-19T00:00:00.000Z",
+      "fecha_fin": "2026-05-28T00:00:00.000Z",
+      "hora_pico_utc": "00:00",
+      "mejor_hora_local": null,
+      "descripcion": "Lluvia importante asociada con el cometa Halley. ZHR = 50. Mejor desde el hemisferio sur. Luna gibosa decreciente afecta observaciones.",
+      "imagen_url": "https://i.imgur.com/Bd1I6Sw.jpeg",
+      "fuente": "IMO Meteor Shower Calendar 2026",
+      "ubicacion": {
+        "lat": 40,
+        "lon": -3,
+        "nombre": "España"
+      }
+    },
+    {
+      "nombre": "Perseids",
+      "tipo": "meteor_shower",
+      "fecha_pico": "2026-08-13T02:00:00.000Z",
+      "fecha_inicio": "2026-07-17T00:00:00.000Z",
+      "fecha_fin": "2026-08-24T00:00:00.000Z",
+      "hora_pico_utc": "02:00",
+      "mejor_hora_local": null,
+      "descripcion": "La lluvia meteórica más predecible y espectacular del año con hasta 100 meteoros/hora. Asociada con cometa Swift-Tuttle. Luna nueva proporciona condiciones excelentes.",
+      "imagen_url": "https://i.imgur.com/lg1ipuU.jpeg",
+      "fuente": "IMO Meteor Shower Calendar 2026",
+      "ubicacion": {
+        "lat": 65,
+        "lon": -19,
+        "nombre": "Islandia"
+      }
+    },
+    {
+      "nombre": "September ε-Perseids",
+      "tipo": "meteor_shower",
+      "fecha_pico": "2026-09-09T18:00:00.000Z",
+      "fecha_inicio": "2026-09-05T00:00:00.000Z",
+      "fecha_fin": "2026-09-21T00:00:00.000Z",
+      "hora_pico_utc": "18:00",
+      "mejor_hora_local": null,
+      "descripcion": "Lluvia de otoño rica en meteoros brillantes. ZHR = 8. Posibles encuentros con polvo antiguo del cometa. Luna nueva óptima.",
+      "imagen_url": "https://www.popastro.com/images/meteor/AlphaAurigid_radiant.png",
+      "fuente": "IMO Meteor Shower Calendar 2026",
+      "ubicacion": {
+        "lat": 65,
+        "lon": -19,
+        "nombre": "Islandia"
+      }
+    },
+    {
+      "nombre": "October Draconids",
+      "tipo": "meteor_shower",
+      "fecha_pico": "2026-10-09T01:00:00.000Z",
+      "fecha_inicio": "2026-10-06T00:00:00.000Z",
+      "fecha_fin": "2026-10-10T00:00:00.000Z",
+      "hora_pico_utc": "01:00",
+      "mejor_hora_local": null,
+      "descripcion": "Lluvia meteórica lenta y rara con radiante circumpolar. ZHR = 5. Históricamente produce tormentas meteorológicas espectaculares.",
+      "imagen_url": "https://starwalk.space/gallery/images/draconids-radiant-point/1540x866.jpg",
+      "fuente": "IMO Meteor Shower Calendar 2026",
+      "ubicacion": {
+        "lat": 65,
+        "lon": -19,
+        "nombre": "Islandia"
+      }
+    },
+    {
+      "nombre": "Orionids",
+      "tipo": "meteor_shower",
+      "fecha_pico": "2026-10-21T00:00:00.000Z",
+      "fecha_inicio": "2026-10-02T00:00:00.000Z",
+      "fecha_fin": "2026-11-07T00:00:00.000Z",
+      "hora_pico_utc": "00:00",
+      "mejor_hora_local": null,
+      "descripcion": "Lluvia importante asociada con cometa Halley. ZHR = 20+. Visible desde ambos hemisferios. Radiante a altura útil al anochecer.",
+      "imagen_url": "https://earthsky.org/upl/2022/10/Orionid-radiant.jpg",
+      "fuente": "IMO Meteor Shower Calendar 2026",
+      "ubicacion": {
+        "lat": 40,
+        "lon": -3,
+        "nombre": "España"
+      }
+    },
+    {
+      "nombre": "Southern Taurids",
+      "tipo": "meteor_shower",
+      "fecha_pico": "2026-11-05T00:00:00.000Z",
+      "fecha_inicio": "2026-09-20T00:00:00.000Z",
+      "fecha_fin": "2026-11-20T00:00:00.000Z",
+      "hora_pico_utc": "00:00",
+      "mejor_hora_local": null,
+      "descripcion": "Primera rama del complejo Táurida asociado con cometa 2P/Encke. ZHR = 5-10. Meteoros brillantes y lentos ideales para still-imaging.",
+      "imagen_url": "https://www.amsmeteors.org/wp-content/uploads/2015/10/taurids2.jpg",
+      "fuente": "IMO Meteor Shower Calendar 2026",
+      "ubicacion": {
+        "lat": 40,
+        "lon": -3,
+        "nombre": "España"
+      }
+    },
+    {
+      "nombre": "Northern Taurids",
+      "tipo": "meteor_shower",
+      "fecha_pico": "2026-11-12T00:00:00.000Z",
+      "fecha_inicio": "2026-10-20T00:00:00.000Z",
+      "fecha_fin": "2026-12-10T00:00:00.000Z",
+      "hora_pico_utc": "00:00",
+      "mejor_hora_local": null,
+      "descripcion": "Segunda rama del complejo Táurida. ZHR = 5. Componente complementaria de Southern Taurids con radiante oval extendido.",
+      "imagen_url": "https://www.spacecentre.co.uk/media/innn4b50/taurids_stellarium_thumb-1200x0-c-default-2.png",
+      "fuente": "IMO Meteor Shower Calendar 2026",
+      "ubicacion": {
+        "lat": 40,
+        "lon": -3,
+        "nombre": "España"
+      }
+    },
+    {
+      "nombre": "Leonids",
+      "tipo": "meteor_shower",
+      "fecha_pico": "2026-11-17T23:45:00.000Z",
+      "fecha_inicio": "2026-11-06T00:00:00.000Z",
+      "fecha_fin": "2026-11-30T00:00:00.000Z",
+      "hora_pico_utc": "23:45",
+      "mejor_hora_local": null,
+      "descripcion": "Lluvia histórica conocida por espectaculares tormentas meteorológicas. ZHR ≈ 15. Asociada con cometa 55P/Tempel-Tuttle. Luna casi llena afecta observaciones.",
+      "imagen_url": "https://astronomia.ign.es/rknowsys-theme/images/webAstro/leonidas.jpg",
+      "fuente": "IMO Meteor Shower Calendar 2026",
+      "ubicacion": {
+        "lat": 40,
+        "lon": -3,
+        "nombre": "España"
+      }
+    },
+    {
+      "nombre": "Geminids",
+      "tipo": "meteor_shower",
+      "fecha_pico": "2026-12-14T14:00:00.000Z",
+      "fecha_inicio": "2026-12-04T00:00:00.000Z",
+      "fecha_fin": "2026-12-20T00:00:00.000Z",
+      "hora_pico_utc": "14:00",
+      "mejor_hora_local": null,
+      "descripcion": "La lluvia meteórica más confiable y espectacular con hasta 150 meteoros/hora. Asociada con asteroide 3200 Phaethon. Luna nueva proporciona excelentes condiciones.",
+      "imagen_url": "https://earthsky.org/upl/2021/11/Geminid-meteor-shower-radiant-e1636622626316.jpg",
+      "fuente": "IMO Meteor Shower Calendar 2026",
+      "ubicacion": {
+        "lat": 65,
+        "lon": -19,
+        "nombre": "Islandia"
+      }
+    },
+    {
+      "nombre": "Ursids",
+      "tipo": "meteor_shower",
+      "fecha_pico": "2026-12-22T22:00:00.000Z",
+      "fecha_inicio": "2026-12-17T00:00:00.000Z",
+      "fecha_fin": "2026-12-26T00:00:00.000Z",
+      "hora_pico_utc": "22:00",
+      "mejor_hora_local": null,
+      "descripcion": "Lluvia final del año en circumpolar norte. ZHR = 10. Asociada con cometa 8P/Tuttle. Luna casi llena (96% iluminada) afecta observaciones.",
+      "imagen_url": "https://earthsky.org/upl/2025/12/Ursid-radiant-point-chart.jpg",
+      "fuente": "IMO Meteor Shower Calendar 2026",
+      "ubicacion": {
+        "lat": 65,
+        "lon": -19,
+        "nombre": "Islandia"
+      }
+    }
+  ]
+}

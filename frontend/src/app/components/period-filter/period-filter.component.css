@@ -1,0 +1,76 @@
+.period-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.period-filter__label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.period-filter__label i {
+  font-size: 0.95rem;
+  color: var(--color-primary);
+}
+
+.period-filter__options {
+  display: flex;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.period-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+  white-space: nowrap;
+}
+
+.period-btn + .period-btn {
+  border-left: 1px solid var(--color-border-light);
+}
+
+.period-btn:hover:not(.period-btn--active) {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.period-btn--active {
+  background: var(--color-primary-active);
+  color: var(--color-text-dark);
+  font-weight: 600;
+}
+
+.period-btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
+@media (max-width: 500px) {
+  .period-filter {
+    gap: 0.5rem;
+  }
+
+  .period-filter__label span {
+    display: none;
+  }
+
+  .period-btn {
+    font-size: 0.78rem;
+    padding: 0.3rem 0.55rem;
+  }
+}

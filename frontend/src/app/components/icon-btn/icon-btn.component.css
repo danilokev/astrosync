@@ -1,0 +1,26 @@
+.btn-icon {
+  border-radius: 50%;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  background-color: transparent;
+}
+
+.btn-icon:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.btn-icon:active {
+  transform: scale(0.95);
+}
+
+.bi {
+  font-size: 1.2rem;
+}
+
+@media (max-width: 1600px) {
+  .bi {
+    font-size: 1.1rem;
+  }
+}

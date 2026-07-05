@@ -1,0 +1,12 @@
+<div class="input-group">
+  <label for="{{ name }}">{{ label }}</label>
+  <input
+    class="rounded-3 p-2"
+    [type]="type"
+    [value]="value"
+    [placeholder]="placeholder"
+    [name]="name"
+    (input)="onInputChange($event)"
+    (blur)="onBlur()"
+  />
+</div>

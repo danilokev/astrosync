@@ -1,0 +1,45 @@
+<div class="marker-container" *ngIf="visible">
+  <div class="marker-box">
+    <button class="close-btn" (click)="closeMarker()" aria-label="Cerrar">
+      <i class="bi bi-x-lg"></i>
+    </button>
+
+    <!-- Header con ubicación -->
+    <div class="marker-header">
+      <i class="bi bi-geo-alt-fill location-icon"></i>
+      <div class="location-info">
+        <h4 class="location-name">{{ title }}</h4>
+        <p class="location-coords">
+          {{ lat | number: "1.4-4" }}, {{ lon | number: "1.4-4" }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Acciones -->
+    <div class="marker-actions">
+      <button
+        class="action-btn action-btn-primary"
+        (click)="setAsCurrentLocation()"
+        title="Cambiar a vista de cielo con esta ubicación"
+      >
+        <i class="bi bi-binoculars-fill"></i>
+        <span class="action-text">Explorar el cielo</span>
+      </button>
+
+      <button
+        class="action-btn action-btn-secondary"
+        [class.active]="isBookmarked"
+        (click)="toggleBookmark()"
+        [title]="isBookmarked ? 'Quitar de favoritos' : 'Guardar en favoritos'"
+      >
+        <i
+          class="bi"
+          [ngClass]="isBookmarked ? 'bi-bookmark-fill' : 'bi-bookmark'"
+        ></i>
+        <span class="action-text">{{
+          isBookmarked ? "Guardado" : "Guardar lugar"
+        }}</span>
+      </button>
+    </div>
+  </div>
+</div>

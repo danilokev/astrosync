@@ -1,0 +1,198 @@
+<div class="policy-overlay" role="dialog" aria-modal="true" aria-labelledby="policy-title">
+  <div class="policy-modal">
+
+    <!-- Cabecera -->
+    <div class="policy-modal__header">
+      <h1 id="policy-title" class="policy-modal__brand-name">AstroSync</h1>
+      <button class="policy-modal__close" type="button" (click)="onClose()" aria-label="Cerrar política">✕</button>
+    </div>
+
+    <!-- Pestañas -->
+    <nav class="policy-tabs" aria-label="Secciones">
+      <button
+        class="policy-tab"
+        [class.policy-tab--active]="activeTab === 'privacy'"
+        (click)="setTab('privacy')"
+        type="button">
+        Privacidad
+      </button>
+      <button
+        class="policy-tab"
+        [class.policy-tab--active]="activeTab === 'cookies'"
+        (click)="setTab('cookies')"
+        type="button">
+        Cookies
+      </button>
+    </nav>
+
+    <!-- ======================== POLÍTICA DE PRIVACIDAD ======================== -->
+    <div class="policy-body" *ngIf="activeTab === 'privacy'">
+      
+
+      <section class="policy-section">
+        <h2 class="policy-section__title">1. Responsable del tratamiento</h2>
+        <p>
+          AstroSync es una plataforma digital de planetario desarrollada como proyecto académico.
+          Para cualquier consulta sobre el tratamiento de tus datos puedes escribirnos a
+          <a [href]="'mailto:' + contactEmail" class="policy-link">{{ contactEmail }}</a>.
+        </p>
+      </section>
+
+      <section class="policy-section">
+        <h2 class="policy-section__title">2. Datos que recopilamos</h2>
+        <p>Recopilamos únicamente los datos necesarios para el funcionamiento de la plataforma:</p>
+        <ul class="policy-list">
+          <li><strong>Datos de registro:</strong> nombre de usuario, correo electrónico y contraseña cifrada, proporcionados al crear una cuenta.</li>
+          <li><strong>Datos de uso:</strong> ubicación geográfica de observación (solo si el usuario la proporciona), zona horaria y preferencias de visualización.</li>
+          <li><strong>Contenido generado:</strong> fotografías astronómicas y observaciones que los usuarios registrados decidan subir.</li>
+          <li><strong>Datos técnicos:</strong> dirección IP, tipo de navegador y datos de sesión para el funcionamiento seguro de la plataforma.</li>
+        </ul>
+      </section>
+
+      <section class="policy-section">
+        <h2 class="policy-section__title">3. Finalidad del tratamiento</h2>
+        <ul class="policy-list">
+          <li>Gestionar tu cuenta y acceso a las funcionalidades de AstroSync.</li>
+          <li>Personalizar la experiencia del planetario según tu ubicación y zona horaria.</li>
+          <li>Guardar cuerpos celestes favoritos e historial de observaciones.</li>
+          <li>Garantizar la seguridad e integridad de la plataforma.</li>
+          <li>Mejorar las funcionalidades mediante análisis agregados y anónimos.</li>
+        </ul>
+      </section>
+
+      <section class="policy-section">
+        <h2 class="policy-section__title">4. Base legal</h2>
+        <p>
+          El tratamiento se basa en el consentimiento expreso que otorgas al registrarte y en el
+          interés legítimo de garantizar la seguridad y correcto funcionamiento de AstroSync.
+        </p>
+      </section>
+
+      <section class="policy-section">
+        <h2 class="policy-section__title">5. Conservación de datos</h2>
+        <p>
+          Conservamos tus datos mientras mantengas una cuenta activa. Si la eliminas, suprimiremos
+          todos tus datos personales en un plazo máximo de 30 días, salvo obligación legal de
+          conservación.
+        </p>
+      </section>
+
+      <section class="policy-section">
+        <h2 class="policy-section__title">6. Tus derechos (RGPD)</h2>
+        <ul class="policy-list">
+          <li><strong>Acceso:</strong> obtener confirmación sobre si tratamos tus datos y acceder a ellos.</li>
+          <li><strong>Rectificación:</strong> corregir datos inexactos o incompletos.</li>
+          <li><strong>Supresión:</strong> solicitar la eliminación de tus datos ("derecho al olvido").</li>
+          <li><strong>Portabilidad:</strong> recibir tus datos en formato estructurado.</li>
+          <li><strong>Oposición y limitación:</strong> oponerte a ciertos tratamientos o solicitar su limitación.</li>
+          <li><strong>Retirada del consentimiento:</strong> retirar en cualquier momento el consentimiento prestado.</li>
+        </ul>
+        <p>Para ejercer estos derechos escríbenos a <a [href]="'mailto:' + contactEmail" class="policy-link">{{ contactEmail }}</a>.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2 class="policy-section__title">7. Seguridad</h2>
+        <p>
+          Aplicamos medidas técnicas y organizativas apropiadas para proteger tus datos frente a
+          accesos no autorizados, incluyendo cifrado de contraseñas y comunicaciones HTTPS.
+        </p>
+      </section>
+    </div>
+
+    <!-- ======================== POLÍTICA DE COOKIES ======================== -->
+    <div class="policy-body" *ngIf="activeTab === 'cookies'">
+      
+
+      <section class="policy-section">
+        <h2 class="policy-section__title">¿Qué son las cookies?</h2>
+        <p>
+          Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo al visitar
+          AstroSync. Nos permiten recordar tus preferencias, mantener tu sesión activa y analizar
+          el uso de la plataforma para mejorarla.
+        </p>
+      </section>
+
+      <section class="policy-section">
+        <h2 class="policy-section__title">Cookies que utilizamos</h2>
+
+        <div class="cookie-group">
+          <div class="cookie-group__header">
+            <span class="badge badge--essential">Esenciales</span>
+            <span class="cookie-group__note">Siempre activas · No requieren consentimiento</span>
+          </div>
+          <table class="cookie-table">
+            <thead><tr><th>Cookie</th><th>Finalidad</th><th>Duración</th></tr></thead>
+            <tbody>
+              <tr><td><code>astrosync_session</code></td><td>Mantiene la sesión del usuario autenticado</td><td>Sesión</td></tr>
+              <tr><td><code>astrosync_csrf</code></td><td>Protección contra ataques CSRF</td><td>Sesión</td></tr>
+              <tr><td><code>astrosync_cookie_consent</code></td><td>Guarda tus preferencias de cookies</td><td>12 meses</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="cookie-group">
+          <div class="cookie-group__header">
+            <span class="badge badge--analytics">Análisis</span>
+            <span class="cookie-group__note">Requieren consentimiento</span>
+          </div>
+          <table class="cookie-table">
+            <thead><tr><th>Cookie</th><th>Finalidad</th><th>Duración</th></tr></thead>
+            <tbody>
+              <tr><td><code>_ga</code></td><td>Identifica usuarios únicos (Google Analytics)</td><td>2 años</td></tr>
+              <tr><td><code>_gid</code></td><td>Distingue sesiones de usuario</td><td>24 horas</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="cookie-group">
+          <div class="cookie-group__header">
+            <span class="badge badge--preferences">Preferencias</span>
+            <span class="cookie-group__note">Requieren consentimiento</span>
+          </div>
+          <table class="cookie-table">
+            <thead><tr><th>Cookie</th><th>Finalidad</th><th>Duración</th></tr></thead>
+            <tbody>
+              <tr><td><code>astrosync_location</code></td><td>Guarda tu ubicación de observación</td><td>6 meses</td></tr>
+              <tr><td><code>astrosync_timezone</code></td><td>Zona horaria seleccionada</td><td>6 meses</td></tr>
+              <tr><td><code>astrosync_theme</code></td><td>Preferencias visuales del planetario</td><td>12 meses</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="cookie-group">
+          <div class="cookie-group__header">
+            <span class="badge badge--third">Terceros</span>
+            <span class="cookie-group__note">Requieren consentimiento</span>
+          </div>
+          <table class="cookie-table">
+            <thead><tr><th>Cookie</th><th>Finalidad</th><th>Duración</th></tr></thead>
+            <tbody>
+              <tr><td><code>lightpollution_*</code></td><td>Mapa de contaminación lumínica</td><td>Sesión</td></tr>
+              <tr><td><code>weather_*</code></td><td>Pronóstico meteorológico para observaciones</td><td>Sesión</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="policy-section">
+        <h2 class="policy-section__title">Gestionar tus preferencias</h2>
+        <p>
+          Puedes modificar tus preferencias en cualquier momento desde el enlace
+          <strong>«Gestionar cookies»</strong> del pie de página. También puedes configurar tu
+          navegador para bloquear o eliminar cookies, aunque esto puede afectar a algunas
+          funcionalidades de AstroSync.
+        </p>
+        <button class="btn-revoke" type="button" (click)="onRevokeConsent()">
+          Restablecer preferencias de cookies
+        </button>
+      </section>
+    </div>
+
+    <!-- Pie -->
+    <div class="policy-modal__footer">
+      <span class="policy-modal__footer-note">© 2025 AstroSync</span>
+      <button class="btn btn--primary" type="button" (click)="onClose()">Cerrar</button>
+    </div>
+
+  </div>
+</div>

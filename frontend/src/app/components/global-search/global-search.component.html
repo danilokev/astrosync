@@ -1,0 +1,88 @@
+<div class="global-search-wrapper position-relative">
+  <app-search
+    placeholder="Buscar estrellas, planetas, constelaciones..."
+    [showFilter]="false"
+    (valueChange)="onSearchChange($event)"
+    (cleared)="resetSearch()"
+  >
+  </app-search>
+
+  <div
+    class="dropdown-menu custom-scrollbar"
+    [class.show]="
+      isLoading ||
+      isOpen ||
+      (currentTerm.length >= 2 &&
+        !isLoading &&
+        (results.length === 0 || hasError))
+    "
+  >
+    <div
+      *ngIf="isLoading && results.length === 0"
+      class="dropdown-item text-center"
+    >
+      <span class="spinner-loader me-2"></span>
+      Buscando...
+    </div>
+
+    <div *ngIf="hasError" class="dropdown-item text-center text-danger">
+      Error al obtener resultados.
+    </div>
+
+    <ng-container *ngIf="!isLoading || results.length > 0">
+      <button
+        *ngFor="let result of results"
+        class="dropdown-item result-item"
+        (click)="selectItem(result)"
+      >
+        <i
+          class="me-2"
+          [ngClass]="{
+            'bi bi-star-fill text-warning': result.type === 'star',
+            'bi bi-globe text-info': result.type === 'planet',
+            'bi bi-diagram-3 text-success': result.type === 'constellation',
+          }"
+        ></i>
+
+        <span class="fw-bold">
+          {{
+            result.displayName ||
+              result.label ||
+              result.proper ||
+              result.bf ||
+              "Sin nombre"
+          }}
+        </span>
+
+        <span *ngIf="result.type === 'star'" class="text-muted-5 ms-2 small">
+          Mag: {{ result.mag }}
+        </span>
+      </button>
+
+      <div
+        class="dropdown-divider"
+        *ngIf="results.length > 0 && results.length < totalResults"
+      ></div>
+      <button
+        *ngIf="results.length > 0 && results.length < totalResults"
+        class="dropdown-item text-center text-primary load-more-btn"
+        (click)="loadMore()"
+      >
+        <span *ngIf="!isLoading"
+          >Ver más resultados ({{
+            totalResults - results.length
+          }}
+          restantes)</span
+        >
+        <span *ngIf="isLoading" class="spinner-loader" role="status"></span>
+      </button>
+    </ng-container>
+
+    <div
+      *ngIf="!isLoading && results.length === 0 && currentTerm.length >= 2"
+      class="dropdown-item text-center text-white"
+    >
+      No se encontraron coincidencias.
+    </div>
+  </div>
+</div>

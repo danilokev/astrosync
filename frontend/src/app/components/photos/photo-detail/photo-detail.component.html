@@ -1,0 +1,132 @@
+<div
+  class="photo-detail__overlay"
+  [class.show]="isOpen"
+  (click)="handleBackdropClick($event)"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="photo-detail-title"
+>
+  <div
+    class="photo-detail__panel"
+    [class.show]="isOpen"
+    (click)="$event.stopPropagation()"
+  >
+    <header class="photo-detail__header">
+      <h2 class="photo-detail__title" id="photo-detail-title">
+        Detalles de la fotografía
+      </h2>
+      <button
+        type="button"
+        class="btn-close"
+        (click)="handleClose()"
+        aria-label="Cerrar panel de detalle"
+        title="Cerrar"
+      ></button>
+    </header>
+
+    <div class="photo-detail__content">
+      @if (isLoading) {
+        <div class="photo-detail__loading">
+          <div class="spinner-ring"></div>
+          <p class="text-muted mb-0">Cargando detalles de la foto...</p>
+        </div>
+      } @else if (error) {
+        <div class="photo-detail__error">
+          <i class="bi bi-exclamation-triangle"></i>
+          <p class="text-muted mb-0">{{ error }}</p>
+          <button type="button" class="btn-back" (click)="cargarFoto()">
+            <i class="bi bi-arrow-clockwise"></i>
+            Reintentar
+          </button>
+        </div>
+      } @else if (photo) {
+        <div class="photo-detail__body">
+          <div class="row g-4">
+            <div class="col-12 col-lg-7">
+              <div class="photo-detail__image-wrapper">
+                <img
+                  [src]="getPhotoUrl()"
+                  [alt]="photo.titulo"
+                  class="photo-detail__image"
+                  loading="eager"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-lg-5">
+              <div class="photo-detail__info">
+                <div class="photo-detail__info-item">
+                  <h3 class="photo-detail__info-label">Título</h3>
+                  <p class="photo-detail__info-value h5 mb-0">
+                    {{ photo.titulo }}
+                  </p>
+                </div>
+
+                <div class="photo-detail__info-item">
+                  <h3 class="photo-detail__info-label">Autor</h3>
+                  <p class="photo-detail__info-value">
+                    <i class="bi bi-person-fill"></i>
+                    {{ getAuthorName() }}
+                  </p>
+                </div>
+
+                <div class="photo-detail__info-item">
+                  <h3 class="photo-detail__info-label">Fecha de captura</h3>
+                  <p class="photo-detail__info-value">
+                    <i class="bi bi-calendar3"></i>
+                    {{ getFormattedDate() }}
+                  </p>
+                </div>
+
+                @if (hasLocation()) {
+                  <div class="photo-detail__info-item">
+                    <h3 class="photo-detail__info-label">Ubicación</h3>
+                    @if (photo.localizacion?.nombre) {
+                      <p class="photo-detail__info-value">
+                        <i class="bi bi-geo-alt-fill"></i>
+                        {{ photo.localizacion?.nombre }}
+                      </p>
+                    }
+                    @if (
+                      photo.localizacion?.latitud &&
+                      photo.localizacion?.longitud
+                    ) {
+                      <p
+                        class="photo-detail__info-value photo-detail__info-value--coords"
+                      >
+                        {{ photo.localizacion?.latitud }},
+                        {{ photo.localizacion?.longitud }}
+                      </p>
+                    }
+                  </div>
+                }
+
+                @if (getReferencias().length > 0) {
+                  <div class="photo-detail__info-item">
+                    <h3 class="photo-detail__section-title">
+                      <i class="bi bi-tags-fill"></i>
+                      Referencias
+                    </h3>
+                    <ul class="photo-detail__references">
+                      @for (ref of getReferencias(); track ref) {
+                        <li class="photo-detail__reference-tag">
+                          <i class="bi bi-link-45deg"></i>
+                          {{ ref }}
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                } @else {
+                  <div class="photo-detail__info-item">
+                    <h3 class="photo-detail__info-label">Referencias</h3>
+                    <p class="photo-detail__empty-refs">Sin referencias</p>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,128 @@
+<article class="card custom-card h-100 shadow-lg">
+  <div class="card-body d-flex flex-column">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="d-flex align-items-center gap-2">
+        <h2 class="card-title fw-bold display-5 m-0 text-white">
+          {{ celestial()?.label }}
+        </h2>
+        <app-bookmark
+          *ngIf="!loading() && celestial()"
+          [isActive]="isBookmarked"
+          (bookmarkToggled)="onBookmarkToggled($event)"
+        >
+        </app-bookmark>
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-back"
+        aria-label="Cerrar"
+        title="Cerrar panel"
+        (click)="handleCloseClick()"
+      >
+        <i class="bi bi-x fs-4"></i>
+      </button>
+    </div>
+
+    <app-loading *ngIf="loading()" text="Cargando información..."></app-loading>
+
+    <ng-container *ngIf="!loading() && celestial()">
+      <div class="card-text text-white text-justify flex-grow-1">
+        <div class="text-center mb-4 image-container">
+          <img
+            [src]="celestial()?.wikidataImage"
+            [alt]="celestial()?.label"
+            class="img-fluid border border-2 border-secondary shadow-sm"
+          />
+          <!-- <p>
+          {{celestial()?.wikidataLicense.artist.text}} {{celestial()?.wikidataLicense.artist.name}}, <a href="{{celestial()?.wikidataLicense.licenseUrl}}">{{celestial()?.wikidataLicense.license}}</a>, via <a href="celestial()?.wikidataImageFileUrl">Wikimedia Commons</a>
+        </p> -->
+
+          <p
+            class="attribution"
+            *ngIf="celestial()?.wikidataLicense?.attributionRequired === true"
+          >
+            <!-- Autor -->
+            <ng-container
+              *ngIf="
+                (celestial()?.wikidataLicense?.artist?.profileUrl &&
+                  celestial()?.wikidataLicense?.artist?.name) ||
+                celestial()?.wikidataLicense?.artist?.text
+              "
+            >
+              <span *ngIf="celestial()?.wikidataLicense?.artist?.text">{{
+                celestial()?.wikidataLicense.artist.text
+              }}</span>
+              <a
+                *ngIf="celestial()?.wikidataLicense?.artist?.profileUrl"
+                [href]="celestial()?.wikidataLicense?.artist?.profileUrl"
+                >{{ celestial()?.wikidataLicense.artist.name }}</a
+              >,
+            </ng-container>
+
+            <!-- Licencia -->
+            <ng-container
+              *ngIf="
+                celestial()?.wikidataLicense?.licenseUrl &&
+                celestial()?.wikidataLicense?.license
+              "
+            >
+              <a
+                [href]="celestial()?.wikidataLicense?.licenseUrl"
+                target="_blank"
+              >
+                {{ celestial()?.wikidataLicense.license }} </a
+              >,
+            </ng-container>
+
+            <!-- Wikimedia Commons -->
+            <ng-container *ngIf="celestial()?.wikidataImageFileUrl">
+              via
+              <a [href]="celestial()?.wikidataImageFileUrl" target="_blank"
+                >Wikimedia Commons</a
+              >
+            </ng-container>
+          </p>
+        </div>
+
+        <!-- <div class="card-text text-white text-justify flex-grow-1"> -->
+        <p>{{ celestial()?.extract }}</p>
+
+        <!-- Tabla -->
+        <app-info-table
+          [data]="celestial()"
+          (constellationClick)="onConstellationSelected($event)"
+        ></app-info-table>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <app-input-select
+          [defaultValue]="'pdf'"
+          (selectionChange)="onSelectChange($event)"
+        >
+          <option value="pdf">PDF</option>
+          <option value="html">HTML</option>
+          <option value="epub">ePub</option>
+          <option value="xml">XML</option>
+        </app-input-select>
+        <app-icon-btn
+          icon="bi-download"
+          (action)="generateFormat(celestial()?.download)"
+        ></app-icon-btn>
+      </div>
+
+      <div
+        class="mt-auto pt-3 border-top border-white border-opacity-25 text-center"
+      >
+        <a
+          *ngIf="celestial()?.wikipediaUrl"
+          [href]="celestial()?.wikipediaUrl"
+          target="_blank"
+          class="btn btn-outline-light btn-sm w-100 rounded-pill"
+        >
+          Más información en Wikipedia
+        </a>
+      </div>
+    </ng-container>
+  </div>
+</article>

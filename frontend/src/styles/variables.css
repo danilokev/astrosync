@@ -1,0 +1,75 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+:root {
+  /*  FONDOS  */
+  --color-bg-main: #0a0f1f;
+  /* Paneles y barra lateral */
+  --color-bg-panel: rgba(20, 25, 80, 0.85);
+  /* Menús flotantes o modales */
+  --color-bg-panel-floating: rgba(15, 20, 60, 0.98);
+
+  /* TEXTO */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.7);
+  --color-text-inverse: #04001e;
+  --color-text-dark: #1a0033;
+
+  /* ACCIÓN PRINCIPAL */
+  --color-primary: #bc7aff;
+  --color-primary-hover-bg: #d1a3ff;
+  --color-primary-active: #a84dff;
+
+  --color-menu-hover-bg: rgba(188, 122, 255, 0.2);
+  --color-primary-hover-border: rgba(188, 122, 255, 0.6);
+
+  /* ACCIÓN SECUNDARIA */
+  --color-secondary-bg: rgba(255, 255, 255, 0.05);
+  --color-secondary-hover-bg: rgba(255, 255, 255, 0.1);
+  --color-secondary-active-bg: rgba(255, 255, 255, 0.18);
+
+  /* BORDES */
+  --color-border-default: rgba(255, 255, 255, 0.25);
+  --color-border-light: rgba(255, 255, 255, 0.12);
+  --color-border-primary: rgba(188, 122, 255, 0.5);
+
+  /* RADIOS */
+  --radius-default: 16px;
+  --radius-pill: 50rem;
+  --radius-md: 10px;
+
+  /* ESTADOS */
+  --color-accept: #41cd4e;
+  --color-accept-hover: #26762d;
+  --color-accept-active: #1b5e20;
+
+  --color-cancel: #ff005e;
+  --color-cancel-hover: #d21057;
+  --color-cancel-active: #9a0162;
+
+  /* SOMBRAS Y EFECTOS */
+  --shadow-default: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-floating: 0 12px 40px rgba(0, 0, 0, 0.7);
+  --backdrop-blur-default: blur(12px);
+  --backdrop-blur-heavy: blur(20px);
+
+  /*  SCROLLBAR */
+  --color-scrollbar-track: var(--color-bg-main);
+  --color-scrollbar-thumb: rgba(255, 255, 255, 0.25);
+  --color-scrollbar-thumb-hover: rgba(255, 255, 255, 0.28);
+
+  /* TIPOGRAFÍA */
+  --font-body: "Roboto", sans-serif;
+  --font-heading: "Montserrat", sans-serif;
+
+  --line-height-base: 1.6;
+  --heading-line-height: 1.2;
+
+  --h1-size: 2rem;
+  --h2-size: 1.5rem;
+  --h3-size: 1.25rem;
+  --h4-size: 1rem;
+
+  /* fondo (landing) */
+  --color-nebula-orb-a: rgba(188, 122, 255, 0.18);
+  --color-nebula-orb-b: rgba(67, 120, 255, 0.12);
+}
