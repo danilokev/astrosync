@@ -7,7 +7,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { EngineService } from './facade-engine.service'; // Motor Three.js
-import { FacadeEngineServiceTAG } from './facade-engine-TAG.service'; // Motor propio\
+import { FacadeEngineServiceTAG } from './facade-engine-TAG.service'; // Motor propio
 import { ENGINE_CONFIG } from './engine-config'; // Fichero de configuración
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
@@ -435,47 +435,49 @@ export class EngineComponent implements OnInit, AfterViewInit, OnDestroy {
         latitud: this.userLat,
       };
 
-      // console.log('Usando ubicación guardada:', this.userLat, this.userLon);
       this.loadStars();
       return;
     }
 
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          this.userLat = pos.coords.latitude;
-          this.userLon = pos.coords.longitude;
-          this.currentLocation = {
-            ...this.currentLocation,
-            longitud: this.userLon,
-            latitud: this.userLat,
-          };
-
-          // Guardamos como ubicación inicial
-          this.locationState.setLocation(this.userLat, this.userLon);
-
-          // console.log(
-          //   'Usando ubicación inicial:',
-          //   this.userLat,
-          //   this.userLon,
-          // );
-          this.loadStars();
-        },
-        () => {
-          // Fallback Madrid
-          this.userLat = 40.42;
-          this.userLon = -3.7;
-          this.locationState.setLocation(this.userLat, this.userLon);
-          this.currentLocation = {
-            ...this.currentLocation,
-            longitud: this.userLon,
-            latitud: this.userLat,
-          };
-
-          this.loadStars();
-        },
-      );
+    if (!navigator.geolocation) {
+      // Contexto no seguro (LAN/HTTP): la API no existe; sin fallback nunca se carga la escena
+      this.useFallbackLocation();
+      return;
     }
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        this.userLat = pos.coords.latitude;
+        this.userLon = pos.coords.longitude;
+        this.currentLocation = {
+          ...this.currentLocation,
+          longitud: this.userLon,
+          latitud: this.userLat,
+        };
+
+        // Guardamos como ubicación inicial
+        this.locationState.setLocation(this.userLat, this.userLon);
+
+        this.loadStars();
+      },
+      () => this.useFallbackLocation(),
+      // Sin timeout el diálogo de permiso puede quedarse pendiente eternamente y la escena se queda en negro
+      { timeout: 10000, maximumAge: 300000 },
+    );
+  }
+
+  // Ubicación por defecto (Madrid) para garantizar que la escena siempre se dibuje
+  private useFallbackLocation(): void {
+    this.userLat = 40.42;
+    this.userLon = -3.7;
+    this.locationState.setLocation(this.userLat, this.userLon);
+    this.currentLocation = {
+      ...this.currentLocation,
+      longitud: this.userLon,
+      latitud: this.userLat,
+    };
+
+    this.loadStars();
   }
 
   // Obtener estrellas de la BD
@@ -492,9 +494,10 @@ export class EngineComponent implements OnInit, AfterViewInit, OnDestroy {
         console.error(err);
         this.error = 'Error al cargar datos';
         this.loading = false;
+        // Pintar al menos horizonte/cielo/planetas; con estrellas vacías las líneas se omiten
+        this.starsVisualization();
       },
     });
-    //this.starsVisualization(); // Movido a la función de callback de la carga de estrellas para asegurar que se cargan antes de intentar visualizarlas
   }
 
   // Visualizar estrellas
@@ -514,61 +517,6 @@ export class EngineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.engServ.showPlanet(this.userLat, this.userLon, this.currentTime);
     this.engServ.addSkybox();
     this.engServ.addHorizonLine();
-    // Datos para probar
-    /*const estrellas = [
-      {
-        "_id": "6912709c9182b547b8729909",
-        "proper": "Arcturus",
-        "ra": 14.26103,
-        "dec": 19.18241,
-        "mag": -0.05,
-        "ci": 1.239,
-        "bayer": "Alp",
-        "con": "Boo"
-      },
-      {
-        "_id": "691270fb9182b547b87305f9",
-        "proper": "Altair",
-        "ra": 19.846388,
-        "dec": 8.868322,
-        "mag": 0.76,
-        "ci": 0.221,
-        "bayer": "Alp",
-        "con": "Aql"
-      },
-      {
-        "_id": "6912708c9182b547b87288b6",
-        "proper": "Spica",
-        "ra": 13.419883,
-        "dec": -11.161322,
-        "mag": 0.98,
-        "ci": -0.235,
-        "bayer": "Alp",
-        "con": "Vir"
-      },
-      {
-        "_id": "691270479182b547b8724b3a",
-        "proper": "Regulus",
-        "ra": 10.139532,
-        "dec": 11.967207,
-        "mag": 1.36,
-        "ci": -0.087,
-        "bayer": "Alp",
-        "con": "Leo"
-      },
-      {
-        "_id": "6912704c9182b547b8724ec7",
-        "proper": "Algieba",
-        "ra": 10.332873,
-        "dec": 19.841489,
-        "mag": 2.01,
-        "ci": 1.128,
-        "bayer": "Gam-1",
-        "con": "Leo"
-      },
-    ]
-
-    this.engServ.showStars(estrellas, this.userLat, this.userLon, this.currentTime);*/
   }
 
   private onWindowResize = () => {
