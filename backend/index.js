@@ -44,13 +44,9 @@ app.use('/api/fotos', require('./routes/fotosRouter'));
 app.use('/api/favoritos', require('./routes/favoritosRouter'));
 app.use('/api/metrics', require('./routes/metricsRouter'));
 app.use('/api/constelaciones', require('./routes/constelacionesRouter'));
-
-// Ruta para Dialogflow
 app.use('/api/dialogflow', require('./routes/dialogflowRouter'));
-//app.use('/api/dialogflow/webhook', require('./routes/dialogflowRouter')); // para borrar cuando se corrige la estructura de /api/dialogflow
 
-// Ruta para servir archivos estáticos (imágenes subidas)
-app.use('/uploads', express.static(process.env.UPLOAD_DIR));
+app.use('/uploads', express.static(process.env.UPLOAD_DIR)); // Servir archivos estáticos desde la carpeta de uploads
 
 // Iniciar el servidor
 app.listen(port, '127.0.0.1', () => {
